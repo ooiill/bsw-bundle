@@ -1,0 +1,9 @@
+{% block operate %}
+  {% if operate.buttons is not empty %}
+    <div class="{{ ['bsw-operate', operate.position, operate.clsName]|joinClass }}">
+      {% for form in operate.buttons %}
+        {% include 'form/button.html.twig' with {form: form} %}
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}

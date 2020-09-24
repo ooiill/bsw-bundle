@@ -1,0 +1,32 @@
+{% set scene = logic.scene ?? constant(scaffold.abs ~ '::TAG_UNKNOWN') %}
+<a-slider
+  {% if form.class %}
+    class="{{ form.class }}"
+  {% endif %}
+  name="{{ form.name }}"
+  :style="{{ form.style }}"
+  {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+    :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+  {% else %}
+    :disabled="{{ form.disabled ? 'true' : 'false' }}"
+  {% endif %}
+  :dots="{{ form.dots ? 'true' : 'false' }}"
+  :min="{{ form.min }}"
+  :max="{{ form.max }}"
+  :marks="{{ form.marks }}"
+  :included="{{ form.included ? 'true' : 'false' }}"
+  :range="{{ form.range ? 'true' : 'false' }}"
+  :step="{{ form.step }}"
+  :vertical="{{ form.vertical ? 'true' : 'false' }}"
+  :data-bsw.prop="{{ form.formData }}"
+  {% if form.change %}
+    @change="((value) => {this.{{ form.change }}(value, '{{ form.key }}')})"
+  {% endif %}
+  :auto-focus="{{ form.autoFocus ? 'true' : 'false' }}"
+  {% if form.tooltipVisible is not same as(null) %}
+    :tooltip-visible="{{ form.tooltipVisible ? 'true' : 'false' }}"
+  {% endif %}
+  :tip-formatter="{{ form.tipFormatter }}"
+  {{ form.attributes|raw }}
+  v-decorator="['{{ form.key }}', { initialValue: {{ form.value }} }]"
+></a-slider>

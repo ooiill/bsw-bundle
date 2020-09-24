@@ -1,0 +1,29 @@
+{% block chartJavascript %}
+bsw.configure({
+    data: {},
+    method: {},
+    logic: {
+        chartInit(v) {
+            {% for item in chart.items %}
+                try {
+                    {% if item.type == 'map' %}
+                    $.get('{{ item.mapJsonFile }}', function (mapJson) {
+                        echarts.registerMap('{{ item.mapKey }}', mapJson);
+                        {% endif %}
+                        bsw.chart({
+                            id: '{{ item.name }}',
+                            theme: '{{ item.themeName }}',
+                            option: {{ item.optionStringify|raw }}
+                        });
+                        {% if item.type == 'map' %}
+                        });
+                    {% endif %}
+                } catch(e) {
+                    console.warning("Build chart error when name = `{{ item.name }}`.");
+                    console.error(e);
+                }
+            {% endfor %}
+        }
+    }
+});
+{% endblock %}

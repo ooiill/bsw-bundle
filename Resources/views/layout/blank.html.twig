@@ -1,0 +1,106 @@
+{% extends 'layout/empty.html.twig' %}
+
+{% use 'limbs/menu.html.twig' with menu as bswMenu %}
+{% use 'limbs/header.html.twig' %}
+{% use 'limbs/crumbs.html.twig' %}
+{% use 'limbs/welcome.html.twig' %}
+{% use 'limbs/operate.html.twig' %}
+{% use 'limbs/tabs.html.twig' %}
+{% use 'limbs/footer.html.twig' %}
+
+{% block content %}
+  <a-layout class="{{ ['bsw-scaffold', tplScaffoldClass ?? null]|joinClass }}">
+    {% if menu is defined and 'menu' not in logic.display ?? [] %}
+      <!-- menu mobile -->
+      <a-drawer
+        wrap-class-name="bsw-menu-mobile"
+        v-if="bsw.isMobile()"
+        placement="left"
+        :closable="false"
+        :visible="!menuCollapsed"
+        :width="menuWidth"
+        @close="menuTrigger"
+      >
+        {% block menuMobile %}
+          {{ block('bswMenu') }}
+        {% endblock %}
+      </a-drawer>
+      <!-- menu -->
+      <div class="bsw-menu" v-else>
+        {% block menu %}
+          {{ block('bswMenu') }}
+        {% endblock %}
+      </div>
+    {% endif %}
+    <a-layout>
+      <!-- header -->
+      {% block headerBefore %}{% endblock %}
+      {% if header is defined and 'header' not in logic.display ?? [] %}
+        {% block header %}
+          {{ parent() }}
+        {% endblock %}
+      {% endif %}
+      {% block headerAfter %}{% endblock %}
+      <a-layout-content class="{{ scaffold.iframe ? 'iframe' : null }}">
+        <!-- crumbs -->
+        {% block crumbsBefore %}{% endblock %}
+        {% if crumbs is defined and 'crumbs' not in logic.display ?? [] %}
+          {% block crumbs %}
+            {{ parent() }}
+          {% endblock %}
+        {% endif %}
+        {% block curmbsAfter %}{% endblock %}
+        <!-- welcome -->
+        {% block welcomeBefore %}{% endblock %}
+        {% if welcome is defined and 'welcome' not in logic.display ?? [] %}
+          {% block welcome %}
+            {{ parent() }}
+          {% endblock %}
+        {% endif %}
+        {% block welcomeAfter %}{% endblock %}
+        {% if operate is defined and operate.position is same as(top) %}
+          <!-- operate top -->
+          {% block operateTopBefore %}{% endblock %}
+          {% if operate is defined and 'operate' not in logic.display ?? [] %}
+            {% block operateTop %}
+              {{ block('operate') }}
+            {% endblock %}
+          {% endif %}
+          {% block operateTopAfter %}{% endblock %}
+        {% endif %}
+        <!-- tabs -->
+        {% block tabsBefore %}{% endblock %}
+        {% if tabs is defined and 'tabs' not in logic.display ?? [] %}
+          {% block tabs %}
+            {{ parent() }}
+          {% endblock %}
+        {% endif %}
+        {% block tabsAfter %}{% endblock %}
+        <div class="{{ ['bsw-content', tplContentClass ?? null]|joinClass }}">
+          <!-- page -->
+          {% block pageBefore %}{% endblock %}
+          {% block page %}{% endblock %}
+          {% block pageAfter %}{% endblock %}
+        </div>
+        {% if operate is defined and operate.position is same as(bottom) %}
+          <!-- operate bottom -->
+          {% block operateBottomBefore %}{% endblock %}
+          {% if operate is defined and 'operate' not in logic.display ?? [] %}
+            {% block operateBottome %}
+              {{ block('operate') }}
+            {% endblock %}
+          {% endif %}
+          {% block operateBottomAfter %}{% endblock %}
+        {% endif %}
+      </a-layout-content>
+      <!-- footer -->
+      {% block footerBefore %}{% endblock %}
+      {% if footer is defined and 'footer' not in logic.display ?? [] %}
+        {% block footer %}
+          {{ parent() }}
+        {% endblock %}
+      {% endif %}
+      {% block footerAfter %}{% endblock %}
+    </a-layout>
+  </a-layout>
+{% endblock %}

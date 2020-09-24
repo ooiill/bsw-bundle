@@ -1,0 +1,105 @@
+{% block header %}
+  <a-layout-header>
+    {% block headerMenuTrigger %}
+      {% if 'menu' not in logic.display ?? [] %}
+        <span class="icon" @click="menuTrigger">
+          <a-icon :type="menuCollapsed ? 'menu-unfold' : 'menu-fold'"></a-icon>
+        </span>
+      {% endif %}
+    {% endblock %}
+    <div class="user-wrapper left">
+      {% block headerMenu %}
+        {% if header.menu is not empty %}
+          <a-menu
+            :default-selected-keys="['{{ scaffold.route }}']"
+            mode="horizontal"
+            @click="redirectByVue"
+          >
+            {% for item in header.menu %}
+              <a-menu-item key="{{ item.route }}">
+                <div>
+                  {% if item.icon is not empty %}
+                    {{ item.icon|icon|raw }}
+                  {% endif %}
+                  <span :data-bsw.prop="{{ item.data }}">{{ item.label|trans({}, 'twig') }}</span>
+                </div>
+              </a-menu-item>
+            {% endfor %}
+          </a-menu>
+        {% endif %}
+      {% endblock %}
+    </div>
+    <div class="user-wrapper right">
+      {% block headerLanguage %}
+        {% if header.language is not empty %}
+          <a-dropdown placement="bottomRight" overlay-class-name="header-menu">
+        <span class="item action ant-dropdown-link">
+          {{ scaffold.cnf.iconLanguage|icon|raw }}
+          <span class="language">{{ 'Language'|trans({}, 'twig') }}</span>
+          {% if scaffold.cnf.twigHeaderLanguageIcon is not empty %}
+            {{ scaffold.cnf.twigHeaderLanguageIcon|icon|raw }}
+          {% endif %}
+        </span>
+            <a-menu slot="overlay" @click="changeLanguageByVue">
+              {% for key, label in header.language %}
+                <a-menu-item>
+                  <div>
+                    <span lang="{{ key }}">{{ label }}</span>
+                  </div>
+                </a-menu-item>
+              {% endfor %}
+            </a-menu>
+          </a-dropdown>
+        {% endif %}
+      {% endblock %}
+      {% block headerSetting %}
+        {% if header.setting is not empty %}
+          <a-dropdown placement="bottomRight" overlay-class-name="header-menu">
+        <span class="item action ant-dropdown-link">
+          {{ scaffold.cnf.iconSetting|icon|raw }}
+          <span class="setting">{{ 'Setting'|trans({}, 'twig') }}</span>
+          {% if scaffold.cnf.twigHeaderSettingIcon is not empty %}
+            {{ scaffold.cnf.twigHeaderSettingIcon|icon|raw }}
+          {% endif %}
+        </span>
+            <a-menu slot="overlay" @click="redirectByVue">
+              {% for item in header.setting %}
+                <a-menu-item>
+                  <div>
+                    {{ item.icon|icon|raw }}
+                    <span :data-bsw.prop="{{ item.data }}">{{ item.label|trans({}, 'twig') }}</span>
+                  </div>
+                </a-menu-item>
+              {% endfor %}
+            </a-menu>
+          </a-dropdown>
+        {% endif %}
+      {% endblock %}
+      {% block headerLinks %}
+        {% if header.links is not empty and scaffold.usr is not empty %}
+          <a-dropdown placement="bottomRight" overlay-class-name="header-menu">
+        <span class="item action ant-dropdown-link">
+          {% set avatar = attribute(scaffold.usr, scaffold.cnf.usrAvatar) %}
+          <a-avatar class="avatar" size="small" src="{{ avatar }}" icon="user"></a-avatar>
+          {% set account = scaffold.cnf.usrAccount %}
+          <span class="username">{{ attribute(scaffold.usr, account) ?? ('`' ~ account ~ '`') }}</span>
+          {% if scaffold.cnf.twigHeaderLinksIcon is not empty %}
+            {{ scaffold.cnf.twigHeaderLinksIcon|icon|raw }}
+          {% endif %}
+        </span>
+            <a-menu slot="overlay" :default-selected-keys="['{{ scaffold.route }}']" @click="redirectByVue">
+              {% for item in header.links %}
+                <a-menu-item key="{{ item.route }}">
+                  <div>
+                    {{ item.icon|icon|raw }}
+                    <span :data-bsw.prop="{{ item.data }}">{{ item.label|trans({}, 'twig') }}</span>
+                  </div>
+                </a-menu-item>
+              {% endfor %}
+            </a-menu>
+          </a-dropdown>
+        {% endif %}
+      {% endblock %}
+    </div>
+  </a-layout-header>
+{% endblock %}

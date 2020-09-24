@@ -1,0 +1,34 @@
+<a-button
+  {% if form.class %}
+    class="{{ form.class }}"
+  {% endif %}
+  name="{{ form.name }}"
+  :style="{{ form.style }}"
+  :disabled="{{ form.disabled ? 'true' : 'false' }}"
+  type="{{ form.type }}"
+  size="{{ form.size }}"
+  :block="{{ form.block ? 'true' : 'false' }}"
+  :ghost="{{ form.ghost ? 'true' : 'false' }}"
+  html-type="{{ form.htmlType }}"
+  {% if form.shape %}
+    shape="{{ form.shape }}"
+  {% endif %}
+  :data-bsw.prop="{{ form.data }}"
+  @click="{{ form.rootClickForVue }}"
+  {{ form.attributes|raw }}
+  {% if form.bindLoading %}
+    :loading="{{ form.bindLoading }}"
+  {% endif %}
+>
+  {% if form.icon %}
+    {{ form.icon|icon(true, form.iconClass, form.iconAttribute)|raw }}
+  {% endif %}
+  {{ form.label|trans({}, 'twig') }}
+  {% if form.selector and form.varNameForSelector is not empty %}
+    {% set var = '(' ~ form.varNameForSelector ~ ' && ' ~ form.varNameForSelector ~ '.length)' %}
+    {{ '{{ ' ~ var ~ ' ? `(${' ~ var ~ '})` : null }}' }}
+  {% endif %}
+  {% if form.bindVariable %}
+    {{ '{{ ' ~ form.bindVariable ~ ' }}' }}
+  {% endif %}
+</a-button>

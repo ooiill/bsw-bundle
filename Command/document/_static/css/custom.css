@@ -1,0 +1,94 @@
+
+div.code > div.highlight, div.section > div.highlight-json {
+    padding: 2px 4px 2px 6px;
+    background-color: #f3f6f6;
+    border-left: 6px solid #6ab0de;
+    margin: 20px 0;
+}
+
+.wy-nav-content {
+    max-width: 1000px;
+}
+
+table.docutils {
+    width: 100%;
+}
+
+.show-tips {
+    display: inline-block;
+    margin: 2px;
+    line-height: normal;
+    background: rgba(251, 241, 229, .5);
+    border-left: solid 1px #fdd1a7;
+    border-right: solid 1px #fdd1a7;
+    border-radius: 2px;
+    padding: 4px 8px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+}
+
+.show-tips p {
+    font-size: 12px;
+    color: rgba(10, 9, 9, 0.55);
+    font-weight: lighter;
+}
+
+.show-tips-hidden {
+    display: none;
+}
+
+div.rst-content img {
+    display: block;
+    width: 50%;
+    height: 10px;
+    margin: 60px auto !important;
+    opacity: .3;
+}
+
+p {
+    font-size: 14px;
+}
+
+.highlight, .highlight-json {
+    background: none;
+    border-radius: 4px;
+}
+
+.highlight > pre, .highlight-json > pre {
+    font-size: 14px !important;
+    line-height: 1.8 !important;
+    opacity: .7;
+}
+
+.tippy-popper p {
+    margin-bottom: unset;
+}
+
+table.bsw-doc-table-header td,
+table.bsw-doc-table-error td,
+table.bsw-doc-table-basic td {
+    height: 36px;
+}
+
+table.bsw-doc-table-request td,
+table.bsw-doc-table-response td {
+    height: 40px;
+}
+
+.wy-table td,
+.rst-content table.docutils td,
+.rst-content table.field-list td,
+.wy-table th,
+.rst-content table.docutils th,
+.rst-content table.field-list th {
+    padding: 6px 16px;
+}
+
+div.note > ul {
+    margin-bottom: 0 !important;
+}
+
+div.note > p:nth-child(n+2) {
+    padding: 10px 4px;
+}

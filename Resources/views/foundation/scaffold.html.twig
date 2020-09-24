@@ -1,0 +1,21 @@
+{% extends 'foundation/w3c.html.twig' %}
+
+{% block w3c %}
+  <p class="bsw-hide" id="var-font-symbol" data-bsw-value="{{ scaffold.cnf.fontSymbol }}"></p>
+  {% if scaffold.app == constant(scaffold.abs ~ '::APP_TYPE_BACKEND') %}
+    {% block loading %}
+      <div class="bsw-page-loading" style="{{ scaffold.cnf|imageStyle('loading') }}">
+        <span>{{ 'Loading'|trans({}, 'twig') }}</span>
+      </div>
+    {% endblock %}
+  {% endif %}
+  <div class="{{ ['bsw-vue', 'bsw-body', tplBodyClass ?? null]|joinClass }}">
+    <template>
+      <a-config-provider :locale="locale" :auto-insert-space-in-button="true">
+        {% block bodyBefore %}{% endblock %}
+        {% block body %}{% endblock %}
+        {% block bodyAfter %}{% endblock %}
+      </a-config-provider>
+    </template>
+  </div>
+{% endblock %}

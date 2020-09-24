@@ -1,0 +1,27 @@
+{% set scene = logic.scene ?? constant(scaffold.abs ~ '::TAG_UNKNOWN') %}
+<a-textarea
+  {% if form.class %}
+    class="{{ form.class }}"
+  {% endif %}
+  name="{{ form.name }}"
+  :style="{{ form.style }}"
+  {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+    :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+  {% else %}
+    :disabled="{{ form.disabled ? 'true' : 'false' }}"
+  {% endif %}
+  size="{{ form.size }}"
+  :auto-size="{ minRows: {{ form.minRows }}, maxRows: {{ form.maxRows }} }"
+  {% if form.maxLength %}
+    :max-length="{{ form.maxLength }}"
+  {% endif %}
+  :data-bsw.prop="{{ form.formData }}"
+  {% if form.change %}
+    @change="((value) => {this.{{ form.change }}(value, '{{ form.key }}')})"
+  {% endif %}
+  :auto-focus="{{ form.autoFocus ? 'true' : 'false' }}"
+  placeholder="{{ form.placeholder }}"
+  {{ form.attributes|raw }}
+  v-decorator="['{{ form.key }}', { initialValue: `{{ form.value }}`, rules: {{ form.formRules }} }]"
+></a-textarea>
+{% include 'form/iframe-entrypoint.html.twig' with {form: form} %}

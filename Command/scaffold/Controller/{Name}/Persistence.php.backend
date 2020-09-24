@@ -1,0 +1,42 @@
+<?php
+
+namespace {Namespace}\Controller\{Name};
+
+use {Namespace}\Entity\{Name};
+use Leon\BswBundle\Module\Form\Entity\Button;
+use Leon\BswBundle\Module\Bsw\Persistence\Tailor;
+use Leon\BswBundle\Annotation\Entity\AccessControl as Access;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+
+trait Persistence
+{
+    /**
+     * @return string
+     */
+    public function persistenceEntity(): string
+    {
+        return {Name}::class;
+    }
+
+    {PersistenceTailor}
+
+    /**
+     * Persistence record
+     *
+     * @Route("/{RouteUri}/persistence/{id}", name="app_{Route}_persistence", requirements={"id": "\d+"})
+     * @Access()
+     *
+     * @param int $id
+     *
+     * @return Response
+     */
+    public function persistence(int $id = null): Response
+    {
+        if (($args = $this->valid()) instanceof Response) {
+            return $args;
+        }
+
+        return $this->showPersistence(['id' => $id]);
+    }
+}

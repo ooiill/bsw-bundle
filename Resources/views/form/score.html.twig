@@ -1,0 +1,26 @@
+{% set scene = logic.scene ?? constant(scaffold.abs ~ '::TAG_UNKNOWN') %}
+<a-rate
+  {% if form.class %}
+    class="{{ form.class }}"
+  {% endif %}
+  name="{{ form.name }}"
+  :style="{{ form.style }}"
+  {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+    :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+  {% else %}
+    :disabled="{{ form.disabled ? 'true' : 'false' }}"
+  {% endif %}
+  v-decorator="['{{ form.key }}', { initialValue: {{ form.value }} }]"
+  :allow-clear="{{ form.allowClear ? 'true' : 'false' }}"
+  :allow-half="{{ form.allowHalf ? 'true' : 'false' }}"
+  {% if form.character %}
+    character="{{ form.character }}"
+  {% endif %}
+  :data-bsw.prop="{{ form.formData }}"
+  {% if form.change %}
+    @change="((value) => {this.{{ form.change }}(value, '{{ form.key }}')})"
+  {% endif %}
+  :auto-focus="{{ form.autoFocus ? 'true' : 'false' }}"
+  :count="{{ form.count }}"
+  {{ form.attributes|raw }}
+></a-rate>

@@ -1,0 +1,31 @@
+{% block filterJavascript %}
+bsw.configure({
+    data: {
+        filterForm: null,
+        filterFormat: {{ filter.formatJson|raw }},
+        filterExpand: false,
+    },
+    method: {
+        filterSubmit(e) {
+            {% if logic.filterJump is defined %}
+                {% set jump = logic.filterJump ? 'true' : 'false' %}
+            {% else %}
+                {% set jump = logic.scene == constant(scaffold.abs ~ '::TAG_PREVIEW') ? 'false' : 'true' %}
+            {% endif %}
+            this.filterFormAction(e, {{ jump }}, 'filterForm', 'filterFormat');
+        },
+        filterToggle() {
+          this.filterExpand = !this.filterExpand;
+        },
+        filterDisplay(key) {
+            let list = this.filterExpand ? {{ filter.showFullJson|raw }} : {{ filter.showListJson|raw }};
+            return list.findIndex((v) => {return v === key}) !== -1;
+        },
+    },
+    logic: {
+        createFilterForm(v) {
+            v.filterForm = v.$form.createForm(v);
+        },
+    }
+});
+{% endblock %}

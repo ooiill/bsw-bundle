@@ -1,0 +1,7 @@
+{% block welcome %}
+  {% if welcome.speech is not empty %}
+    <div class="bsw-welcome">
+      {{ welcome.speech|raw }}
+    </div>
+  {% endif %}
+{% endblock %}

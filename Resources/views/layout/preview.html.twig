@@ -1,0 +1,113 @@
+{% extends 'layout/blank.html.twig' %}
+{% set tplContentClass = ['bsw-content-preview', tplContentChildrenClass ?? null]|joinClass %}
+
+{% use 'layout/nothing.html.twig' %}
+{% use 'limbs/filter.html.twig' %}
+{% use 'javascript/filter.md.twig' %}
+{% use 'javascript/preview.md.twig' %}
+
+{% block page %}
+  {% block filterBefore %}{% endblock %}
+  {% if 'filter' not in logic.display ?? [] %}
+    {% block filter %}
+      {{ parent() }}
+    {% endblock %}
+  {% endif %}
+  {% block filterAfter %}{% endblock %}
+  {% set fields = '{' ~ (preview.choice.fields ?? [])|arrayMap('"{value}":"${record.{value}}"')|join(',') ~ '}' %}
+  {% block previewBefore %}{% endblock %}
+  {% block preview %}
+    <div class="bsw-preview">
+      <a-table
+        {% if preview.loadTwice %}
+          :key="`preview-{{ scaffold.uuid }}-${loadTimes}`"
+        {% else %}
+          :key="`preview-{{ scaffold.uuid }}`"
+        {% endif %}
+        :columns="previewColumns"
+        :data-source="previewList"
+        :bordered="{{ preview.border ? 'true' : 'false' }}"
+        children-column-name="{{ preview.childrenName }}"
+        :default-expand-all-rows="{{ preview.expandRows ? 'true' : 'false' }}"
+        :expand-row-by-click="{{ preview.expandRowByClick ? 'true' : 'false' }}"
+        {% if preview.expandIconColumnIndex ?? false %}
+          :expand-icon-column-index="{{ preview.expandIconColumnIndex }}"
+        {% endif %}
+        :indent-size="{{ preview.indentSize }}"
+        :pagination="false"
+        {% if  preview.rowClsNameMethod|length %}
+          :row-class-name="{{ preview.rowClsNameMethod }}"
+        {% endif %}
+        :row-key="record => `{{ fields }}`"
+        {% if preview.choice.enable ?? false %}
+          :row-selection="{
+            type: '{{ (preview.choice.multiple ?? false) ? 'checkbox' : 'radio' }}',
+            selectedRowKeys: previewSelectedRow,
+            onChange: previewSelectedChange,
+            selections: true,
+            fixed: {{ preview.choiceFixed ? 'true' : 'false' }}
+          }"
+        {% endif %}
+        :scroll="{{ {x: preview.scrollX}|merge(preview.scroll)|stringify }}"
+        size="{{ preview.size }}"
+        @change="previewChange"
+      >
+        {% block previewSlots %}
+          {% for item in preview.slots %}
+            {{ item|raw }}
+          {% endfor %}
+        {% endblock %}
+        {% if preview.header %}
+          <template slot="title" slot-scope="currentPageData">
+            {% block previewTableHeader %}{% endblock %}
+          </template>
+        {% endif %}
+        {% if preview.header %}
+          <template slot="footer" slot-scope="currentPageData">
+            {% block previewTableFooter %}{% endblock %}
+          </template>
+        {% endif %}
+      </a-table>
+      {% block scrollXOperate %}
+        {% if preview.scrollXOperate %}
+          <div
+            class="bsw-scroll-x left"
+            data-step="{{ preview.scrollXStepPx }}"
+            data-target-selector=".ant-table-body"
+            :style="{bottom: '{{ preview.scrollXBottomPx }}px'}"
+          >{{ scaffold.cnf.twigScrollXLeftIcon|icon|raw }}</div>
+          <div
+            class="bsw-scroll-x right"
+            data-step="{{ preview.scrollXStepPx }}"
+            data-target-selector=".ant-table-body"
+            :style="{bottom: '{{ preview.scrollXBottomPx }}px'}"
+          >{{ scaffold.cnf.twigScrollXRightIcon|icon|raw }}</div>
+        {% endif %}
+      {% endblock %}
+      {% block pagination %}
+        <a-pagination
+          class="{{ preview.paginationClsName }}"
+          :show-quick-jumper="true"
+          :hide-on-single-page="{{ preview.paginationAnyCase ? 'false' : 'true' }}"
+          :show-total="(total, range) => `${bsw.lang.total} ${total}`"
+          :page-size.sync="previewPageSize"
+          :default-current="previewPaginationData.currentPage"
+          :total="previewPaginationData.totalItem"
+          :show-size-changer="{{ preview.paginationSizeChanger ? 'true' : 'false' }}"
+          :page-size-options="previewPaginationSizeOptions"
+          :simple="{{ preview.paginationSimple ? 'true' : 'false' }}"
+          size="{{ preview.paginationSize }}"
+          @change="previewPagination"
+        ></a-pagination>
+      {% endblock %}
+    </div>
+  {% endblock %}
+  {% block previewAfter %}{% endblock %}
+{% endblock %}
+
+{% block javascript %}
+{% if 'filter' not in logic.display ?? [] %}
+  {{ block('filterJavascript') }}
+{% endif %}
+{{ block('previewJavascript') }}
+{% endblock %}

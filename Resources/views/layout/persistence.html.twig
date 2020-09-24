@@ -1,0 +1,78 @@
+{% extends 'layout/blank.html.twig' %}
+{% set tplContentClass = ['bsw-content-persistence', tplContentChildrenClass ?? null]|joinClass %}
+
+{% use 'layout/nothing.html.twig' %}
+{% use 'javascript/persistence.md.twig' %}
+
+{% block page %}
+  {% set persistenceArea = 'good' %}
+  {% block persistenceBefore %}{% endblock %}
+  {% block persistence %}
+    {% set view = scaffold.get.view ?? false %}
+    <div class="{{ ['bsw-persistence', view ? 'bsw-persistence-view' : null]|joinClass }}">
+      <a-form
+        :class="{'bsw-persistence-form': true, 'just-first-load': loadTimes <= 1}"
+        :form="persistenceForm"
+        :style="{{ persistence.styleJson }}"
+        @submit="persistenceSubmit"
+      >
+        {% set totalColumn = constant(scaffold.abs ~ '::PERSISTENCE_TOTAL_COLUMN') %}
+        {% set labelColumn = constant(scaffold.abs ~ '::PERSISTENCE_LABEL_COLUMN') %}
+        <!-- xs < sm < md < lg < xl < xxl -->
+        {% set small = scaffold.iframe ? 'sm' : 'md' %}
+        {% set large = scaffold.iframe ? 'md' : 'lg' %}
+        {% for field, item in persistence.record if item.type|formArea(persistenceArea ?? null) %}
+          {% set form = item.type %}
+          {% set wrapperColumn = item.column ?: (totalColumn - labelColumn) %}
+          {% set formClass = form.class ? 'bsw-item-' ~ form.class : null %}
+          {% set fieldHide = "persistenceFieldHideNow." ~ field %}
+          {% set renderHide = item.hide ? 'true' : 'false' %}
+          <transition
+            enter-active-class="animated {{ scaffold.cnf.twigPersistenceItemAnimateIn }}"
+            leave-active-class="animated {{ scaffold.cnf.twigPersistenceItemAnimateOut }}"
+          >
+            <a-form-item
+              v-show="typeof {{ fieldHide }} !== 'undefined' ? (!{{ renderHide }} && !{{ fieldHide }}) : !{{ renderHide }}"
+              :label-col="{
+                {{ small }}: { span: {{ totalColumn }} },
+                {{ large }}: { span: {{ labelColumn }} }
+              }"
+              :wrapper-col="{
+                {{ small }}: { span: {{ totalColumn }} },
+                {{ large }}: { span: {{ wrapperColumn }} }
+              }"
+              label="{{ item.label|trans({}, 'twig') }}"
+              extra="{{ ((item.tips|trans({}, 'twig')) ~ ',' ~ item.tipsAuto)|trim(',') }}"
+              class="{{ ['bsw-form-' ~ form.itemName, formClass]|joinClass }}"
+              :style="{{ form.parentStyle }}"
+            >
+              {% set title = ((item.title|trans({}, 'twig')) ~ ',' ~ item.titleAuto)|trim(',') %}
+              {% set begin = title ? '<a-popover><template slot="content">' ~ title ~ '</template>' : null %}
+              {% set end = title ? '</a-popover>' : null %}
+              {{ begin|raw }}
+              {% include "form/" ~ form.itemName ~ ".html.twig" with {form: form} %}
+              {{ end|raw }}
+            </a-form-item>
+          </transition>
+        {% endfor %}
+        <a-form-item
+          :wrapper-col="{
+            {{ small }}: { span: {{ totalColumn }}, offset: 0 },
+            {{ large }}: { span: {{ totalColumn - labelColumn }}, offset: {{ labelColumn }} }
+          }"
+          :class="{'bsw-persistence-form-operate': true}"
+          :style="{{ persistence.operateStyleJson }}"
+        >
+          {% for form in persistence.operates %}
+            {% include 'form/button.html.twig' with {form: form} %}
+          {% endfor %}
+        </a-form-item>
+      </a-form>
+    </div>
+  {% endblock %}
+  {% block persistenceAfter %}{% endblock %}
+{% endblock %}
+
+{% block javascript %}
+{{ block('persistenceJavascript') }}
+{% endblock %}

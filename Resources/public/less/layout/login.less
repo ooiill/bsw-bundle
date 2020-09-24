@@ -1,0 +1,102 @@
+@mobile-sm: 576px;
+
+.bsw-body-login {
+  .ant-spin-container {
+    width: 100%;
+    min-height: 100%;
+    padding: 120px 0;
+    transition: padding .5s ease-in-out;
+    @media screen and (max-width: @mobile-sm) {
+      padding: 50px 0;
+    }
+    @media screen and (min-height: 1000px) {
+      padding: 200px 0
+    }
+  }
+
+  .header {
+    width: 100%;
+    text-align: center;
+    user-select: none;
+
+    a {
+      text-decoration: none;
+    }
+
+    img {
+      width: 50px;
+      vertical-align: top;
+      margin-right: 10px;
+    }
+
+    span {
+      color: #1890ff;
+      font-size: 32px;
+      padding-right: 14px;
+      font-weight: 200;
+    }
+  }
+
+  .login-container {
+    width: 460px;
+    margin: 0 auto;
+    padding: 40px 0;
+    background: rgba(255, 255, 255, .3);
+    border: 1px solid rgba(255, 255, 255, 1);
+    border-radius: 4px;
+
+    &.dark {
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(6, 6, 6, 0.2);
+    }
+
+    @media screen and (max-width: @mobile-sm) {
+      width: unset;
+      background: none;
+      border: none;
+    }
+  }
+
+  .login-form {
+    margin: 64px auto 0;
+    max-width: 360px;
+
+    .login-form-forgot {
+      float: right;
+    }
+
+    .login-form-button {
+      width: 100%;
+    }
+
+    .ant-input-prefix .anticon {
+      color: rgba(0, 0, 0, .25);
+    }
+
+    .ant-input-affix-wrapper .ant-input:not(:first-child) {
+      padding-left: 36px;
+    }
+
+    transition: max-width .5s ease-in-out;
+    @media screen and (max-width: @mobile-sm) {
+      margin: 70px auto 0;
+      max-width: 320px;
+    }
+  }
+
+  .bsw-captcha-item .ant-form-item-children {
+    display: flex;
+    flex-direction: row;
+
+    > span {
+      flex: 1;
+    }
+
+    > img.bsw-captcha {
+      height: 40px;
+      margin-left: 10px;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+    }
+  }
+}

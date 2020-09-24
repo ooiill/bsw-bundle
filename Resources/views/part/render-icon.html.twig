@@ -1,0 +1,6 @@
+<div v-if='{Abs::SLOT_NOT_BLANK}'>
+  <a-icon v-if='{:value}.split(":")[0] == "a"' :type='{:value}.split(":")[1]'></a-icon>
+  <b-icon v-else-if='{:value}.split(":")[0] == "b"' :type='{:value}.split(":")[1]'></b-icon>
+  {value}
+</div>
+{Abs::TPL_ELSE_NIL}

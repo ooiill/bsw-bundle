@@ -1,0 +1,33 @@
+{% set clsNameList = {
+  basic: 'ant-btn',
+  type: 'ant-btn-' ~ form.type,
+  size: {small: 'ant-btn-sm', large: 'ant-btn-lg'}[form.size] ?? null,
+  block: form.ghost ? 'ant-btn-block' : null,
+  ghost: form.ghost ? 'ant-btn-background-ghost' : null,
+  shape: form.shape ? ('ant-btn-' ~ form.shape) : null,
+  custom: form.class,
+} %}
+
+<button
+  class="{{ clsNameList|joinClass }}"
+  name="{{ form.name }}"
+  {% if form.styleStringify %}
+    style="{{ form.styleStringify }}"
+  {% endif %}
+  {% if form.disabled %}
+    disabled="disabled"
+  {% endif %}
+  type="{{ form.htmlType }}"
+  data-bsw="{{ form.data }}"
+  onclick="{{ form.rootClickForNative }}"
+  {% if form.selector and form.varNameForSelector is not empty %}
+    {% set var = '(' ~ form.varNameForSelector ~ ' && ' ~ form.varNameForSelector ~ '.length)' %}
+    {{ '{{ ' ~ var ~ ' ? `(${' ~ var ~ '})` : null }}' }}
+  {% endif %}
+  {{ form.attributes|raw }}
+>
+  {% if form.icon %}
+    {{ form.icon|nativeIcon(form.iconClass)|raw }}
+  {% endif %}
+  <span>{{ form.label|trans({}, 'twig') }}</span>
+</button>

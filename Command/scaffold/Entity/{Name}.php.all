@@ -1,0 +1,11 @@
+<?php
+
+namespace {Namespace}\Entity;
+
+{EntityUse}
+
+{EntityClass}
+class {Name} extends FoundationEntity
+{
+    {EntityFields}
+}

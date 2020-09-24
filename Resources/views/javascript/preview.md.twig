@@ -1,0 +1,104 @@
+{% block previewJavascript %}
+bsw.configure({
+    data: {
+        previewColumns: {{ preview.columnsJson|raw }},
+        previewList: {{ preview.listJson|raw }},
+        previewSelectedRow: [],
+        previewDynamicRefresh: {{ preview.dynamic }},
+        previewUrl: '{{ scaffold.url|raw }}',
+        previewPaginationData: {{ preview.pageJson|raw }},
+        previewPageSize: {{ preview.page.pageSize }},
+        previewPaginationSizeOptions: {{ preview.pageSizeOptionsJson|raw }},
+        previewPageNumber: 1
+    },
+    watch: {
+        previewPageSize(pageSize) {
+            location.href = this.previewGetUrl(null, {page: 1, page_size: pageSize});
+        }
+    },
+    method: {
+        {% if logic.pageJump is defined %}
+            {% set jump = logic.pageJump ? 'true' : 'false' %}
+        {% else %}
+            {% set jump = 'false' %}
+        {% endif %}
+        previewSelectedChange(selectedRow) {
+            this.previewSelectedRow = selectedRow;
+        },
+        previewPagination(page, pageSize) {
+            this.pagination(this.previewGetUrl(), page, {{ jump }});
+        },
+        previewChange(pagination, filters, sorter) {
+            let url = this.previewGetUrl();
+            let query = bsw.parseQueryString(url);
+            let arrKey = '{{ constant(scaffold.abs ~ '::TAG_SEQUENCE') }}';
+            url = bsw.unsetParamsBeginWith([arrKey], url);
+            if (typeof sorter.field !== 'undefined') {
+                let field = bsw.humpToUnder(sorter.field);
+                let key = `${arrKey}[${field}]`;
+                if (typeof sorter.column === 'undefined') {
+                    next = null;
+                } else {
+                    let dir = sorter.column.sortDirections;
+                    let index = dir.findIndex((v) => {return v === query[key] || null})
+                    next = (index + 1) >= dir.length ? null : dir[index + 1];
+                }
+                url = bsw.setParams({[key]: next}, url);
+            }
+            this.pagination(url, null, {{ jump }});
+        },
+        previewRowClsName(record, index) {
+            return record['{{ constant(scaffold.abs ~ '::TAG_ROW_CLS_NAME') }}'];
+        },
+    },
+    logic: {
+        previewCustomRenders(v) {
+            let customRenders = bsw.jsonFnHandler({{ preview.customRendersJson|raw }}, 'customRender');
+            for (let item of v.previewColumns) {
+                let field = item.dataIndex;
+                if (typeof customRenders[field] !== 'undefined' && customRenders.hasOwnProperty(field)) {
+                    item.customRender = customRenders[item.dataIndex];
+                }
+            }
+        },
+        previewResize(v) {
+            let upper = {{ preview.scroll.x ?? preview.scrollX }};
+            let columns = v.previewColumns;
+            let fixed = [];
+            for (let index in columns) {
+                if (!columns.hasOwnProperty(index)) {
+                    continue;
+                }
+                if (columns[index].fixed) {
+                    fixed[index] = columns[index].fixed;
+                }
+            }
+            let resize = function() {
+                let width = $('.ant-table-wrapper').width();
+                let free = ((width < 720) || (width > upper));
+                for (let index in fixed) {
+                    if (!fixed.hasOwnProperty(index)) {
+                        continue;
+                    }
+                    columns[index].fixed = free ? false : fixed[index];
+                }
+            };
+            v.$nextTick(function () {
+                resize();
+                $(window).resize(() => resize());
+            });
+        },
+        previewImageChange(v) {
+            v.previewImageChange();
+        },
+        previewDynamicRefresh(v) {
+            if (v.previewDynamicRefresh < 3 || v.previewList.length === 0) {
+                return;
+            }
+            setInterval(function() {
+                v.previewPaginationRefresh(false);
+            }, v.previewDynamicRefresh * 1000);
+        }
+    }
+});
+{% endblock %}

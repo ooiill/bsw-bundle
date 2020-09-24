@@ -1,0 +1,7 @@
+/**
+ * @return array
+ */
+public function persistenceTailor(): array
+{
+    return {ArrayChunk};
+}

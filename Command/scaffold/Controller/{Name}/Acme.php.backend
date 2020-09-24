@@ -1,0 +1,19 @@
+<?php
+
+namespace {Namespace}\Controller\{Name};
+
+use {AcmeNamespace};
+use Leon\BswBundle\Module\Entity\Abs;
+use Leon\BswBundle\Annotation\Entity\Input as I;
+use Leon\BswBundle\Annotation\Entity\Output as O;
+use Leon\BswBundle\Annotation\Entity\AccessControl as Access;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * {Info}
+ */
+class Acme extends {Acme}
+{
+    use Preview;
+    use Persistence;
+}

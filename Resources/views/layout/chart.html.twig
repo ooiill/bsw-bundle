@@ -1,0 +1,35 @@
+{% extends 'layout/blank.html.twig' %}
+{% set tplContentClass = ['bsw-content-chart', tplContentChildrenClass ?? null]|joinClass %}
+
+{% use 'layout/nothing.html.twig' %}
+{% use 'limbs/filter.html.twig' %}
+{% use 'limbs/chart.html.twig' %}
+{% use 'javascript/filter.md.twig' %}
+{% use 'javascript/chart.md.twig' %}
+
+{% block page %}
+  {% block filterBefore %}{% endblock %}
+  {% if 'filter' not in logic.display ?? [] %}
+    {% block filter %}
+      {{ parent() }}
+    {% endblock %}
+  {% endif %}
+  {% block filterAfter %}{% endblock %}
+  {% block chartBefore %}{% endblock %}
+  {% block chart %}
+    <div class="bsw-chart-list">
+      {% for item in chart.items %}
+        {% set chart = item %}
+        {{ parent() }}
+      {% endfor %}
+    </div>
+  {% endblock %}
+  {% block chartAfter %}{% endblock %}
+{% endblock %}
+
+{% block javascript %}
+{% if 'filter' not in logic.display ?? [] %}
+  {{ block('filterJavascript') }}
+{% endif %}
+{{ block('chartJavascript') }}
+{% endblock %}

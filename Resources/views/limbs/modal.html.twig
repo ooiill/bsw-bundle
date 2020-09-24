@@ -1,0 +1,36 @@
+{% block modal %}
+  {% set maskClosable = modal.maskClosable ? 'true' :'false' %}
+  {% set clsName = ['bsw-modal', modal.wrapClsName]|joinClass %}
+  <a-modal
+    v-model="modal.visible"
+    :wrap-class-name="'{{ clsName }}' + (typeof modal.class === 'undefined' ? '' : (' ' + modal.class))"
+    :closable="typeof modal.closable !== 'undefined' ? modal.closable : {{ modal.closable ? 'true' : 'false' }}"
+    :destroy-on-close="true"
+    :transition-name="modal.animate || '{{ modal.animate }}'"
+    :mask="typeof modal.mask !== 'undefined' ? modal.mask : {{ modal.mask ? 'true' : 'false' }}"
+    :mask-closable="typeof modal.maskClosable !== 'undefined' ? modal.maskClosable : {{ maskClosable }}"
+    :mask-transition-name="modal.maskAnimate || '{{ modal.maskAnimate }}'"
+    :keyboard="typeof modal.keyboard !== 'undefined' ? modal.keyboard : {{ modal.keyboard ? 'true' : 'false' }}"
+    :title="modal.title === false ? '' : (modal.title || '{{ modal.title|trans({}, 'twig') }}')"
+    :ok-text="modal.okText || '{{ modal.okText|trans({}, 'twig') }}'"
+    :ok-type="modal.okType || '{{ modal.okType }}'"
+    :cancel-text="modal.cancelText || '{{ modal.cancelText|trans({}, 'twig') }}'"
+    :z-index="modal.zIndex || {{ modal.zIndex }}"
+    :centered="typeof modal.centered !== 'undefined' ? modal.centered : {{ modal.centered ? 'true' : 'false' }}"
+    :width="modal.width || {{ modal.width|vueType }}"
+    :body-style="{{ modal.bodyStyleJson }}"
+    :mask-style="{{ modal.maskStyleJson }}"
+    :dialog-style="{{ modal.dialogStyleJson }}"
+    :ok-button-props="{props:typeof modal.okProps !== 'undefined' ? modal.okProps : {}}"
+    :cancel-button-props="{props:typeof modal.cancelProps !== 'undefined' ? modal.cancelProps : {}}"
+    :[footer]="null"
+    @ok="bsw.modalOnOk"
+    @cancel="bsw.modalOnCancel"
+  >
+    <div
+      class="bsw-modal-data"
+      :data-bsw.prop="{ok: modal.ok, cancel: modal.cancel, extra: modal.extra}"
+    ></div>
+    <div v-html="modal.content"></div>
+  </a-modal>
+{% endblock %}

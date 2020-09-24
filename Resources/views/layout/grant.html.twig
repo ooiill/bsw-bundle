@@ -1,0 +1,95 @@
+{% extends 'layout/persistence.html.twig' %}
+{% set tplContentChildrenClass = 'bsw-content-grant' %}
+
+{% use 'layout/nothing.html.twig' %}
+
+{% block page %}
+  <p class="bsw-hide" v-init:selected-list='{{ logic.render|raw }}'></p>
+  <p class="bsw-hide" v-init:disabled-list='{{ logic.disabledJson|raw }}'></p>
+  {% block grantBefore %}{% endblock %}
+  {% block grant %}
+    <div class="bsw-persistence">
+      <a-form
+        class="bsw-grant-form"
+        :form="persistenceForm"
+        @submit="persistenceSubmit"
+      >
+        {% set totalColumn = 24 %}
+        {% set labelColumn = 4 %}
+        {% set danger = logic.danger %}
+        {% set realColumn = (totalColumn - labelColumn) %}
+        <a-affix :offset-top="20">
+          <a-form-item
+            :label-col="{'xs':24, 'sm':24, 'md':24, 'lg':24, 'xl':24, 'xxl':24}"
+            :wrapper-col="{'xs':24, 'sm':24, 'md':24, 'lg':24, 'xl':24, 'xxl':24}"
+          >
+            <a-button @click="selectAll" type="primary">
+              {{ 'b:icon-success1'|icon|raw }}
+              {{ 'Select all'|trans({}, 'twig') }}
+            </a-button>
+            <a-button @click="unSelectAll">
+              {{ 'b:icon-icon-37'|icon|raw }}
+              {{ 'Un select all'|trans({}, 'twig') }}
+            </a-button>
+          </a-form-item>
+        </a-affix>
+        <a-form-item v-show="false">
+          <a-input-number v-decorator="['id', { initialValue: `{{ logic.id }}` }]"></a-input-number>
+        </a-form-item>
+        {% for index, item in logic.form %}
+          <a-form-item
+            :label-col="{'xs':24, 'sm':24, 'md':24, 'lg':24, 'xl':24, 'xxl':24}"
+            :wrapper-col="{'xs':24, 'sm':24, 'md':24, 'lg':24, 'xl':24, 'xxl':24}"
+            label="{{ item.info }}"
+          >
+            {% set initial = (item.type.value is empty) ? null : ('"' ~ item.type.value|join('","') ~ '"') %}
+            <a-checkbox-group
+              {% if item.type.class %}
+                class="{{ item.type.class }}"
+              {% endif %}
+              :style="{width: '100%'}"
+              :disabled="{{ item.type.disabled ? 'true' : 'false' }}"
+              placeholder="{{ item.type.placeholder }}"
+              {{ item.type.attributes|raw }}
+              v-decorator="['{{ index }}', { initialValue: [{{ initial }}], rules: {{ item.type.formRules }} }]"
+            >
+              <a-row>
+                {% for value, label in item.type.optionsArray %}
+                  {% set _danger = attribute(danger, value) ?? null %}
+                  <a-col :xs="24" :sm="24" :md="12" :lg="8" :xl="6" :xxl="4">
+                    {% macro checkbox(logic, value, label, _danger) %}
+                      {% set disabled = attribute(logic.disabled, value) ?? false %}
+                      <a-checkbox
+                        :disabled="{{ disabled ? 'true' : 'false' }}"
+                        class="{{ ['bsw-checkbox-middle', _danger.class ?? null]|joinClass }}"
+                        value="{{ value }}"
+                      >
+                        {{ label }}
+                      </a-checkbox>
+                    {% endmacro %}
+                    {% if _danger is not null %}
+                      <a-popover>
+                        <template slot="content">{{ _danger.title|trans({}, 'twig') }}</template>
+                        {{ _self.checkbox(logic, value, label, _danger) }}
+                      </a-popover>
+                    {% else %}
+                      {{ _self.checkbox(logic, value, label, _danger) }}
+                    {% endif %}
+                  </a-col>
+                {% endfor %}
+              </a-row>
+            </a-checkbox-group>
+          </a-form-item>
+        {% endfor %}
+        <a-affix :offset-bottom="20">
+          <a-form-item :wrapper-col="{'xs':24, 'sm':24, 'md':24, 'lg':24, 'xl':24, 'xxl':24}">
+            {% for form in persistence.operates %}
+              {% include 'form/button.html.twig' with {form: form} %}
+            {% endfor %}
+          </a-form-item>
+        </a-affix>
+      </a-form>
+    </div>
+  {% endblock %}
+  {% block grantAfter %}{% endblock %}
+{% endblock %}

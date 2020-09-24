@@ -1,0 +1,63 @@
+{% block menu %}
+  <a-layout-sider
+    class="bsw-menu-container"
+    :theme="menuTheme"
+    collapsible
+    v-model="menuCollapsed"
+    :width="menuWidth"
+    @collapse="menuTriggerFooter"
+  >
+    <div class="logo" :class="{'menu-collapse':menuCollapsed}">
+      {% block menuLogo %}
+        <a href="{{ path(scaffold.cnf.routeDefault) }}">
+          {% if scaffold.cnf.appLogo %}
+            <img src="{{ scaffold.cnf.appLogo }}?version={{ scaffold.version }}" alt="logo">
+          {% endif %}
+          {% set appName = scaffold.cnf.appName ?? 'Application' %}
+          {% set appName = appName|trans({}, 'twig') %}
+          <h1 :style="`max-width:${menuWidth - 80}px;`" title="{{ appName }}">
+            {{ appName }} <sup>{{ scaffold.env }}</sup>
+          </h1>
+        </a>
+      {% endblock %}
+    </div>
+    <a-menu
+      :theme="menuTheme"
+      :default-open-keys="['{{ menu.parent }}']"
+      :default-selected-keys="['{{ menu.current }}']"
+      :inline-collapsed="menuCollapsed"
+      :force-sub-menu-render="true"
+      mode="inline"
+      @click="redirectByVue"
+    >
+      {% for menuItem in menu.masterMenu %}
+        {% set subMenu = attribute(menu.slaveMenu, menuItem.id) ?? [] %}
+        {% if subMenu is not empty %}
+          <a-sub-menu key="{{ menuItem.id }}">
+          <span slot="title">
+            {% if menuItem.icon is not empty %}
+              {{ menuItem.icon|icon|raw }}
+            {% endif %}
+            <span>{{ menuItem.label }}</span>
+          </span>
+            {% for subMenuItem in subMenu %}
+              <a-menu-item key="{{ subMenuItem.id }}">
+                {% if subMenuItem.icon is not empty %}
+                  {{ subMenuItem.icon|icon|raw }}
+                {% endif %}
+                <span :data-bsw.prop="{{ subMenuItem.data }}">{{ subMenuItem.label }}</span>
+              </a-menu-item>
+            {% endfor %}
+          </a-sub-menu>
+        {% else %}
+          <a-menu-item key="{{ menuItem.id }}">
+            {% if menuItem.icon is not empty %}
+              {{ menuItem.icon|icon|raw }}
+            {% endif %}
+            <span :data-bsw.prop="{{ menuItem.data }}">{{ menuItem.label }}</span>
+          </a-menu-item>
+        {% endif %}
+      {% endfor %}
+    </a-menu>
+  </a-layout-sider>
+{% endblock %}

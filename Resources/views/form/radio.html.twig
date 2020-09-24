@@ -1,0 +1,55 @@
+{% set scene = logic.scene ?? constant(scaffold.abs ~ '::TAG_UNKNOWN') %}
+<a-radio-group
+  {% if form.class %}
+    class="{{ form.class }}"
+  {% endif %}
+  name="{{ form.name }}"
+  :style="{{ form.style }}"
+  {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+    :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+  {% else %}
+    :disabled="{{ form.disabled ? 'true' : 'false' }}"
+  {% endif %}
+  :data-bsw.prop="{{ form.formData }}"
+  size="{{ form.size }}"
+  button-style="{{ form.buttonDress }}"
+  {% if form.varNameForMeta %}
+    :options="{{ form.varNameForMeta }}"
+    data-dds-meta="{{ form.varNameForMeta }}"
+  {% endif %}
+  {% if form.ddsRoute %}
+    data-dds-api="{{ path(form.ddsRoute, form.ddsArgs) }}"
+  {% endif %}
+  {% if form.change %}
+    @change="((value) => {this.{{ form.change }}(value, '{{ form.key }}')})"
+  {% endif %}
+  :auto-focus="{{ form.autoFocus ? 'true' : 'false' }}"
+  {{ form.attributes|raw }}
+  v-decorator="['{{ form.key }}', { initialValue: `{{ form.value }}`, rules: {{ form.formRules }} }]"
+>
+  {% if not form.varNameForMeta %}
+    {% if form.buttonMode %}
+      {% for i in form.optionsArray %}
+        <a-radio-button value="{{ i.value }}" {{ i.disabled ? 'disabled' : null }}>
+          {{ i.label }}
+        </a-radio-button>
+      {% endfor %}
+    {% else %}
+      <a-row>
+        {% for i in form.optionsArray %}
+          {% if form.col is empty %}
+            <a-radio value="{{ i.value }}" {{ i.disabled ? 'disabled' : null }}>
+              {{ i.label }}
+            </a-radio>
+          {% else %}
+            <a-col {{ form.colStringify|raw }}>
+              <a-radio value="{{ i.value }}" {{ i.disabled ? 'disabled' : null }}>
+                {{ i.label }}
+              </a-radio>
+            </a-col>
+          {% endif %}
+        {% endfor %}
+      </a-row>
+    {% endif %}
+  {% endif %}
+</a-radio-group>

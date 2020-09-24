@@ -1,0 +1,11 @@
+{% extends 'layout/blank.html.twig' %}
+{% set tplContentClass = ['bsw-content-document', tplContentChildrenClass ?? null]|joinClass %}
+
+{% block loading %}{% endblock %}
+
+{% block page %}
+  <div class="markdown-content">
+    <div class="index">{{ data.data.index|raw }}</div>
+    <div class="content">{{ data.data.document|raw }}</div>
+  </div>
+{% endblock %}

@@ -1,0 +1,75 @@
+
+.bsw-ck {
+  line-height: normal;
+  border: 1px solid var(--ck-color-base-border);
+  border-radius: var(--ck-border-radius);
+  max-height: 700px;
+  display: flex;
+  flex-flow: column nowrap;
+
+  .bsw-ck-toolbar {
+    z-index: 1;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+    border-bottom: 1px solid var(--ck-color-toolbar-border);
+
+    .ck-toolbar {
+      border: 0;
+      border-radius: 0;
+    }
+  }
+
+  .bsw-ck-editor {
+    min-height: 220px;
+    overflow-y: auto;
+
+    p {
+      margin-bottom: 8px;
+    }
+  }
+}
+
+.ck-content ul {
+  padding-left: 24px;
+
+  li {
+    list-style: circle;
+  }
+}
+
+.ck-content ol {
+  padding-left: 24px;
+
+  li {
+    list-style: decimal;
+  }
+}
+
+.ck-content a {
+  color: #2e6da4;
+
+  :hover {
+    color: #6889bc;
+  }
+}
+
+.ck&.ck-content blockquote {
+  padding: 6px 10px;
+  font-style: normal;
+  line-height: 1.5;
+  background-color: #fbfbfb;
+  border-radius: 2px;
+
+  p {
+    margin: 8px 0 !important;
+  }
+}
+
+.ant-form-item .ck-editor {
+  line-height: normal;
+
+  .ck-content {
+    p {
+      margin-bottom: 8px;
+    }
+  }
+}

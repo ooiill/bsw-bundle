@@ -1,0 +1,12 @@
+{% block init %}
+  <p class="bsw-hide" v-init:configure='{{ (scaffold.configure ?? '{}')|raw }}'></p>
+  <p class="bsw-hide" v-init:message='{{ (scaffold.message ?? '{}')|raw }}'></p>
+  <p class="bsw-hide" v-init:modal='{{ (scaffold.modal ?? '{}')|raw }}'></p>
+  <p class="bsw-hide" v-init:result='{{ (scaffold.result ?? '{}')|raw }}'></p>
+  {% for key, url in scaffold.api %}
+    <p class="bsw-hide" v-init:{{ key }}-api-url=`{{ url }}`></p>
+  {% endfor %}
+  {% for key, url in tplApiUrl ?? [] %}
+    <p class="bsw-hide" v-init:{{ key }}-api-url=`{{ url }}`></p>
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,3 @@
+{% for item in attribute(scaffold.src.js, position) ?? [] %}
+  <script src="{{ item }}"></script>
+{% endfor %}

@@ -1,0 +1,40 @@
+{% set initial = (form.value is same as(null)) ? null : ("initialValue: `" ~ form.value ~ "`,") %}
+{% set scene = logic.scene ?? constant(scaffold.abs ~ '::TAG_UNKNOWN') %}
+<a-tree-select
+  {% if form.class %}
+    class="{{ form.class }}"
+  {% endif %}
+  name="{{ form.name }}"
+  :style="{{ form.style }}"
+  {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+    :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+  {% else %}
+    :disabled="{{ form.disabled ? 'true' : 'false' }}"
+  {% endif %}
+  size="{{ form.size }}"
+  :allow-clear="{{ form.allowClear ? 'true' : 'false' }}"
+  :label-in-value="{{ form.labelInValue ? 'true' : 'false' }}"
+  :show-search="{{ form.showSearch ? 'true' : 'false' }}"
+  tree-node-filter-prop="{{ form.optionFilterProp }}"
+  :show-arrow="{{ form.showArrow ? 'true' : 'false' }}"
+  :show-checked-strategy="{{ form.showCheckedStrategy }}"
+  :dropdown-match-select-width="{{ form.dropdownEqualWidth ? 'true' : 'false' }}"
+  :dropdown-style="{{ form.dropdownStyle }}"
+  {% if form.varNameForMeta %}
+    :tree-data="{{ form.varNameForMeta }}"
+    data-dds-meta="{{ form.varNameForMeta }}"
+  {% else %}
+    :tree-data="{{ form.treeData }}"
+  {% endif %}
+  :data-bsw.prop="{{ form.formData }}"
+  {% if form.ddsRoute %}
+    data-dds-api="{{ path(form.ddsRoute, form.ddsArgs) }}"
+  {% endif %}
+  {% if form.change %}
+    @change="((value) => {this.{{ form.change }}(value, '{{ form.key }}')})"
+  {% endif %}
+  placeholder="{{ form.placeholder }}"
+  {{ form.attributes|raw }}
+  v-decorator="['{{ form.key }}', { {{ initial }} rules: {{ form.formRules }} }]"
+  :tree-default-expand-all="{{ form.expandAll ? 'true' : 'false' }}"
+></a-tree-select>

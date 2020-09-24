@@ -1,0 +1,18 @@
+{% block taskJavascript %}
+bsw.configure({
+    data: {
+        trailCurrent: 0,
+        trailDrawer: {{ logic.drawer.trailVisible|raw }},
+    },
+    method: {
+        showTrailDrawer(options) {
+            this.drawer.width = 720;
+            this.trailCurrent = options.id;
+            this.trailDrawer[this.trailCurrent] = true;
+        },
+        trailDrawerClose(e) {
+            this.trailDrawer[this.trailCurrent] = false;
+        }
+    },
+});
+{% endblock %}

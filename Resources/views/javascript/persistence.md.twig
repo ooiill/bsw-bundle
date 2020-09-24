@@ -1,0 +1,50 @@
+{% block persistenceJavascript %}
+bsw.configure({
+    data: {
+        persistenceForm: null,
+        persistenceFormat: {{ persistence.formatJson|raw }},
+        persistenceFileListKeyCollect: {{ persistence.fileListKeyCollectJson|raw }},
+        persistenceUploadTipsCollect: {{ persistence.uploadTipsCollectJson|raw }},
+        persistenceFieldHideNow: {},
+        persistenceFieldDisabledNow: {},
+        persistenceFieldHideCollect: {{ persistence.fieldHideCollectJson|raw }},
+        persistenceFieldDisabledCollect: {{ persistence.fieldDisabledCollectJson|raw }},
+        persistenceTransferKeysCollect: {{ persistence.transferKeysCollectJson|raw }},
+        persistenceVarNameForMetaCollect: {{ persistence.varNameForMetaCollectJson|raw }}
+    },
+    method: {
+        persistenceSubmit(e) {
+            this.submitFormAction(e, 'persistenceForm', 'persistenceFormat');
+        },
+        persistenceTransferChange(targetKeys, direction, moveKeys, field) {
+            this.persistenceTransferKeysCollect[field].target = targetKeys;
+        },
+    },
+    logic: {
+        persistenceInit(v) {
+            v.persistenceForm = v.$form.createForm(v);
+            v.$nextTick(function () {
+                bsw.initCkEditor();
+            });
+            v.$nextTick(function () {
+                for (let field in v.persistenceFieldHideCollect) {
+                    if (!v.persistenceFieldHideCollect.hasOwnProperty(field)) {
+                        continue;
+                    }
+                    let value = v.persistenceForm.getFieldValue(field);
+                    v.persistenceForm.setFieldsValue({[field]: value}); // fixed bug
+                    v.changeTriggerHide(value, field);
+                }
+                for (let field in v.persistenceFieldDisabledCollect) {
+                    if (!v.persistenceFieldDisabledCollect.hasOwnProperty(field)) {
+                        continue;
+                    }
+                    let value = v.persistenceForm.getFieldValue(field);
+                    v.persistenceForm.setFieldsValue({[field]: value}); // fixed bug
+                    v.changeTriggerDisabled(value, field);
+                }
+            });
+        }
+    }
+});
+{% endblock %}

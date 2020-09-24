@@ -1,0 +1,47 @@
+{% extends 'layout/preview.html.twig' %}
+
+{% use 'javascript/task.md.twig' %}
+
+{% block pageAfter %}
+  {% set maskClosable = drawer.maskClosable ? 'true' :'false' %}
+  {% set clsName = ['bsw-drawer', 'bsw-work-task-drawer', drawer.wrapClsName]|joinClass %}
+  <a-drawer
+    v-for="item in previewList"
+    :visible="trailDrawer[item.id]"
+    :key="item.id"
+    :wrap-class-name="'{{ clsName }}' + (typeof drawer.class === 'undefined' ? '' : (' ' + drawer.class))"
+    :closable="typeof drawer.closable !== 'undefined' ? drawer.closable : {{ drawer.closable ? 'true' : 'false' }}"
+    :destroy-on-close="true"
+    :mask="typeof drawer.mask !== 'undefined' ? drawer.mask : {{ drawer.mask ? 'true' : 'false' }}"
+    :mask-closable="typeof drawer.maskClosable !== 'undefined' ? drawer.maskClosable : {{ maskClosable }}"
+    :keyboard="typeof drawer.keyboard !== 'undefined' ? drawer.keyboard : {{ drawer.keyboard ? 'true' : 'false' }}"
+    :title="item.originalTitle === false ? '' : (item.originalTitle || '{{ drawer.title|trans({}, 'twig') }}')"
+    :width="drawer.width || {{ drawer.width|vueType }}"
+    :height="drawer.height || {{ drawer.height|vueType }}"
+    :z-index="drawer.zIndex || {{ drawer.zIndex }}"
+    :placement="drawer.placement || '{{ drawer.placement }}'"
+    @close="trailDrawerClose"
+  >
+    <a-timeline>
+      <a-timeline-item v-for="item in item.trailList" :key="item.id">
+        <a-avatar slot="dot" size="large" :style={backgroundColor:item.color}>{{ '{{ item.name }}' }}</a-avatar>
+        <div>
+          {{ '{{ item.time }}' }}
+          <span :style={color:item.reliable?'rgba(0,128,0,.7)':'#999'}>({{ '{{ item.human }}' }})</span>
+        </div>
+        <pre class='bsw-pre bsw-long-text' v-html="item.trail"></pre>
+      </a-timeline-item>
+      <a-timeline-item v-if="[1,2].indexOf(item.state) >= 0">
+        <a-icon slot="dot" type="loading" style="font-size: 24px;"></a-icon>
+        Progressing..
+      </a-timeline-item>
+    </a-timeline>
+    <div class="bsw-footer-bar bsw-align-right">
+      <a-button type="primary" @click="trailDrawerClose">{{ 'I got it'|trans({}, 'twig') }}</a-button>
+    </div>
+  </a-drawer>
+{% endblock %}
+
+{% block javascriptAfter %}
+  {{ block('taskJavascript') }}
+{% endblock %}

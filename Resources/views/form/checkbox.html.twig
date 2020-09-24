@@ -1,0 +1,47 @@
+{% set initial = (form.value is empty) ? null : ('"' ~ form.value|join('","') ~ '"') %}
+{% set scene = logic.scene ?? constant(scaffold.abs ~ '::TAG_UNKNOWN') %}
+<a-checkbox-group
+  {% if form.class %}
+    class="{{ form.class }}"
+  {% endif %}
+  name="{{ form.name }}"
+  :style="{{ form.style }}"
+  {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+    :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+  {% else %}
+    :disabled="{{ form.disabled ? 'true' : 'false' }}"
+  {% endif %}
+  :data-bsw.prop="{{ form.formData }}"
+  {% if form.varNameForMeta %}
+    :options="{{ form.varNameForMeta }}"
+    data-dds-meta="{{ form.varNameForMeta }}"
+  {% endif %}
+  {% if form.ddsRoute %}
+    data-dds-api="{{ path(form.ddsRoute, form.ddsArgs) }}"
+  {% endif %}
+  {% if form.change %}
+    @change="((value) => {this.{{ form.change }}(value, '{{ form.key }}')})"
+  {% endif %}
+  :auto-focus="{{ form.autoFocus ? 'true' : 'false' }}"
+  placeholder="{{ form.placeholder }}"
+  {{ form.attributes|raw }}
+  v-decorator="['{{ form.key }}', { initialValue: [{{ initial }}], rules: {{ form.formRules }} }]"
+>
+  {% if not form.varNameForMeta %}
+    <a-row>
+      {% for i in form.optionsArray %}
+        {% if form.col is empty %}
+          <a-checkbox value="{{ i.value }}" {{ i.disabled ? 'disabled' : null }}>
+            {{ i.label }}
+          </a-checkbox>
+        {% else %}
+          <a-col {{ form.colStringify|raw }}>
+            <a-checkbox value="{{ i.value }}" {{ i.disabled ? 'disabled' : null }}>
+              {{ i.label }}
+            </a-checkbox>
+          </a-col>
+        {% endif %}
+      {% endfor %}
+    </a-row>
+  {% endif %}
+</a-checkbox-group>

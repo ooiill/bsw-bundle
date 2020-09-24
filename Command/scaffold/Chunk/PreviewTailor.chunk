@@ -1,0 +1,7 @@
+/**
+ * @return array
+ */
+public function previewTailor(): array
+{
+    return {ArrayChunk};
+}

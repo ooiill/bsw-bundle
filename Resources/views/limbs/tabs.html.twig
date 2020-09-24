@@ -1,0 +1,26 @@
+{% block tabs %}
+  {% if tabs.links is not empty %}
+    <a-tabs
+      class="{{ ['bsw-tabs-links', tabs.clsName, tabs.fit ? 'bsw-tabs-fit' : null]|joinClass }}"
+      active-key="{{ scaffold.route }}"
+      @change="tabsLinksSwitch"
+      :tab-bar-gutter="{{ tabs.tabBarGutter }}"
+      :animated="true"
+      size="{{ tabs.size }}"
+      type="{{ tabs.type }}"
+      tab-position="{{ tabs.position }}"
+    >
+      {% for index, link in tabs.links %}
+        <a-tab-pane key="{{ link.route }}">
+        <span
+          id="tabs_link_{{ link.route }}"
+          :data-bsw.prop="{{ link.data }}"
+          slot="tab"
+        >
+          {{ link.icon|icon|raw }}{{ link.label|trans({}, 'twig') }}
+        </span>
+        </a-tab-pane>
+      {% endfor %}
+    </a-tabs>
+  {% endif %}
+{% endblock %}

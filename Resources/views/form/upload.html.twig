@@ -1,0 +1,78 @@
+{% set scene = logic.scene ?? constant(scaffold.abs ~ '::TAG_UNKNOWN') %}
+<a-input-number
+  v-if="{{ form.needId ? 'true' : 'false' }}"
+  {% if form.class %}
+    class="{{ form.class }}"
+  {% endif %}
+  name="{{ form.name }}"
+  :style="{{ form.style }}"
+  {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+    :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+  {% else %}
+    :disabled="{{ form.disabled ? 'true' : 'false' }}"
+  {% endif %}
+  size="{{ form.size }}"
+  :min="{{ form.min }}"
+  :max="{{ form.max }}"
+  step="{{ form.step }}"
+  placeholder="{{ form.placeholder }}"
+  v-decorator="['{{ form.key }}', { initialValue: `{{ form.value }}`, rules: {{ form.formRules }} }]"
+></a-input-number>
+<a-upload
+  {% if form.class %}
+    class="{{ form.class }}"
+  {% endif %}
+  :style="{{ form.style }}"
+  {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+    :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+  {% else %}
+    :disabled="{{ form.disabled ? 'true' : 'false' }}"
+  {% endif %}
+  {% if not form.needDrag %}
+    accept="{{ form.accept }}"
+  {% endif %}
+  action="{{ form.url }}"
+  :show-upload-list="{{ form.showList ? 'true' : 'false' }}"
+  list-type="{{ form.listType }}"
+  :file-list="{{ form.fileListKey }}"
+  name="{{ form.flag }}"
+  :data="{ file_flag: '{{ form.flag }}' }"
+  :data-bsw.prop="{{ form.formData }}"
+  @change="((object) => {this.{{ form.change }}(object, '{{ form.key }}')})"
+  {{ form.attributes|raw }}
+  v-decorator="['{{ form.key }}FileList']"
+>
+  {% macro button(scaffold, form, scene) %}
+    <a-button
+      type="{{ form.buttonType }}"
+      size="{{ form.size }}"
+      :block="{{ form.buttonBlock ? 'true' : 'false' }}"
+      {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+        :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+      {% else %}
+        :disabled="{{ form.disabled ? 'true' : 'false' }}"
+      {% endif %}
+      :style="{{ form.buttonStyle }}"
+    >
+      {{ scaffold.cnf.iconUpload|icon|raw }}
+      {{ form.buttonLabel|trans({}, 'twig') }}
+    </a-button>
+  {% endmacro %}
+  {% if form.needTips and form.varNameForTips is not empty %}
+    <a-popover>
+      <template slot="content">
+        <a-table
+          :columns="{{ form.varNameForTips }}.{{ form.key }}.columns"
+          :data-source="{{ form.varNameForTips }}.{{ form.key }}.list"
+          :pagination="false"
+          :scroll="{ x: 340 }"
+          :bordered="true"
+          size="small"
+        ></a-table>
+      </template>
+      {{ _self.button(scaffold, form, scene) }}
+    </a-popover>
+  {% else %}
+    {{ _self.button(scaffold, form, scene) }}
+  {% endif %}
+</a-upload>

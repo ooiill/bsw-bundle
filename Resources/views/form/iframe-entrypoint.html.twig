@@ -1,0 +1,19 @@
+{% set scene = logic.scene ?? constant(scaffold.abs ~ '::TAG_UNKNOWN') %}
+{% if form.previewRoute %}
+  <a-button
+    type="{{ form.buttonType }}"
+    size="{{ form.size }}"
+    :block="{{ form.buttonBlock ? 'true' : 'false' }}"
+    {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+      :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+    {% else %}
+      :disabled="{{ form.disabled ? 'true' : 'false' }}"
+    {% endif %}
+    :style="{{ form.buttonStyle }}"
+    :data-bsw.prop="{{ form.previewIframeArgs|merge({location: path(form.previewRoute, form.previewArgs)})|stringify }}"
+    @click="showIFrameByVue"
+  >
+    {{ scaffold.cnf.iconClick|icon|raw }}
+    {{ form.buttonLabel|trans({}, 'twig') }}
+  </a-button>
+{% endif %}

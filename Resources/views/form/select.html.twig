@@ -1,0 +1,60 @@
+{% if form.valueMultiple %}
+  {% set initial = (form.value is same as(null)) ? null : ("initialValue: " ~ form.value ~ ",") %}
+{% else %}
+  {% set initial = (form.value is same as(null)) ? null : ("initialValue: `" ~ form.value ~ "`,") %}
+{% endif %}
+{% set scene = logic.scene ?? constant(scaffold.abs ~ '::TAG_UNKNOWN') %}
+<a-select
+  {% if form.class %}
+    class="{{ form.class }}"
+  {% endif %}
+  name="{{ form.name }}"
+  :style="{{ form.style }}"
+  {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+    :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+  {% else %}
+    :disabled="{{ form.disabled ? 'true' : 'false' }}"
+  {% endif %}
+  size="{{ form.size }}"
+  :allow-clear="{{ form.allowClear ? 'true' : 'false' }}"
+  :label-in-value="{{ form.labelInValue ? 'true' : 'false' }}"
+  :default-active-first-option="true"
+  :show-search="{{ form.showSearch ? 'true' : 'false' }}"
+  option-filter-prop="{{ form.optionFilterProp }}"
+  :show-arrow="{{ form.showArrow ? 'true' : 'false' }}"
+  :token-separators="{{ form.tokenSeparators }}"
+  mode="{{ form.mode }}"
+  not-found-content="{{ form.notFoundContent }}"
+  :dropdown-match-select-width="false"
+  :dropdown-menu-style="{{ form.dropdownStyle }}"
+  :dropdown-match-select-width="{{ form.dropdownEqualWidth ? 'true' : 'false' }}"
+  {% set scene = logic.scene ?? constant(scaffold.abs ~ '::TAG_UNKNOWN') %}
+  {% set persistenceSence = (scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE')) %}
+  :data-bsw.prop="{{ form.formData }}"
+  {% if form.varNameForMeta %}
+    :options="{{ form.varNameForMeta }}"
+    data-dds-meta="{{ form.varNameForMeta }}"
+  {% endif %}
+  {% if form.ddsRoute %}
+    data-dds-api="{{ path(form.ddsRoute, form.ddsArgs) }}"
+  {% endif %}
+  {% if form.change %}
+    @change="((value, option) => {this.{{ form.change }}(value, option, '{{ form.key }}')})"
+  {% endif %}
+  {% if form.search %}
+    @search="((value) => {this.{{ form.search }}(value, '{{ form.key }}')})"
+  {% endif %}
+  :auto-focus="{{ form.autoFocus ? 'true' : 'false' }}"
+  placeholder="{{ form.placeholder }}"
+  {{ form.attributes|raw }}
+  v-decorator="['{{ form.key }}', { {{ initial }} rules: {{ form.formRules }} }]"
+>
+  {% if not form.varNameForMeta %}
+    {% for i in form.optionsArray %}
+      <a-select-option value="{{ i.value }}" {{ i.disabled ? 'disabled' : null }}>
+        {{ i.label }}
+      </a-select-option>
+    {% endfor %}
+  {% endif %}
+</a-select>
+{% include 'form/iframe-entrypoint.html.twig' with {form: form} %}

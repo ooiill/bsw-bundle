@@ -1,0 +1,63 @@
+<?php
+
+namespace {Namespace}\Controller\{Name};
+
+use {Namespace}\Entity\{Name};
+use Leon\BswBundle\Module\Bsw\Arguments;
+use Leon\BswBundle\Module\Form\Entity\Button;
+use Leon\BswBundle\Module\Bsw\Preview\Tailor;
+use Leon\BswBundle\Annotation\Entity\AccessControl as Access;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+
+trait Preview
+{
+    /**
+     * @return string
+     */
+    public function previewEntity(): string
+    {
+        return {Name}::class;
+    }
+
+    {PreviewTailor}
+
+    /**
+     * @return Button[]
+     */
+    public function previewOperates()
+    {
+        return [
+            new Button('New record', 'app_{Route}_persistence', $this->cnf->icon_newly),
+        ];
+    }
+
+    /**
+     * @param Arguments $args
+     *
+     * @return Button[]
+     */
+    public function previewRecordOperates(Arguments $args): array
+    {
+        return [
+            (new Button('Edit record', 'app_{Route}_persistence'))->setArgs(['id' => $args->item['id']]),
+        ];
+    }
+
+    /**
+     * Preview record
+     *
+     * @Route("/{RouteUri}/preview", name="app_{Route}_preview")
+     * @Access(export=true)
+     *
+     * @return Response
+     */
+    public function preview(): Response
+    {
+        if (($args = $this->valid()) instanceof Response) {
+            return $args;
+        }
+
+        return $this->showPreview();
+    }
+}

@@ -1,0 +1,43 @@
+{% if (form.value[0] is same as(null)) or (form.value[1] is same as(null)) %}
+  {% set initial = "null" %}
+{% else %}
+  {% set dateHead = "moment(`" ~ form.value[0] ~ "`, `" ~ form.format ~ "`)" %}
+  {% set dateTail = "moment(`" ~ form.value[1] ~ "`, `" ~ form.format ~ "`)" %}
+  {% set initial = "[" ~ dateHead ~ ", " ~ dateTail ~ "]" %}
+{% endif %}
+{% set scene = logic.scene ?? constant(scaffold.abs ~ '::TAG_UNKNOWN') %}
+<a-range-picker
+  {% if form.class %}
+    class="{{ form.class }}"
+  {% endif %}
+  name="{{ form.name }}"
+  :style="{{ form.style }}"
+  {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+    :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+  {% else %}
+    :disabled="{{ form.disabled ? 'true' : 'false' }}"
+  {% endif %}
+  :allow-clear="{{ form.allowClear ? 'true' : 'false' }}"
+  size="{{ form.size }}"
+  :data-bsw.prop="{{ form.formData }}"
+  {% if form.change %}
+    @change="((value) => {this.{{ form.change }}(value, '{{ form.key }}')})"
+  {% endif %}
+  :auto-focus="{{ form.autoFocus ? 'true' : 'false' }}"
+  :placeholder="['{{ form.placeholder }}', '{{ form.placeholder }}']"
+  format="{{ form.format }}"
+  separator="{{ form.separator }}"
+  {% if form.showTime %}
+    :show-time="{ defaultValue: [moment('{{ form.timeHead }}', '{{ form.timeFormat }}'), moment('{{ form.timeTail }}', '{{ form.timeFormat }}')] }"
+  {% else %}
+    :show-time="false"
+  {% endif %}
+  {% if form.disabledDate is not null %}
+    :disabled-date="{{ form.disabledDate }}"
+  {% endif %}
+  {% if form.disabledTime is not null %}
+    :disabled-time="{{ form.disabledTime }}"
+  {% endif %}
+  {{ form.attributes|raw }}
+  v-decorator="['{{ form.key }}', { initialValue: {{ initial }}, rules: {{ form.formRules }} }]"
+></a-range-picker>

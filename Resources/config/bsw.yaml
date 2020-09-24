@@ -1,0 +1,391 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+
+    locale: en
+    version: 1.0.0
+    sf_version: !php/const App\Kernel::VERSION
+    cert: '%kernel.project_dir%/certificate'
+    file: '%kernel.project_dir%/../file'
+    salt: BackendSteeringWheel
+    config_cache_enabled: true
+    config_cache_default_expires: 86400
+    upload_to_oss: true
+    upload_max_mb: 128
+    upload_replace_file: false
+    upload_save_name: uniqid
+    upload_save_path: savePath
+    upload_save_fmt: null
+    token_for_login_key: tk4l
+
+    platform_sms: aws
+    platform_email: aws
+
+    telegram_bot_token: null
+    telegram_hooks_host: null
+
+    backend_with_google_secret: true
+    backend_with_ip_strict: true
+    backend_ip_limit: false
+
+    backend_maintain_alone: true
+    backend_with_login_log: true
+    backend_captcha_digit: 4
+    backend_auth_root_ids: [1]
+    backend_db_logger: true
+
+    aes_key: KHkBMKsNdc8Ttkjl
+    aes_iv: KHkBMKsNdc8Ttkjl
+    aes_method: AES-128-CBC
+
+    jwt_issuer: bsw-antd
+    jwt_type: hmac
+
+    bd_dwz_token: baidu-dwz-token
+
+    ali_key: ali-key
+    ali_secret: ali-secret
+    ali_sms_key: null
+    ali_sms_secret: null
+    ali_sms_region: ali-sms-region
+    ali_oss_key: null
+    ali_oss_secret: null
+    ali_oss_bucket: ali-oss-bucket
+    ali_oss_endpoint: ali-oss-endpoint
+
+    tx_key: tx-key
+    tx_secret: tx-secret
+    tx_sms_key: null
+    tx_sms_secret: null
+
+    aws_region: aws-region
+    aws_key: aws-key
+    aws_secret: aws-secret
+    aws_email: bsw-antd@gmail.com
+
+    smtp_host: smtp.mail.com
+    smtp_port: 587
+    smtp_sender: smtp-sender@mail.com
+    smtp_secret: smtp-secret
+
+    doctrine_prefix: null
+    doctrine_prefix_mode: remove # add、remove
+
+    currency_code: CNY
+    currency_char: ￥
+
+    module_extra_path: []
+
+    wx_official_default:
+        app_id: app-id
+        secret: secret
+        token: CCUUSSTTOOMMEERR
+        aes_key: aes-key
+        response_type: object
+        oauth:
+            scopes: [ snsapi_userinfo ]
+            callback: /wx/oauth
+
+    wx_payment_default:
+        app_id: app-id
+        mch_id: mch-id
+        key: key-for-signature
+        cert_path: path/to/your/cert.pem
+        key_path: path/to/your/key
+
+    ali_payment_default:
+        app_id: app-id
+        ali_public_key: public-key-string
+        private_key: privaet-key-string
+
+    bsw_component:
+        Leon\BswBundle\Component\Aes:
+            arguments: ['%aes_key%', '%aes_iv%', '%aes_method%']
+
+        Leon\BswBundle\Component\AwsSDK:
+            arguments: ['%aws_region%', '%aws_key%', '%aws_secret%', {mail_sender: '%aws_email%'}]
+
+        Leon\BswBundle\Component\BaiDuShortUrl:
+            arguments: ['%bd_dwz_token%']
+
+        Leon\BswBundle\Component\Fetch:
+            arguments: ['%kernel.debug%']
+
+        Leon\BswBundle\Component\JWT:
+            arguments: ['%cert%/jwt_private.pem', '%cert%/jwt_public.pem', '%jwt_issuer%', '%jwt_type%']
+
+        Leon\BswBundle\Component\Rsa:
+            arguments: ['%cert%/rsa_private.pem', '%cert%/rsa_public.pem']
+
+    bsw_cnf:
+        app_logo: /bundles/leonbsw/img/logo.svg
+        app_ico: /bundles/leonbsw/img/favicon.ico
+        app_name: Backend Steering Wheel
+        host: //app.bsw-antd.com
+        host_official: http://www.bsw-antd.com
+        host_file: http://file.bsw-antd.com
+        third_message_key: bsw_third_message
+        work_lifecycle_max_day: 14
+        work_lifecycle_max_day_by_leader: 30
+        work_lifecycle_day_hours: 8
+
+        cache_enabled: true
+        cache_default_expires: 86400
+        copyright: Backend Steering Wheel ©2019 Spring Basic on Ant Design For Vue
+        debug_devil: ehwkJqsdWHmsjSE2
+        debug_uuid: user_id_OR_device_id
+        debug_cost: false
+        api_vs_client_time_diff: 300
+        curl_timeout_second: 30
+        proxy_pass: null
+        crumbs_min_level: 3
+
+        route_default: app_site_index
+        route_login: app_bsw_admin_user_login
+        route_login_handler: app_bsw_admin_user_login_handler
+        route_logout: app_bsw_admin_user_logout
+        route_profile: app_bsw_admin_user_profile
+        route_language: app_language
+        route_clean_backend: app_clean_backend
+        route_clean_frontend: app_clean_frontend
+        route_upload: app_upload
+        route_captcha: app_captcha
+        route_export: app_export
+        route_thrid_message: app_third_message
+        route_tg_debug: app_tg_debug
+        route_tg_hooks: app_tg_hooks
+        route_tg_cmd: app_tg_cmd
+
+        usr_uid: user_id
+        usr_phone: phone
+        usr_account: name
+        usr_role: role_id
+        usr_team: team_id
+        usr_team_leader: team_leader
+        usr_sex: sex
+        usr_update: update_time
+        usr_login: login_time
+        usr_ip: ip
+        usr_avatar: avatar
+
+        app_online_date: '2019-07-01' # use string
+        rm_local_file_when_oss: true
+        font_symbol: /bundles/leonbsw/font/iconfont/iconfont.js
+        font_symbol_url: /bundles/leonbsw/font/iconfont/demo_index.html
+        ant_icon_url: https://www.antdv.com/components/icon-cn
+        verify_json_url: http://www.ab173.com/json
+        verify_json_key: json
+        loading_label: null
+        work_task_send_telegram: true
+
+        loading_background_image: null
+        loading_background_repeat: no-repeat
+        loading_background_color: rgba(255,255,255,1)
+        loading_background_position: center
+        loading_background_size: cover
+
+        login_background_image: /bundles/leonbsw/img/background.1.svg
+        login_background_repeat: no-repeat
+        login_background_color: rgba(240,242,245,1)
+        login_background_position: center
+        login_background_size: cover
+        login_container_class: null # "login-container dark" dark is option
+
+        icon_tag: b:icon-tag
+        icon_click: b:icon-dianji
+        icon_search: b:icon-search
+        icon_badge: b:icon-assessedbadge
+        icon_two_box: b:icon-similarproduct
+        icon_submit_form: b:icon-rfq
+        icon_theme: b:icon-theme
+        icon_message: b:icon-remind1
+        icon_bulb: a:bulb
+        icon_db: b:icon-jifen
+        icon_profile: a:profile
+        icon_logout: a:logout
+        icon_redis: b:icon-Redis
+        icon_upload: a:upload
+        icon_setting: a:setting
+        icon_user: a:user
+        icon_lock: a:lock
+        icon_captcha: b:icon-yanzhengma1
+        icon_left: a:left
+        icon_right: a:right
+        icon_loading: null
+        icon_export: b:icon-export4
+        icon_import: b:icon-import1
+        icon_warning: b:icon-warning
+        icon_sure: a:coffee
+        icon_newly: a:plus
+        icon_delete: b:icon-delete1
+        icon_edit: b:icon-icon-38
+        icon_language: b:icon-icon-60
+        icon_speech: b:icon-icon-49
+
+        twig_crumbs_split: '|'
+        twig_crumbs_need_icon: true
+        twig_filter_item_animate_in: flipInY
+        twig_filter_item_animate_out: flipOutY
+        twig_header_language_icon: null
+        twig_header_setting_icon: null
+        twig_header_links_icon: null
+        twig_persistence_item_animate_in: fadeInDown
+        twig_persistence_item_animate_out: fadeOutDown
+        twig_scroll_x_left_icon: b:icon-back
+        twig_scroll_x_right_icon: b:icon-more
+
+    bsw_backend_allow_ips:
+        - 0.0.0.0
+        - 127.0.0.1
+        - 172.16.0.0/16
+        - 172.17.0.0/16
+        - 172.18.0.0/16
+        - 172.19.0.0/16
+
+    bsw_route_exclude_login:
+        - app_user_login
+        - app_user_logout
+        - app_captcha
+        - app_upload
+
+    bsw_route_exclude_history:
+        - app_third_message
+
+    bsw_crumbs_preview_pre:
+        - persistence
+        - away
+        - close
+        - sort
+        - export
+        - import
+
+    bsw_crumbs_map:
+        app_bsw_admin_role_access_control_grant: app_bsw_admin_role_preview
+        app_bsw_admin_access_control_grant: app_bsw_admin_user_preview
+        app_bsw_work_task_weight: app_bsw_work_task_preview
+        app_bsw_work_task_progress: app_bsw_work_task_preview
+
+    bsw_crumbs_keyword_to_icon_map:
+        home: b:icon-home
+        preview: b:icon-5
+        persistence: b:icon-qianming
+        away: b:icon-delete1
+        sort: a:icon-pin
+        export: b:icon-export4
+        import: b:icon-import1
+        grant: b:icon-assessedbadge
+
+    bsw_menus_same_current_map: {}
+
+    bsw_cover_iframe_args_by_name:
+        new_work_task: {}
+        adjust_work_progress: {}
+        note_work_task: {}
+        transfer_work_task: {}
+        adjust_work_weight: {}
+        admin_menu_sort: {}
+        attachment_diy_upload: {}
+        yaml_config_list: {}
+
+    bsw_menus_same_parent_map:
+        app_site_index: app_bsw_config_preview
+
+    bsw_command_queue_pos:
+        - mission
+        - import
+        - export
+        - queue
+
+    bsw_configure:
+        menuTheme: dark
+        menuWidth: 256
+        menuCollapsed: false
+        menuThemeMap: {dark: 'light', light: 'dark'}
+        opposeMap: {yes: 'no', no: 'yes'}
+        mobileDefaultCollapsed: true
+        weak: no
+        thirdMessage: no
+        thirdMessageSecond: 15
+        requestTimeout: 30,
+        requestRetryTimes: 3
+        notificationDuration: 3
+        messageDuration: 3
+        confirmDuration: 3
+        confirmWidth: 350
+        alertType: message
+        alertTypeForce: null
+        maxZIndex: 1000
+        notificationPlacement: topRight
+        transitionName: bsw-zoom
+        maskTransitionName: fade
+        cosyMinWidth: 1285
+        cosyMinWidthLess: .95
+        cosyMinWidthMore: .65
+        cosyMinHeight: 666
+        cosyMinHeightLess: .95
+        cosyMinHeightMore: .75
+        autoHeightDuration: 100
+        autoHeightOffset: 0
+        autoHeightOverOffset: yes
+        scrollXMinHeight: 300
+        scrollXFadeDuration: 100
+
+    bsw_module_input_args:
+        Leon\BswBundle\Module\Bsw\Away\Module: {}
+        Leon\BswBundle\Module\Bsw\Chart\Module: {}
+        Leon\BswBundle\Module\Bsw\Crumbs\Module: {}
+        Leon\BswBundle\Module\Bsw\Data\Module: {}
+        Leon\BswBundle\Module\Bsw\Drawer\Module: {}
+        Leon\BswBundle\Module\Bsw\Filter\Module: {}
+        Leon\BswBundle\Module\Bsw\Footer\Module: {}
+        Leon\BswBundle\Module\Bsw\Header\Module: {}
+        Leon\BswBundle\Module\Bsw\Menu\Module: {}
+        Leon\BswBundle\Module\Bsw\Modal\Module: {}
+        Leon\BswBundle\Module\Bsw\Operate\Module: {}
+        Leon\BswBundle\Module\Bsw\Persistence\Module: {}
+        Leon\BswBundle\Module\Bsw\Preview\Module: {}
+        Leon\BswBundle\Module\Bsw\Result\Module: {}
+        Leon\BswBundle\Module\Bsw\Tabs\Module: {}
+        Leon\BswBundle\Module\Bsw\Welcome\Module: {}
+
+services:
+
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Leon\BswBundle\Twig\AppExtension:
+        public: true
+
+    Leon\BswBundle\EventListener\LocaleSubscriber:
+        arguments:
+            - '%kernel.default_locale%'
+
+    Leon\BswBundle\Controller\BswFreeController:
+        public: true
+
+    Leon\BswBundle\Command\BswDocumentCommand:
+        tags: ['console.command']
+
+    Leon\BswBundle\Command\BswExportPreviewCommand:
+        tags: ['console.command']
+
+    Leon\BswBundle\Command\BswInitCommand:
+        tags: ['console.command']
+
+    Leon\BswBundle\Command\BswInitRecordCommand:
+        tags: ['console.command']
+
+    Leon\BswBundle\Command\BswMissionCommand:
+        tags: ['console.command']
+
+    Leon\BswBundle\Command\BswScaffoldCommand:
+        tags: ['console.command']
+
+    Twig\Extension\StringLoaderExtension:
+        tags:
+            - { name: twig.extension }

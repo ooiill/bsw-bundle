@@ -1,0 +1,3 @@
+{% for item in attribute(scaffold.src.css, position) ?? [] %}
+  <link href="{{ item }}" rel="stylesheet"/>
+{% endfor %}

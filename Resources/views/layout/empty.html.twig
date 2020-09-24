@@ -1,0 +1,58 @@
+{% extends 'foundation/scaffold.html.twig' %}
+
+{% use 'limbs/init.html.twig' %}
+{% use 'limbs/modal.html.twig' %}
+{% use 'limbs/drawer.html.twig' %}
+{% use 'limbs/result.html.twig' %}
+
+{% block body %}
+  <a-spin
+    :spinning="spinning"
+    {% if scaffold.cnf.loadingLabel is not empty %}
+      tip="{{ scaffold.cnf.loadingLabel|trans({}, 'twig') }}"
+    {% endif %}
+    size="large"
+    wrapper-class-name="bsw-loading"
+  >
+    <!-- init -->
+    {% if limbsInit ?? true %}
+      {% block init %}
+        {{ parent() }}
+      {% endblock %}
+    {% endif %}
+    <!-- modal -->
+    {% block modalBefore %}{% endblock %}
+    {% if modal is defined and 'modal' not in logic.display ?? [] %}
+      {% block modal %}
+        {{ parent() }}
+      {% endblock %}
+    {% endif %}
+    {% block modalAfter %}{% endblock %}
+    <!-- drawer -->
+    {% block drawerBefore %}{% endblock %}
+    {% if drawer is defined and 'drawer' not in logic.display ?? [] %}
+      {% block drawer %}
+        {{ parent() }}
+      {% endblock %}
+    {% endif %}
+    {% block drawerAfter %}{% endblock %}
+    <!-- result -->
+    {% block resultBefore %}{% endblock %}
+    {% if result is defined and 'result' not in logic.display ?? [] %}
+      {% block result %}
+        {{ parent() }}
+      {% endblock %}
+    {% endif %}
+    {% block resultAfter %}{% endblock %}
+    <!-- content -->
+    {% if scaffold.cnf.iconLoading is not empty %}
+      {{ scaffold.cnf.iconLoading|icon(true, {}, {slot:'indicator', spin:true})|raw }}
+    {% endif %}
+    {% if not scaffold.iframe and ':top' not in logic.display ?? [] %}
+      <a-back-top></a-back-top>
+    {% endif %}
+    {% block contentBefore %}{% endblock %}
+    {% block content %}{% endblock %}
+    {% block contentAfter %}{% endblock %}
+  </a-spin>
+{% endblock %}

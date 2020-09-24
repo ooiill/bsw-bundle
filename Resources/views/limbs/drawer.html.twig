@@ -1,0 +1,44 @@
+{% block drawer %}
+  {% set maskClosable = drawer.maskClosable ? 'true' :'false' %}
+  {% set clsName = ['bsw-drawer', drawer.wrapClsName]|joinClass %}
+  <a-drawer
+    :visible="drawer.visible"
+    :wrap-class-name="'{{ clsName }}' + (typeof drawer.class === 'undefined' ? '' : (' ' + drawer.class))"
+    :closable="typeof drawer.closable !== 'undefined' ? drawer.closable : {{ drawer.closable ? 'true' : 'false' }}"
+    :destroy-on-close="true"
+    :mask="typeof drawer.mask !== 'undefined' ? drawer.mask : {{ drawer.mask ? 'true' : 'false' }}"
+    :mask-closable="typeof drawer.maskClosable !== 'undefined' ? drawer.maskClosable : {{ maskClosable }}"
+    :keyboard="typeof drawer.keyboard !== 'undefined' ? drawer.keyboard : {{ drawer.keyboard ? 'true' : 'false' }}"
+    :title="drawer.title === false ? '' : (drawer.title || '{{ drawer.title|trans({}, 'twig') }}')"
+    :width="drawer.width || {{ drawer.width|vueType }}"
+    :height="drawer.height || {{ drawer.height|vueType }}"
+    :z-index="drawer.zIndex || {{ drawer.zIndex }}"
+    :placement="drawer.placement || '{{ drawer.placement }}'"
+    :mask-style="{{ drawer.maskStyleJson }}"
+    :wrap-style="{{ drawer.wrapStyleJson }}"
+    :drawer-style="{{ drawer.drawerStyleJson }}"
+    :header-style="{{ drawer.headerStyleJson }}"
+    :body-style="{{ drawer.bodyStyleJson }}"
+    @close="bsw.drawerOnCancel"
+  >
+    <div v-html="drawer.content"></div>
+    <div
+      v-if="drawer.footer"
+      :data-bsw.prop="{ok: drawer.ok, cancel: drawer.cancel, extra: drawer.extra}"
+      class="{{ ['bsw-footer-bar', drawer.clsName]|joinClass }}"
+    >
+      <a-button
+        v-if="typeof drawer.cancelShow !== 'undefined' ? drawer.cancelShow : {{ drawer.cancelShow ? 'true' : 'false' }}"
+        type="default"
+        @click="bsw.drawerOnCancel"
+        v-text="drawer.cancelText || '{{ drawer.cancelText|trans({}, 'twig') }}'">
+      </a-button>
+      <a-button
+        v-if="typeof drawer.okShow !== 'undefined' ? drawer.okShow : {{ drawer.okShow ? 'true' : 'false' }}"
+        :type="drawer.okType || '{{ drawer.okType }}'"
+        @click="bsw.drawerOnOk"
+        v-text="drawer.okText || '{{ drawer.okText|trans({}, 'twig') }}'">
+      </a-button>
+    </div>
+  </a-drawer>
+{% endblock %}

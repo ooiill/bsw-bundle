@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="keywords" content="{{ tplKeyword ?? scaffold.seo.keyword }}">
+  <meta name="description" content="{{ tplDescription ?? scaffold.seo.description }}">
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+  <link rel="shortcut icon" href="{{ scaffold.cnf.appIco }}" type="image/x-icon"/>
+  <title>{{ tplTitle ?? scaffold.seo.title }}</title>
+  {% set void = 'javascript:void(null);' %}
+  {% set top = constant(scaffold.abs ~ '::POS_TOP') %}
+  {% set topApp = constant(scaffold.abs ~ '::POS_TOP_APP') %}
+  {% set bottom = constant(scaffold.abs ~ '::POS_BOTTOM') %}
+  {% set bottomApp = constant(scaffold.abs ~ '::POS_BOTTOM_APP') %}
+  {% set v = '?version=' ~ scaffold.version %}
+  {% set vv = '&version=' ~ scaffold.version %}
+  {% for src in [['css', top], ['css', topApp], ['js', top], ['js', topApp]] %}
+    {% include 'block/'~ src[0] ~'.html.twig' with {position: src[1]} %}
+  {% endfor %}
+  <style>
+    {% block stylesheetsBefore %}{% endblock %}
+    {% block stylesheets %}{% endblock %}
+    {% block stylesheetsAfter %}{% endblock %}
+  </style>
+</head>
+
+<!-- Global class variable -->
+<!-- tplFoundationClass >> tplBodyClass >> tplScaffoldClass >> tplContentClass -->
+<body class="{{ ['bsw-foundation', tplFoundationClass ?? null]|joinClass }}">
+{% block w3cBefore %}{% endblock %}
+{% block w3c %}{% endblock %}
+{% block w3cAfter %}{% endblock %}
+{% for src in [['css', bottom], ['css', bottomApp], ['js', bottom], ['js', bottomApp]] %}
+  {% include 'block/'~ src[0] ~'.html.twig' with {position: src[1]} %}
+{% endfor %}
+<script>
+  {% block javascriptBefore %}{% endblock %}
+  {% block javascript %}{% endblock %}
+  {% block javascriptAfter %}{% endblock %}
+</script>
+</body>
+</html>

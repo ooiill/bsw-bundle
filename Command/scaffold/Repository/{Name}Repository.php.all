@@ -1,0 +1,10 @@
+<?php
+
+namespace {Namespace}\Repository;
+
+use Leon\BswBundle\Repository\FoundationRepository;
+
+class {Name}Repository extends FoundationRepository
+{
+
+}

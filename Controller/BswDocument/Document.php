@@ -53,7 +53,7 @@ trait Document
     }
 
     /**
-     * Document index
+     * Document bsw
      *
      * @Route("/bsw/document/{name}", name="app_bsw_document", requirements={"name": "[a-zA-Z0-9\-\.]+"})
      *

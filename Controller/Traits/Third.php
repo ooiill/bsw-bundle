@@ -213,10 +213,11 @@ trait Third
      *
      * @param string   $path
      * @param callable $itemsHandler
+     * @param string   $keySuffix
      *
      * @return array
      */
-    public function parseMdInPath(string $path, callable $itemsHandler = null): array
+    public function parseMdInPath(string $path, ?callable $itemsHandler = null, ?string $keySuffix = null): array
     {
         return $this->caching(
             function () use ($path, $itemsHandler) {
@@ -237,7 +238,7 @@ trait Third
 
                 return $markdown;
             },
-            "md-path-{$path}",
+            "md-path-{$path}{$keySuffix}",
             Abs::TIME_WEEK
         );
     }

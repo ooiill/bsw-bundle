@@ -672,7 +672,7 @@ class Module extends Bsw
         $this->handleShowList($filterAnnotation, $output);
         $this->handleFilter($output);
         $output->size = $this->getInputAuto('size');
-
+        
         $output = $this->caller(
             $this->method(),
             self::OUTPUT_ARGS_HANDLER,

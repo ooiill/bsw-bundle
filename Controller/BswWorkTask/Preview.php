@@ -58,6 +58,7 @@ trait Preview
                 'type'       => SelectTree::class,
                 'typeArgs'   => ['expandAll' => true],
                 'enum'       => $this->getTeamMemberTree($team),
+                'enumExtra'  => false,
                 'filter'     => TeamMember::class,
                 'filterArgs' => ['alias' => $this->previewAlias],
                 'value'      => $this->teamDefaultValue(),

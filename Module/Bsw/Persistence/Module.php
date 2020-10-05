@@ -641,7 +641,7 @@ class Module extends Bsw
                  * @var Group $form
                  */
                 foreach ($form->getMember() as $f) {
-                    if (method_exists($f, 'setSize') && !$form->isSizeManual()) {
+                    if (method_exists($f, 'setSize') && !$f->isSizeManual()) {
                         $f->setSize($this->getInputAuto('size'));
                     }
                 }

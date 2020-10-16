@@ -7,12 +7,12 @@
     "web",
     "symfony"
   ],
-  "homepage": "https://github.com/ecccho/oil-bundle",
+  "homepage": "https://github.com/ooiill/bsw-bundle",
   "license": "MIT",
   "authors": [
     {
-      "name": "ecccho",
-      "email": "ecccho@gmail.com"
+      "name": "ooiill",
+      "email": "jiangxilee@gmail.com"
     }
   ],
   "require": {

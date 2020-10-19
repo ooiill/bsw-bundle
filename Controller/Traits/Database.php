@@ -46,7 +46,7 @@ trait Database
 
         $this->logger->debug("Use doctrine connection named {$db}");
 
-        return $manager->getRepository($table);
+        return $manager->getRepository($table, $db);
     }
 
     /**

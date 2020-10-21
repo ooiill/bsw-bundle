@@ -2,7 +2,7 @@
 div.code > div.highlight, div.section > div.highlight-json {
     padding: 2px 4px 2px 6px;
     background-color: #f3f6f6;
-    border-left: 6px solid #6ab0de;
+    border-left: 3px solid #6ab0de;
     margin: 20px 0;
 }
 
@@ -19,9 +19,7 @@ table.docutils {
     margin: 2px;
     line-height: normal;
     background: rgba(251, 241, 229, .5);
-    border-left: solid 1px #fdd1a7;
-    border-right: solid 1px #fdd1a7;
-    border-radius: 2px;
+    border-top: solid 1px #fdd1a7;
     padding: 4px 8px;
     position: relative;
     cursor: pointer;
@@ -91,4 +89,8 @@ div.note > ul {
 
 div.note > p:nth-child(n+2) {
     padding: 10px 4px;
+}
+
+div.highlight span.nt {
+    font-weight: normal;
 }

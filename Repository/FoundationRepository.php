@@ -571,6 +571,7 @@ abstract class FoundationRepository extends SFRepository
         /*
          * Create
          */
+
         $em = $this->em();
         $em->getConfiguration()->addCustomHydrationMode(ArrayHydration::HYDRATE_ARRAY, ArrayHydration::class);
         $model = $em->createQueryBuilder();
@@ -591,6 +592,7 @@ abstract class FoundationRepository extends SFRepository
         /*
          * From
          */
+
         $model->from($table, $alias);
 
         /*

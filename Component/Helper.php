@@ -274,6 +274,27 @@ class Helper
     }
 
     /**
+     * Change array key
+     *
+     * @param array        $target
+     * @param string|array $keyFrom
+     * @param string|array $keyTo
+     *
+     * @return array
+     */
+    public static function changeArrayKey(array $target, $keyFrom, $keyTo): array
+    {
+        $keyFrom = (array)$keyFrom;
+        $keyTo = (array)$keyTo;
+
+        foreach ($keyTo as $index => $key) {
+            $target[$key] = self::dig($target, $keyFrom[$index]);
+        }
+
+        return $target;
+    }
+
+    /**
      * Pop items and unset they
      *
      * @param array $target
@@ -5296,5 +5317,24 @@ class Helper
         }
 
         return $value;
+    }
+
+    /**
+     * Relation array to index array
+     *
+     * @param array  $target
+     * @param string $keyName
+     * @param string $valueName
+     *
+     * @return array
+     */
+    public static function relationToIndex(array $target, string $keyName = 'key', string $valueName = 'value'): array
+    {
+        $result = [];
+        foreach ($target as $key => $value) {
+            array_push($result, [$keyName => $key, $valueName => $value]);
+        }
+
+        return $result;
     }
 }

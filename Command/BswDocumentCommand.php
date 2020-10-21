@@ -687,7 +687,7 @@ class BswDocumentCommand extends Command
 
                 $enumDocument = $this->enumDocument($item['enum']);
                 $indent = $this->indent($propertyIndent + 3);
-                $type = ucfirst($item['type']);
+                $type = $item['type'];
                 $propertyList[] = [
                     "{$item['indent']}{$item['field']}",
                     strpos($type, Abs::DOC_TAG_LINE) === 0 ? $type : ".. div:: show-tips\n\n{$indent}{$type}",

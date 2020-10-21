@@ -162,6 +162,9 @@ class BswDocumentCommand extends Command
         $this->billError = $this->web->apiErrorBill($this->lang);
         $this->billValidator = $this->web->apiValidatorBill($this->lang);
 
+        $this->billError = Helper::sortArray($this->billError, 'code', Abs::SORT_ASC);
+        $this->billError = array_values($this->billError);
+
         if ($params['bill-only'] == 'yes') {
             foreach ($this->billError as $item) {
                 $class = ltrim($item['class'], '\\');

@@ -5,14 +5,14 @@ namespace Leon\BswBundle\Module\Validator\Entity;
 use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Module\Validator\Validator;
 
-class UnsInteger extends Validator
+class NaturalInt extends Validator
 {
     /**
      * @inheritdoc
      */
     public function description(): string
     {
-        return 'Is positive integer';
+        return 'Is natural integer';
     }
 
     /**
@@ -20,7 +20,7 @@ class UnsInteger extends Validator
      */
     public function message(): string
     {
-        return '{{ field }} Must be positive integer';
+        return '{{ field }} Must be natural integer';
     }
 
     /**
@@ -28,7 +28,15 @@ class UnsInteger extends Validator
      */
     protected function prove(array $extra = []): bool
     {
-        return Helper::isIntNumeric($this->value) && $this->value >= 0;
+        if (!Helper::isIntNumeric($this->value)) {
+            return false;
+        }
+
+        if ($this->args && in_array($this->value, $this->args)) {
+            return true;
+        }
+
+        return $this->value >= 0;
     }
 
     /**

@@ -7,6 +7,7 @@ use Leon\BswBundle\Component\UploadItem;
 use Leon\BswBundle\Annotation\Entity\AccessControl as Access;
 use Leon\BswBundle\Annotation\Entity\Input as I;
 use Leon\BswBundle\Annotation\Entity\Output as O;
+use Leon\BswBundle\Module\Error\Entity\ErrorUpload;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\Log\LoggerInterface;
@@ -40,6 +41,10 @@ trait Upload
         }
 
         $upload = $_FILES[$args->file_flag] ?? [];
+        if (empty($upload)) {
+            return $this->failedAjax(new ErrorUpload(), 'No file upload');
+        }
+
         $options = $this->uploadOptionByFlag($args->file_flag);
 
         /**

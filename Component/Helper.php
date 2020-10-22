@@ -274,21 +274,21 @@ class Helper
     }
 
     /**
-     * Change array key
+     * Change array keys
      *
-     * @param array        $target
-     * @param string|array $keyFrom
-     * @param string|array $keyTo
+     * @param array $target
+     * @param array $map
+     * @param bool  $strict
      *
      * @return array
      */
-    public static function changeArrayKey(array $target, $keyFrom, $keyTo): array
+    public static function changeArrayKeys(array $target, array $map, bool $strict = true): array
     {
-        $keyFrom = (array)$keyFrom;
-        $keyTo = (array)$keyTo;
-
-        foreach ($keyTo as $index => $key) {
-            $target[$key] = self::dig($target, $keyFrom[$index]);
+        foreach ($map as $from => $to) {
+            if ($strict && !key_exists($from, $target)) {
+                continue;
+            }
+            $target[$to] = self::dig($target, $from);
         }
 
         return $target;

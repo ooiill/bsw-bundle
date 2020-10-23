@@ -8,18 +8,26 @@ use Throwable;
 class UploadException extends Exception
 {
     /**
+     * @var array
+     */
+    protected $args = [];
+
+    /**
      * UploadException constructor.
      *
      * @param string         $message
+     * @param array          $args
      * @param int            $code
      * @param Throwable|null $previous
      */
-    public function __construct(?string $message = null, int $code = 0, Throwable $previous = null)
+    public function __construct(?string $message = null, array $args = [], int $code = 0, Throwable $previous = null)
     {
         if (!empty($code)) {
             $message = $this->codeToMessage($code);
         }
+
         $message = $message ?? 'Unknown upload error';
+        $this->args = $args;
 
         parent::__construct($message, $code, $previous);
     }
@@ -64,5 +72,13 @@ class UploadException extends Exception
         }
 
         return $message;
+    }
+
+    /**
+     * @return array
+     */
+    public function getArgs(): array
+    {
+        return $this->args;
     }
 }

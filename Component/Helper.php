@@ -4043,7 +4043,7 @@ class Helper
      * @access public
      *
      * @param string $split
-     * @param array  ...$items
+     * @param string ...$items
      *
      * @return string
      */

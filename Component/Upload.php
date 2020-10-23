@@ -128,7 +128,7 @@ class Upload
         $result = [];
         foreach ($files as $key => $item) {
             if (!empty($item['error'])) {
-                throw new UploadException(null, $item['error']);
+                throw new UploadException(null, [], $item['error']);
             }
 
             $file = new UploadItem($item['tmp_name'], $item['name'], $item['key'] ?? $key, $item['size']);
@@ -150,7 +150,10 @@ class Upload
 
                 // check sizes
                 if ($this->picSizes && !$this->checkSizes($file->tmpName)) {
-                    throw new UploadException('Image sizes error');
+                    throw new UploadException(
+                        'Image sizes error, sizes: {{ sizes }}',
+                        ['{{ sizes }}' => $this->sizesToString()]
+                    );
                 }
 
                 // check core
@@ -268,7 +271,10 @@ class Upload
 
         // check size
         if (!$this->checkSize($file->size)) {
-            throw new UploadException('File size error');
+            throw new UploadException(
+                'File size error, size: {{ size }}',
+                ['{{ size }}' => Helper::humanSize($this->maxSize)]
+            );
         }
 
         // check suffix
@@ -305,6 +311,24 @@ class Upload
         $size /= 1024; // B to KB
 
         return ($size <= $this->maxSize) || (0 == $this->maxSize);
+    }
+
+    /**
+     * Sizes rule to string
+     *
+     * @return string
+     */
+    private function sizesToString(): string
+    {
+        [$width, $height] = $this->picSizes;
+        if (is_array($width)) {
+            $width = implode('-', $width);
+        }
+        if (is_array($height)) {
+            $height = implode('-', $height);
+        }
+
+        return "{$width}*{$height}";
     }
 
     /**

@@ -227,9 +227,9 @@ trait Upload
             $file = current($uploader->upload([$file]));
         } catch (Exception $e) {
             if ($options['manual']) {
-                throw new Exception($e->getMessage());
+                throw new Exception($this->messageLang($e->getMessage(), $e->getArgs()));
             } else {
-                return $this->failedAjax(new ErrorUpload(), $e->getMessage());
+                return $this->failedAjax(new ErrorUpload(), $e->getMessage(), $e->getArgs());
             }
         }
 

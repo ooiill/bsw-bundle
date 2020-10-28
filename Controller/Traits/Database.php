@@ -23,10 +23,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 trait Database
 {
     /**
+     * Get entity manager
+     *
+     * @param string $db
+     *
+     * @return ObjectManager
+     */
+    public function em(string $db): ObjectManager
+    {
+        return $this->getDoctrine()->getManager($db);
+    }
+
+    /**
      * Get instance for repository
      *
      * @param string $table
-     * @param string $db
+     * @param string $db bug in Symfony4.3
      *
      * @return ObjectRepository|FoundationRepository|ObjectManager|EntityRepository
      * @throws
@@ -54,7 +66,7 @@ trait Database
      *
      * @param string $table
      * @param string $alias
-     * @param string $db
+     * @param string $db bug in Symfony4.3
      *
      * @return QueryBuilder
      * @throws

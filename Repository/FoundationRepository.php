@@ -3,9 +3,11 @@
 namespace Leon\BswBundle\Repository;
 
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
+use Doctrine\Persistence\ObjectManager;
 use Knp\Component\Pager\Event\Subscriber\Paginate\Doctrine\ORM\QuerySubscriber;
 use Knp\Component\Pager\Pagination\AbstractPagination;
 use Knp\Component\Pager\Pagination\SlidingPagination;
@@ -166,6 +168,20 @@ abstract class FoundationRepository extends SFRepository
         }
 
         return $this->em;
+    }
+
+    /**
+     * Set entity manager
+     *
+     * @param ObjectManager|EntityManager $em
+     *
+     * @return $this
+     */
+    public function setEm(ObjectManager $em): self
+    {
+        $this->em = $em;
+
+        return $this;
     }
 
     /**
@@ -1015,10 +1031,10 @@ abstract class FoundationRepository extends SFRepository
      *
      * @param array ...$filter
      *
-     * @return FoundationRepository
+     * @return self
      * @noinspection PhpDocSignatureInspection
      */
-    public function filters(array ...$filter): FoundationRepository
+    public function filters(array ...$filter): self
     {
         $this->filter = Helper::merge(...$filter);
 

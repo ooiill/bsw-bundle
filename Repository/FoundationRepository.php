@@ -180,6 +180,7 @@ abstract class FoundationRepository extends SFRepository
     public function setEm(ObjectManager $em): self
     {
         $this->em = $em;
+        $this->_em = $em;
 
         return $this;
     }

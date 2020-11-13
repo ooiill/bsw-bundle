@@ -38,7 +38,7 @@ trait Database
      * Get instance for repository
      *
      * @param string $table
-     * @param string $db bug in Symfony4.3
+     * @param string $db
      *
      * @return ObjectRepository|FoundationRepository|ObjectManager|EntityRepository
      * @throws
@@ -56,9 +56,14 @@ trait Database
             throw new RepositoryException("Doctrine connections '{$db}' don't exist");
         }
 
+        /**
+         * @var ObjectRepository|FoundationRepository|ObjectManager|EntityRepository $repo
+         */
         $this->logger->debug("Use doctrine connection named {$db}");
+        $repo = $manager->getRepository($table); // Switch db with arguments 2 has bug
+        $repo->setEm($this->em($db)); // Fix bug of switch db
 
-        return $manager->getRepository($table, $db);
+        return $repo;
     }
 
     /**

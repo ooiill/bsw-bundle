@@ -95,11 +95,12 @@ class Helper
      * Singleton
      *
      * @param callable $logicHandler
+     * @param bool     $forceNew
      * @param array    $params
      *
      * @return mixed
      */
-    public static function singleton(callable $logicHandler, array $params = null)
+    public static function singleton(callable $logicHandler, bool $forceNew = false, array $params = null)
     {
         static $container = [];
 
@@ -109,7 +110,7 @@ class Helper
 
         $key = md5(self::jsonStringify($params));
 
-        if (!array_key_exists($key, $container)) {
+        if (!array_key_exists($key, $container) || $forceNew) {
             $container[$key] = call_user_func_array($logicHandler, [$params]);
         }
 

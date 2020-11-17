@@ -5,23 +5,6 @@ namespace Leon\BswBundle\Component;
 class UploadItem
 {
     /**
-     * UploadItem constructor.
-     *
-     * @param string $tmpName
-     * @param string $name
-     * @param mixed  $key
-     * @param int    $size
-     */
-    public function __construct(string $tmpName, string $name, $key, int $size)
-    {
-        $this->tmpName = $tmpName;
-        $this->name = strip_tags($name);
-        $this->key = $key;
-        $this->suffix = Helper::getSuffix($this->name);
-        $this->size = $size;
-    }
-
-    /**
      * @var string
      */
     public $tmpName;
@@ -105,4 +88,21 @@ class UploadItem
      * @var bool
      */
     public $new = true;
+
+    /**
+     * UploadItem constructor.
+     *
+     * @param string $tmpName
+     * @param string $name
+     * @param mixed  $key
+     * @param int    $size
+     */
+    public function __construct(string $tmpName, string $name, $key, int $size)
+    {
+        $this->tmpName = $tmpName;
+        $this->name = strip_tags($name);
+        $this->key = $key;
+        $this->suffix = Helper::getSuffix($this->name);
+        $this->size = $size;
+    }
 }

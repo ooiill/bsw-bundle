@@ -14,6 +14,7 @@ use OSS\Core\OssException;
 use Monolog\Logger;
 use OSS\OssClient;
 use Exception;
+use Qcloud\Cos\Client as CosClient;
 
 /**
  * @property Logger $logger
@@ -150,6 +151,8 @@ trait Upload
     }
 
     /**
+     * For Ali Cloud
+     *
      * @param UploadItem $file
      *
      * @return UploadItem
@@ -160,7 +163,7 @@ trait Upload
         $ossKey = $this->parameterInOrderByEmpty(['ali_oss_key', 'ali_key']);
         $ossSecret = $this->parameterInOrderByEmpty(['ali_oss_secret', 'ali_secret']);
 
-        if (!$this->parameter('upload_to_oss') || empty($ossKey) || $ossSecret) {
+        if (!$this->parameter('upload_to_oss') || empty($ossKey) || empty($ossSecret)) {
             return $file;
         }
 
@@ -187,6 +190,52 @@ trait Upload
 
         // remove local file
         if ($this->cnf->rm_local_file_when_oss ?? false) {
+            @unlink($file->file);
+        }
+
+        return $file;
+    }
+
+    /**
+     * For TX Cloud
+     *
+     * @param UploadItem $file
+     *
+     * @return UploadItem
+     * @throws
+     */
+    public function cosUpload(UploadItem $file): UploadItem
+    {
+        $cosKey = $this->parameterInOrderByEmpty(['tx_cos_key', 'tx_key']);
+        $cosSecret = $this->parameterInOrderByEmpty(['tx_cos_secret', 'tx_secret']);
+
+        if (!$this->parameter('upload_to_cos') || empty($cosKey) || empty($cosSecret)) {
+            return $file;
+        }
+
+        $cosClient = new CosClient(
+            [
+                'region'      => $this->parameter('tx_cos_region'),
+                'schema'      => 'https',
+                'credentials' => [
+                    'secretId'  => $cosKey,
+                    'secretKey' => $cosSecret,
+                ],
+            ]
+        );
+
+        try {
+            $f = fopen($file->file, 'rb');
+            $fileName = "{$file->savePath}/{$file->saveName}";
+            $cosClient->upload($this->parameter('tx_cos_bucket'), $fileName, $f);
+        } catch (Exception $e) {
+            $this->logger->error("Tx cos upload error: {$e->getMessage()}");
+
+            return $file;
+        }
+
+        // remove local file
+        if ($this->cnf->rm_local_file_when_cos ?? false) {
             @unlink($file->file);
         }
 
@@ -266,6 +315,7 @@ trait Upload
             }
 
             $file = $this->ossUpload($file);
+            $file = $this->cosUpload($file);
         }
 
         // file url

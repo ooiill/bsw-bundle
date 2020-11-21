@@ -55,6 +55,7 @@
     "phpseclib/phpseclib": "^2.0",
     "predis/predis": "^1.1",
     "qcloudsms/qcloudsms_php": "^0.1.4",
+    "qcloud/cos-sdk-v5": "2.*",
     "respect/validation": "^1.1",
     "snc/redis-bundle": "^2.1",
     "spomky-labs/otphp": "^9.1",

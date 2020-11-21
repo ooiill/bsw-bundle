@@ -13,7 +13,8 @@ parameters:
     salt: BackendSteeringWheel
     config_cache_enabled: true
     config_cache_default_expires: 86400
-    upload_to_oss: true
+    upload_to_oss: false
+    upload_to_cos: false
     upload_max_mb: 128
     upload_replace_file: false
     upload_save_name: uniqid
@@ -60,6 +61,10 @@ parameters:
     tx_secret: tx-secret
     tx_sms_key: null
     tx_sms_secret: null
+    tx_cos_key: null
+    tx_cos_secret: null
+    tx_cos_bucket: tx-cos-bucket
+    tx_cos_region: tx-cos-region
 
     aws_region: aws-region
     aws_key: aws-key
@@ -173,6 +178,7 @@ parameters:
 
         app_online_date: '2019-07-01' # use string
         rm_local_file_when_oss: true
+        rm_local_file_when_cos: true
         font_symbol: /bundles/leonbsw/font/iconfont/iconfont.js
         font_symbol_url: /bundles/leonbsw/font/iconfont/demo_index.html
         ant_icon_url: https://www.antdv.com/components/icon-cn

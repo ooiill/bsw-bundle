@@ -86,6 +86,11 @@ class Upload
     public $removeAfterUpload = false;
 
     /**
+     * @var array
+     */
+    public $currentFile;
+
+    /**
      * Upload constructor.
      *
      * @param array $config
@@ -131,6 +136,7 @@ class Upload
                 throw new UploadException(null, [], $item['error']);
             }
 
+            $this->currentFile = $item;
             $file = new UploadItem($item['tmp_name'], $item['name'], $item['key'] ?? $key, $item['size']);
 
             // get suffix by extend for adobe.flash upload

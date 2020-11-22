@@ -41,14 +41,14 @@ class Module extends Bsw
     /**
      * @const string
      */
-    const BEFORE_HOOK        = 'BeforeHook';
-    const AFTER_HOOK         = 'AfterHook';
-    const BEFORE_RENDER      = 'BeforeRender';
-    const FORM_OPERATE       = 'FormOperates';
-    const AFTER_SUBMIT       = 'AfterSubmit';
+    const BEFORE_HOOK = 'BeforeHook';
+    const AFTER_HOOK = 'AfterHook';
+    const BEFORE_RENDER = 'BeforeRender';
+    const FORM_OPERATE = 'FormOperates';
+    const AFTER_SUBMIT = 'AfterSubmit';
     const BEFORE_PERSISTENCE = 'BeforePersistence';
-    const AFTER_PERSISTENCE  = 'AfterPersistence';
-    const CUSTOM_HANDLER     = 'CustomHandler';
+    const AFTER_PERSISTENCE = 'AfterPersistence';
+    const CUSTOM_HANDLER = 'CustomHandler';
 
     /**
      * @var string
@@ -629,7 +629,21 @@ class Module extends Bsw
             }
 
             if (isset($item['value'])) {
-                $form->setValue($item['value']);
+                $v = $item['value'];
+                if (is_callable($v)) {
+                    $form->setValue(call_user_func_array($v, [$recordHandling, $record]));
+                } else {
+                    $form->setValue($v);
+                }
+            }
+
+            if (isset($item['valueShadow'])) {
+                $v = $item['valueShadow'];
+                if (is_callable($v)) {
+                    $form->setValueShadow(call_user_func_array($v, [$recordHandling, $record]));
+                } else {
+                    $form->setValueShadow($v);
+                }
             }
 
             if (method_exists($form, 'setSize') && !$form->isSizeManual()) {
@@ -1228,7 +1242,6 @@ class Module extends Bsw
              */
             $form = $item['type'];
             if (isset($fillData[$key])) {
-                dump($fillData[$key]);
                 $form->setValue($fillData[$key]);
             }
             if (get_class($form) == CkEditor::class) {

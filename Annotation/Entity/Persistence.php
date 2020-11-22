@@ -10,6 +10,11 @@ use Leon\BswBundle\Annotation\Annotation;
 class Persistence extends Annotation
 {
     /**
+     * @var mixed
+     */
+    public $valueShadow;
+
+    /**
      * @var string
      */
     public $type;

@@ -25,6 +25,7 @@ use Leon\BswBundle\Module\Form\Entity\Traits\Placeholder;
 use Leon\BswBundle\Module\Form\Entity\Traits\FormRules;
 use Leon\BswBundle\Module\Form\Entity\Traits\Style;
 use Leon\BswBundle\Module\Form\Entity\Traits\Value;
+use Leon\BswBundle\Module\Form\Entity\Traits\ValueShadow;
 
 abstract class Form
 {
@@ -33,6 +34,7 @@ abstract class Form
     use Name;
     use Label;
     use Value;
+    use ValueShadow;
     use ClassCss;
     use Attributes;
     use Disabled;

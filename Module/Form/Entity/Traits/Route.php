@@ -41,7 +41,7 @@ trait Route
      */
     public function getRouteForAccess(): array
     {
-        return $this->routeForAccess ?? [$this->route];
+        return $this->routeForAccess ?: [$this->route];
     }
 
     /**

@@ -124,7 +124,7 @@ trait WebCrumbs
             $this->correctCrumbs,
             [
                 'mode'  => 'change',
-                'title' => $title,
+                'title' => urldecode($title),
                 'icon'  => $icon,
                 'route' => $route,
                 'index' => $index,

@@ -22,11 +22,23 @@ use Doctrine\ORM\Query\Expr;
 trait Preview
 {
     /**
+     * @return string
+     */
+    public function previewEntity(): string
+    {
+        return BswAdminUser::class;
+    }
+
+    /**
      * @return array
      */
     public function previewAnnotation(): array
     {
         return [
+            '_tailor_avatar'  => [
+                'render' => Abs::RENDER_IMAGE_SMALL,
+                'width'  => 150,
+            ],
             'roleAccessTotal' => [
                 'width'  => 130,
                 'align'  => Abs::POS_CENTER,
@@ -40,14 +52,6 @@ trait Preview
                 'render' => Abs::HTML_CODE,
             ],
         ];
-    }
-
-    /**
-     * @return string
-     */
-    public function previewEntity(): string
-    {
-        return BswAdminUser::class;
     }
 
     /**

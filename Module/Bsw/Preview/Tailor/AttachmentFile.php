@@ -32,12 +32,15 @@ class AttachmentFile extends Tailor
     public function tailorPreviewAnnotation(Arguments $args): array
     {
         $sort = $args->previewAnnotation[$this->fieldCamel]['sort'] + .01;
-        $args->target[$this->label] = [
-            'label'  => 'Url',
-            'render' => Abs::RENDER_LINK,
-            'sort'   => $sort,
-            'width'  => 400,
-        ];
+        $args->target[$this->label] = array_merge(
+            [
+                'label'  => 'Url',
+                'render' => Abs::RENDER_LINK,
+                'sort'   => $sort,
+                'width'  => 400,
+            ],
+            $args->target[$this->table] ?? []
+        );
 
         return $args->target;
     }

@@ -29,16 +29,16 @@ class Module extends Bsw
     /**
      * @const string
      */
-    const QUERY_PARENT   = 'QueryParent';
+    const QUERY_PARENT = 'QueryParent';
     const QUERY_CHILDREN = 'QueryChildren';
-    const BEFORE_HOOK    = 'BeforeHook';
-    const AFTER_HOOK     = 'AfterHook';
-    const CHOICE         = 'Choice';
-    const BEFORE_RENDER  = 'BeforeRender';
-    const CHARM          = 'Charm';
-    const OPERATES       = 'RecordOperates';
-    const MIXED_HANDLER  = 'MixedHandler';
-    const PREVIEW_DATA   = 'PreviewData';
+    const BEFORE_HOOK = 'BeforeHook';
+    const AFTER_HOOK = 'AfterHook';
+    const CHOICE = 'Choice';
+    const BEFORE_RENDER = 'BeforeRender';
+    const CHARM = 'Charm';
+    const OPERATES = 'RecordOperates';
+    const MIXED_HANDLER = 'MixedHandler';
+    const PREVIEW_DATA = 'PreviewData';
 
     /**
      * @const string

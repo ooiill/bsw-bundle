@@ -23,8 +23,6 @@ class AttachmentImage extends Tailor
     {
         $this->web->appendSrcJsWithKey('fancy-box', Abs::JS_FANCY_BOX);
         $this->web->appendSrcCssWithKey('fancy-box', Abs::CSS_FANCY_BOX);
-        $this->web->appendSrcJsWithKey('lazy-load', Abs::JS_LAZY_LOAD);
-        $this->web->appendSrcCssWithKey('lazy-load', Abs::CSS_FANCY_BOX);
 
         $this->table = "_tailor_{$this->keyword}";
     }
@@ -68,18 +66,24 @@ class AttachmentImage extends Tailor
     public function tailorPreviewAnnotation(Arguments $args): array
     {
         $sort = $args->previewAnnotation[$this->fieldCamel]['sort'];
-        $args->target[$this->table] = [
-            'label'  => $this->label,
-            'render' => Abs::RENDER_IMAGE,
-            'sort'   => $sort + .01,
-            'width'  => 200,
-            'align'  => Abs::POS_CENTER,
-        ];
-        $args->target["{$this->keyword}_size"] = [
-            'hook' => FileSize::class,
-            'sort' => $sort + .02,
-            'show' => false,
-        ];
+        $args->target[$this->table] = array_merge(
+            [
+                'label'  => $this->label,
+                'render' => Abs::RENDER_IMAGE,
+                'sort'   => $sort + .01,
+                'width'  => 200,
+                'align'  => Abs::POS_CENTER,
+            ],
+            $args->target[$this->table] ?? []
+        );
+        $args->target["{$this->keyword}_size"] = array_merge(
+            [
+                'hook' => FileSize::class,
+                'sort' => $sort + .02,
+                'show' => false,
+            ],
+            $args->target[$this->table] ?? []
+        );
 
         return $args->target;
     }

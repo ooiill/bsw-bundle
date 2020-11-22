@@ -793,6 +793,7 @@ class Abs
     const RENDER_CD_LONG         = '<a-statistic-countdown :value="{:value} * 1000" format="D/HH:mm:ss"></a-statistic-countdown>';
     const RENDER_ICON            = "part/render-icon.html";
     const RENDER_IMAGE           = "part/render-image.html";
+    const RENDER_IMAGE_SMALL     = "part/render-image-small.html";
     const RENDER_LINK            = "part/render-link.html";
 
     /**

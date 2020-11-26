@@ -82,7 +82,7 @@ class AttachmentImage extends Tailor
                 'sort' => $sort + .02,
                 'show' => false,
             ],
-            $args->target[$this->table] ?? []
+            $args->target["{$this->keyword}_size"] ?? []
         );
 
         return $args->target;

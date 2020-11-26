@@ -39,7 +39,7 @@ class AttachmentFile extends Tailor
                 'sort'   => $sort,
                 'width'  => 400,
             ],
-            $args->target[$this->table] ?? []
+            $args->target[$this->label] ?? []
         );
 
         return $args->target;

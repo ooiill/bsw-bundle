@@ -70,7 +70,7 @@ class AttachmentLink extends Tailor
                 'sort'   => $sort + .01,
                 'width'  => 400,
             ],
-            $args->target[$this->table] ?? []
+            $args->target[$this->alias] ?? []
         );
         $args->target["{$this->keyword}_size"] = array_merge(
             [
@@ -78,7 +78,7 @@ class AttachmentLink extends Tailor
                 'sort' => $sort + .02,
                 'show' => false,
             ],
-            $args->target[$this->table] ?? []
+            $args->target["{$this->keyword}_size"] ?? []
         );
 
         return $args->target;

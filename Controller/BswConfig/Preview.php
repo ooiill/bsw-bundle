@@ -134,7 +134,6 @@ trait Preview
         ];
     }
 
-
     /**
      * @return array
      */

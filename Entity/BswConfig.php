@@ -58,7 +58,7 @@ class BswConfig extends FoundationEntity
      * @ORM\Column(type="string", name="`remark`")
      * @Assert\Type(type="string", groups={"modify"})
      * @Assert\NotNull(groups={"modify"})
-     * @Assert\Length(max=128, groups={"modify"})
+     * @Assert\Length(max=512, groups={"modify"})
      * @BswAnnotation\Preview(sort=4, render=BswAbs::HTML_PRE, width=360)
      * @BswAnnotation\Persistence(sort=4, type=BswForm\TextArea::class)
      * @BswAnnotation\Filter(sort=4)

@@ -38,6 +38,9 @@ NydhxUEs0y8aMzWbGwIDAQAB
             login.password = bsw.rsaEncrypt(login.password);
             bsw.request(this.init.loginApiUrl, login).then((res) => {
                 this.btnLoading = true;
+                if (res.error === 4901) {
+                    $("img.bsw-captcha").click();
+                }
                 bsw.response(res, 2).then(() => {
                     bsw.responseLogic(res);
                 }).catch(() => {

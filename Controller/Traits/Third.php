@@ -111,15 +111,20 @@ trait Third
      * Check captcha
      *
      * @param string $input
+     * @param bool   $changeWhenWrong
      *
      * @return bool
      */
-    public function checkCaptcha(string $input): bool
+    public function checkCaptcha(string $input, bool $changeWhenWrong = true): bool
     {
         $captcha = $this->session->get($this->skCaptcha);
         $this->logger->debug("Number captcha in server {$captcha} and user input {$input}");
+        $passed = (new CaptchaBuilder($captcha))->testPhrase($input);
+        if (!$passed && $changeWhenWrong) {
+            $this->session->set($this->skCaptcha, Helper::randString());
+        }
 
-        return (new CaptchaBuilder($captcha))->testPhrase($input);
+        return $passed;
     }
 
     /**

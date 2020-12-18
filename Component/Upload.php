@@ -203,7 +203,7 @@ class Upload
         $option = (object)$option;
         $tips = new stdClass();
 
-        $tips->maxFileSize = '≤' . Helper::humanSize(($option->maxSize ?? 0) * 1024);
+        $tips->maxFileSize = '≤' . Helper::humanSize(($option->maxSize ?? 0) * Abs::HEX_SIZE);
         $tips->allowSuffix = ['*'];
         $tips->allowMime = ['*'];
 
@@ -279,7 +279,7 @@ class Upload
         if (!$this->checkSize($file->size)) {
             throw new UploadException(
                 'File size error, size: {{ size }}',
-                ['{{ size }}' => Helper::humanSize($this->maxSize)]
+                ['{{ size }}' => Helper::humanSize($this->maxSize * Abs::HEX_SIZE)]
             );
         }
 

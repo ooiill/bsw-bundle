@@ -261,9 +261,14 @@ trait Upload
         $userId = $this->usr('usr_uid') ?? 0;
 
         // multiplex in same person
+        if (!empty($file['tmp_name'])) {
+            $sha1 = sha1_file($file['tmp_name']);
+        } else {
+            $sha1 = md5(uniqid());
+        }
         $exists = $bswAttachment->findOneBy(
             $unique = [
-                'sha1'     => sha1_file($file['tmp_name']),
+                'sha1'     => $sha1,
                 'platform' => $platform,
                 'userId'   => $userId,
             ]

@@ -497,12 +497,21 @@ $(function () {
                     keyFlag = 'data';
                     binding.arg = binding.arg.substr(5);
                 }
+
                 let key = bsw.smallHump(binding.arg, '-');
                 let value = (binding.value || binding.expression);
                 if (key === 'configure') {
                     bsw.cnf = Object.assign(bsw.cnf, value);
                 } else if (keyFlag === 'data') {
-                    vnode.context[key] = value;
+                    let children = null;
+                    if (key.indexOf(':') > -1) {
+                        [key, children] = key.split(':');
+                    }
+                    if (key && key.length > 0) {
+                        vnode.context[key][bsw.lcFirst(children)] = value;
+                    } else {
+                        vnode.context[key] = value;
+                    }
                 } else {
                     vnode.context.init[key] = value;
                 }

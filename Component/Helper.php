@@ -1367,6 +1367,7 @@ class Helper
      * @param callable $optionHandler
      * @param string   $contentType
      * @param bool     $async
+     * @param int      $httpCode
      *
      * @return mixed
      * @throws
@@ -1377,7 +1378,8 @@ class Helper
         array $params = null,
         callable $optionHandler = null,
         string $contentType = Abs::CONTENT_TYPE_FORM,
-        bool $async = false
+        bool $async = false,
+        int &$httpCode = 200
     ) {
         $options = [];
 
@@ -1446,6 +1448,7 @@ class Helper
 
         curl_setopt_array($curl, $options);
         $content = curl_exec($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
         if ($content === false) {
             throw new Exception("cURL error for url {$url} with " . curl_error($curl));
@@ -4437,7 +4440,7 @@ class Helper
      * Get client IP address
      *
      * @param int  $type 0:IP 1:IPv4
-     * @param bool $adv  Advance mode
+     * @param bool $adv Advance mode
      *
      * @return mixed
      */

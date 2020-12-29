@@ -266,13 +266,19 @@ trait Upload
         } else {
             $sha1 = md5(uniqid());
         }
-        $exists = $bswAttachment->findOneBy(
-            $unique = [
-                'sha1'     => $sha1,
-                'platform' => $platform,
-                'userId'   => $userId,
-            ]
-        );
+
+        $nonExistsForce = $options['nonExistsForce'] ?? false;
+        if ($nonExistsForce) {
+            $exists = false;
+        } else {
+            $exists = $bswAttachment->findOneBy(
+                $unique = [
+                    'sha1'     => $sha1,
+                    'platform' => $platform,
+                    'userId'   => $userId,
+                ]
+            );
+        }
 
         // upload
         try {
@@ -321,6 +327,10 @@ trait Upload
 
             $file = $this->ossUpload($file);
             $file = $this->cosUpload($file);
+
+            if (is_callable($options['fileUploadFn'] ?? null)) {
+                $file = call_user_func_array($options['fileUploadFn'], [$file]);
+            }
         }
 
         // file url

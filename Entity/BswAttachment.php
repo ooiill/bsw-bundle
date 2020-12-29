@@ -16,7 +16,6 @@ use Leon\BswBundle\Component\Helper as BswHelper;
 
 /**
  * @ORM\Entity(repositoryClass="Leon\BswBundle\Repository\BswAttachmentRepository")
- * @UniqueEntity(fields={"platform", "userId", "sha1"}, errorPath="platform,userId,sha1", message="Record exists.", groups={"modify", "newly"})
  */
 class BswAttachment extends FoundationEntity
 {

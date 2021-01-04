@@ -60,6 +60,11 @@ class Persistence extends Annotation
     public $disabled = false;
 
     /**
+     * @var bool
+     */
+    public $disabledOverall = true;
+
+    /**
      * @var array|bool
      */
     public $enum;

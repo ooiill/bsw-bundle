@@ -48,9 +48,9 @@
       size="{{ form.size }}"
       :block="{{ form.buttonBlock ? 'true' : 'false' }}"
       {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
-        :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+        :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabledOverall ? 'true' : 'false' }}) : {{ form.disabledOverall ? 'true' : 'false' }}"
       {% else %}
-        :disabled="{{ form.disabled ? 'true' : 'false' }}"
+        :disabled="{{ form.disabledOverall ? 'true' : 'false' }}"
       {% endif %}
       :style="{{ form.buttonStyle }}"
     >

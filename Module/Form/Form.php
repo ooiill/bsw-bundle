@@ -14,6 +14,7 @@ use Leon\BswBundle\Module\Form\Entity\Traits\ChangeTriggerDisabled;
 use Leon\BswBundle\Module\Form\Entity\Traits\ChangeTriggerHide;
 use Leon\BswBundle\Module\Form\Entity\Traits\ClassCss;
 use Leon\BswBundle\Module\Form\Entity\Traits\Disabled;
+use Leon\BswBundle\Module\Form\Entity\Traits\DisabledOverall;
 use Leon\BswBundle\Module\Form\Entity\Traits\Field;
 use Leon\BswBundle\Module\Form\Entity\Traits\FormData;
 use Leon\BswBundle\Module\Form\Entity\Traits\FormScene;
@@ -38,6 +39,7 @@ abstract class Form
     use ClassCss;
     use Attributes;
     use Disabled;
+    use DisabledOverall;
     use Style;
     use ParentStyle;
     use Placeholder;

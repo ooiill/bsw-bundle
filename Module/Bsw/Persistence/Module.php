@@ -621,6 +621,7 @@ class Module extends Bsw
             $form->setField(Helper::camelToUnder($key));
 
             $form->setDisabled($view ? true : $item['disabled']);
+            $form->setDisabledOverall($view ? true : $item['disabledOverall']);
             $form->setFormRules($item['formRules']);
             $form = $this->web->formRulesHandler($form);
 

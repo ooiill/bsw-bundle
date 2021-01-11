@@ -222,10 +222,14 @@ class Upload
         $image = array_merge(Abs::IMAGE_SUFFIX, ['*']);
         $intersect = array_intersect($image, $tips->allowSuffix);
         if (count($intersect) > 0) {
-            [[$wMin, $wMax], [$hMin, $hMax]] = $option->picSizes;
+            [$_w, $_h] = $option->picSizes;
+            [$wMin, $wMax] = is_array($_w) ? $_w : [$_w, $_w];
+            [$hMin, $hMax] = is_array($_h) ? $_h : [$_h, $_h];
             $wMax = (strtoupper($wMax) === Abs::IMAGE_SIZE_MAX) ? Abs::IMAGE_SIZE_MAX : "{$wMax}px";
             $hMax = (strtoupper($hMax) === Abs::IMAGE_SIZE_MAX) ? Abs::IMAGE_SIZE_MAX : "{$hMax}px";
-            $tips->pictureSizes = "[{$wMin}px~{$wMax}]*[{$hMin}px~{$hMax}]";
+            $wInfo = $wMin == $wMax ? "{$wMin}px" : "[{$wMin}px~{$wMax}]";
+            $hInfo = $hMin == $hMax ? "{$hMin}px" : "[{$hMin}px~{$hMax}]";
+            $tips->pictureSizes = "{$wInfo}*{$hInfo}";
         }
 
         $tips->allowSuffix = implode('、', $tips->allowSuffix);
@@ -428,7 +432,7 @@ class Upload
         $subPath = null;
 
         if (empty($this->savePathFn)) {
-            return $subPath;
+            return null;
         }
 
         $subPath = $this->createName($this->savePathFn, $this->savePathFmt);

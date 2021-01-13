@@ -44,9 +44,10 @@ trait Persistence
     {
         return [
             'upload' => [
-                'label'    => false,
-                'type'     => Upload::class,
-                'typeArgs' => [
+                'label'           => false,
+                'type'            => Upload::class,
+                'disabledOverall' => false,
+                'typeArgs'        => [
                     'flag'        => 'mixed',
                     'class'       => 'tools-upload',
                     'needId'      => false,

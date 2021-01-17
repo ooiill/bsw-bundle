@@ -459,7 +459,7 @@ abstract class Bsw
     protected function handleForEnumExtra(array $item, array $args = []): array
     {
         if (is_string($item['enumExtra'])) {
-            $method = self::ENUM_EXTRA . ucfirst($item['enumExtra']);
+            $method = self::ENUM_EXTRA . Helper::underToCamel($item['enumExtra'], false);
             $enum = (array)$item['enum'];
 
             $arguments = $this->arguments(compact('enum'), $args, $this->input->args);

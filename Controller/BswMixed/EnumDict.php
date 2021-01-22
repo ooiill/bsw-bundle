@@ -25,14 +25,16 @@ trait EnumDict
     {
         return [
             'keyword' => [
-                'label' => 'Keyword',
-                'field' => 'keyword',
+                'label'  => 'Keyword',
+                'field'  => 'keyword',
+                'column' => 4,
             ],
             'limit'   => [
-                'label' => 'Limit',
-                'field' => 'limit',
-                'type'  => Select::class,
-                'enum'  => [
+                'label'  => 'Limit',
+                'field'  => 'limit',
+                'column' => 3,
+                'type'   => Select::class,
+                'enum'   => [
                     0  => Abs::SELECT_ALL_VALUE,
                     5  => 'count ≤ 5',
                     10 => 'count ≤ 10',
@@ -40,7 +42,7 @@ trait EnumDict
                     30 => 'count ≤ 30',
                     50 => 'count ≤ 50',
                 ],
-                'value' => 20,
+                'value'  => 20,
             ],
         ];
     }

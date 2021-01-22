@@ -214,7 +214,8 @@ class BswBackendController extends BswWebController
         /**
          * Telegram token mode
          */
-        $token = $this->getArgs($this->parameter('token_for_login_key'));
+        $tk4l = $this->parameter('token_for_login_key');
+        $token = $this->getArgs($tk4l);
         if ($token && is_string($token) && $record = $this->checkSceneToken($token, 1)) {
             $this->session->clear();
             if ($record instanceof Error) {
@@ -237,13 +238,16 @@ class BswBackendController extends BswWebController
                         'telegram' => [$record->userId],
                     ],
                 ],
+                false,
                 AbstractQuery::HYDRATE_OBJECT
             );
 
             if ($user) {
+                $args = $this->getArgs();
+                Helper::arrayPop($args, [$tk4l]);
                 $this->loginAdminUser($user, $this->getClientIp());
 
-                return $this->redirectToRoute($this->route);
+                return $this->redirectToRoute($this->route, $args);
             }
         }
 

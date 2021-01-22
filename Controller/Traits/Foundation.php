@@ -68,6 +68,7 @@ trait Foundation
         CT\Breakpoint,
         CT\Database,
         CT\DisCache,
+        CT\EnterpriseWx,
         CT\Excel,
         CT\FormRules,
         CT\IpRegion,
@@ -1039,8 +1040,8 @@ trait Foundation
     /**
      * Create filter
      *
-     * @param string $filter
-     * @param        $value
+     * @param string|Filter $filter
+     * @param               $value
      *
      * @return array
      */
@@ -1760,6 +1761,10 @@ trait Foundation
                 'expr',
                 'response',
                 'header',
+                'env',
+                'debug',
+                'router',
+                'controller',
             ]
         )) {
             return $this->{$name};

@@ -794,6 +794,7 @@ class Abs
     const RENDER_ICON            = "part/render-icon.html";
     const RENDER_IMAGE           = "part/render-image.html";
     const RENDER_IMAGE_SMALL     = "part/render-image-small.html";
+    const RENDER_IMAGE_TINY      = "part/render-image-tiny.html";
     const RENDER_LINK            = "part/render-link.html";
 
     /**

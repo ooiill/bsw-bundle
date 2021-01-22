@@ -36,7 +36,8 @@ trait Preview
     {
         return [
             '_tailor_avatar'  => [
-                'render' => Abs::RENDER_IMAGE_SMALL,
+                'sort'   => 2.01,
+                'render' => Abs::RENDER_AVATAR,
                 'width'  => 150,
             ],
             'roleAccessTotal' => [

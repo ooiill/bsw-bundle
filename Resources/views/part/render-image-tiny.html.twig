@@ -1,0 +1,10 @@
+<a
+  v-if='{Abs::SLOT_NOT_BLANK}'
+  :href='{:value}'
+  :data-caption='{:value}'
+  class='ant-avatar ant-avatar-lg ant-avatar-circle ant-avatar-image bsw-preview-image tiny'
+  data-fancybox='preview'
+>
+  <img :src='{:value}'/>
+</a>
+{Abs::TPL_ELSE_NIL}

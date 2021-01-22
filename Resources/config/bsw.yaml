@@ -65,6 +65,7 @@ parameters:
     tx_cos_secret: null
     tx_cos_bucket: tx-cos-bucket
     tx_cos_region: tx-cos-region
+    tx_enterprise_wx_hooks_host: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=%s
 
     aws_region: aws-region
     aws_key: aws-key

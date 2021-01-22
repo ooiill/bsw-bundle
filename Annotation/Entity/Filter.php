@@ -103,7 +103,7 @@ class Filter extends Annotation
      * @var string|array|callable
      */
     public $enumHandler;
-
+    
     /**
      * @var array
      */

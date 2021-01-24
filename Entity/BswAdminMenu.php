@@ -36,7 +36,7 @@ class BswAdminMenu extends FoundationEntity
      * @Assert\Type(type="integer", groups={"modify"})
      * @Assert\NotNull(groups={"modify"})
      * @BswAnnotation\Preview(sort=2, align="center", enumExtra=true, width=200)
-     * @BswAnnotation\Persistence(sort=2, type=BswForm\Select::class, enumExtra=true, typeArgs={"previewRoute": "app_bsw_admin_menu_preview", "previewArgs": {"filter": {"menu_id@0": 0}}})
+     * @BswAnnotation\Persistence(sort=2, type=BswForm\Select::class, enumExtra=true, disabledOverall=false, typeArgs={"previewRoute": "app_bsw_admin_menu_preview", "previewArgs": {"filter": {"menu_id@0": 0}}})
      * @BswAnnotation\Filter(sort=2, type=BswForm\Select::class, enumExtra=true)
      */
     protected $menuId = 0;

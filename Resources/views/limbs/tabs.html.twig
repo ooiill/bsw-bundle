@@ -17,7 +17,11 @@
           :data-bsw.prop="{{ link.data }}"
           slot="tab"
         >
-          {{ link.icon|icon|raw }}{{ link.label|trans({}, 'twig') }}
+          {% if link.icon|length > 0 %}
+            {{ link.icon|icon|raw }}{{ link.label|trans({}, 'twig') }}
+          {% else %}
+            {{ link.label|trans({}, 'twig') }}
+          {% endif %}
         </span>
         </a-tab-pane>
       {% endfor %}

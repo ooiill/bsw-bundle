@@ -54,8 +54,13 @@ class Module extends Bsw
             Abs::SCENE_NORMAL => new Choice(),
         ];
 
+        $arguments = $this->arguments(
+            ['condition' => $this->input->condition],
+            $this->input->args
+        );
+
         $nowScene = $this->input->iframe ? Abs::SCENE_IFRAME : Abs::SCENE_NORMAL;
-        $buttons = $this->caller($this->method, self::OPERATES, Abs::T_ARRAY, [], $this->arguments($this->input->args));
+        $buttons = $this->caller($this->method, self::OPERATES, Abs::T_ARRAY, [], $arguments);
         $coverArgs = $this->web->parameters('cover_iframe_args_by_name') ?? [];
         $size = $this->getInputAuto('size');
 

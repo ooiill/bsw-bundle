@@ -1031,14 +1031,18 @@ class BswBackendController extends BswWebController
      * @param array $filter
      * @param array $index
      * @param bool  $arrayValueToString
+     * @param array $handling
      *
      * @return array
      */
-    public function previewFilter(array $filter, array $index = [], bool $arrayValueToString = true): array
-    {
-        $handling = [];
-        foreach ($filter as $key => $value) {
+    public function previewFilter(
+        array $filter,
+        array $index = [],
+        bool $arrayValueToString = true,
+        array $handling = []
+    ): array {
 
+        foreach ($filter as $key => $value) {
             $k = Helper::camelToUnder($key);
             if (strpos($k, Abs::FILTER_INDEX_SPLIT) === false) {
                 $k = $k . Abs::FILTER_INDEX_SPLIT . ($index[$key] ?? 0);

@@ -41,14 +41,14 @@ class Module extends Bsw
     /**
      * @const string
      */
-    const BEFORE_HOOK = 'BeforeHook';
-    const AFTER_HOOK = 'AfterHook';
-    const BEFORE_RENDER = 'BeforeRender';
-    const FORM_OPERATE = 'FormOperates';
-    const AFTER_SUBMIT = 'AfterSubmit';
+    const BEFORE_HOOK        = 'BeforeHook';
+    const AFTER_HOOK         = 'AfterHook';
+    const BEFORE_RENDER      = 'BeforeRender';
+    const FORM_OPERATE       = 'FormOperates';
+    const AFTER_SUBMIT       = 'AfterSubmit';
     const BEFORE_PERSISTENCE = 'BeforePersistence';
-    const AFTER_PERSISTENCE = 'AfterPersistence';
-    const CUSTOM_HANDLER = 'CustomHandler';
+    const AFTER_PERSISTENCE  = 'AfterPersistence';
+    const CUSTOM_HANDLER     = 'CustomHandler';
 
     /**
      * @var string
@@ -1107,11 +1107,16 @@ class Module extends Bsw
             ]
         );
 
+        $nextRoute = $this->input->nextRoute;
+        if (!empty($this->input->sets['nextRouteFn']) && is_callable($this->input->sets['nextRouteFn'])) {
+            $nextRoute = call_user_func_array($this->input->sets['nextRouteFn'], [$submit, $record, $original]);
+        }
+
         return $this->showSuccess(
             $newly ? $this->input->i18nNewly : $this->input->i18nModify,
             $this->input->sets,
             $args,
-            isset($this->input->sets['function']) ? null : $this->input->nextRoute
+            isset($this->input->sets['function']) ? null : $nextRoute
         );
     }
 

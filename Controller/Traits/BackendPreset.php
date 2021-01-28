@@ -93,10 +93,11 @@ trait BackendPreset
      * Clone to form
      *
      * @param array $hooked
+     * @param bool  $needKey
      *
      * @return array
      */
-    public function clonePreviewToForm(array $hooked): array
+    public function clonePreviewToForm(array $hooked, bool $needKey = true): array
     {
         $hooked = Helper::arrayRemove($hooked, ['id']);
         foreach ($hooked as &$value) {
@@ -106,7 +107,7 @@ trait BackendPreset
             $value = ltrim($value, '$￥');
         }
 
-        return ['fill' => $hooked];
+        return $needKey ? ['fill' => $hooked] : $hooked;
     }
 
     /**

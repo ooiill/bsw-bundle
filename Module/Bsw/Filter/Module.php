@@ -270,8 +270,8 @@ class Module extends Bsw
     protected function getFilterData(array $filterAnnotation, array $hooks): array
     {
         $filter = $this->web->getArgs($this->input->key) ?? [];
-        $filter = Helper::numericValues($filter);
-
+        $filter = Helper::urlDecodeValues(Helper::numericValues($filter));
+        
         $filterHandling = [];
         foreach ($filter as $key => $value) {
             if (strpos($key, Abs::FILTER_INDEX_SPLIT) === false) {

@@ -37,7 +37,7 @@ abstract class BswWebController extends AbstractController
     /**
      * @var string
      */
-    protected $version = '1.5.38';
+    protected $version = '1.5.39';
 
     /**
      * @var bool
@@ -288,7 +288,10 @@ abstract class BswWebController extends AbstractController
 
         // fallback url
         if ($code4logic == ErrorAuthorization::CODE) {
-            $this->addFlash(Abs::TAG_FALLBACK, $this->currentUrl());
+            $get = $this->getArgs();
+            if (empty($get['iframe']) && ($get['scene'] ?? null) !== Abs::TAG_EXPORT) {
+                $this->addFlash(Abs::TAG_FALLBACK, $this->currentUrl());
+            }
         }
 
         $message = (new Message())

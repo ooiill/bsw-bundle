@@ -8,6 +8,7 @@ use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Form\Entity\Button;
 use Leon\BswBundle\Module\Bsw\Preview\Tailor;
 use Leon\BswBundle\Annotation\Entity\AccessControl as Access;
+use Leon\BswBundle\Module\Scene\ButtonScene;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -74,6 +75,11 @@ trait Preview
     {
         return [
             (new Button('Edit record', 'app_bsw_attachment_persistence'))->setArgs(['id' => $args->item['id']]),
+
+            (new ButtonScene('Copy link'))
+                ->setType(Abs::THEME_DEFAULT)
+                ->setClick('copyFileLink')
+                ->setArgs(['link' => $args->item['_tailor_filename']]),
         ];
     }
 

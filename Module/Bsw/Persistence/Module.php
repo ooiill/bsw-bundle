@@ -94,10 +94,10 @@ class Module extends Bsw
      *
      * @param array $record
      *
-     * @return array
+     * @return array|ArgsOutput
      * @throws
      */
-    protected function handleAnnotation(array $record): array
+    protected function handleAnnotation(array $record)
     {
         /**
          * persistence annotation
@@ -120,7 +120,6 @@ class Module extends Bsw
          */
 
         $fn = self::ANNOTATION_ONLY;
-
         $arguments = $this->arguments(
             [
                 'id'                => $this->input->id,
@@ -130,7 +129,19 @@ class Module extends Bsw
             $this->input->args
         );
         $arguments->set('record', $record);
-        $persistAnnotationExtra = $this->caller($this->method, $fn, Abs::T_ARRAY, null, $arguments);
+        $persistAnnotationExtra = $this->caller(
+            $this->method,
+            $fn,
+            [Message::class, Error::class, Abs::T_ARRAY],
+            null,
+            $arguments
+        );
+
+        if ($persistAnnotationExtra instanceof Error) {
+            return $this->showError($persistAnnotationExtra->tiny());
+        } elseif ($persistAnnotationExtra instanceof Message) {
+            return $this->showMessage($persistAnnotationExtra);
+        }
 
         $arguments = $this->arguments(
             ['target' => $persistAnnotationExtra, 'id' => $this->input->id],
@@ -165,7 +176,18 @@ class Module extends Bsw
                 $this->input->args
             );
             $arguments->set('record', $record);
-            $persistAnnotationExtra = $this->caller($this->method, $fn, Abs::T_ARRAY, [], $arguments);
+            $persistAnnotationExtra = $this->caller(
+                $this->method,
+                $fn,
+                [Message::class, Error::class, Abs::T_ARRAY],
+                [],
+                $arguments
+            );
+            if ($persistAnnotationExtra instanceof Error) {
+                return $this->showError($persistAnnotationExtra->tiny());
+            } elseif ($persistAnnotationExtra instanceof Message) {
+                return $this->showMessage($persistAnnotationExtra);
+            }
 
             $arguments = $this->arguments(
                 ['target' => $persistAnnotationExtra, 'id' => $this->input->id],
@@ -1135,13 +1157,17 @@ class Module extends Bsw
         $result = $this->getPersistenceData();
         if ($result instanceof ArgsOutput) {
             return $result;
-        } else {
-            [$submit, $record, $extraSubmit, $recordBefore, $recordAdd, $recordDel] = $result;
         }
 
-        // get annotation
-        [$persistAnnotation, $persistAnnotationHandling, $hooks] = $this->handleAnnotation($record);
+        [$submit, $record, $extraSubmit, $recordBefore, $recordAdd, $recordDel] = $result;
 
+        // get annotation
+        $result = $this->handleAnnotation($record);
+        if ($result instanceof ArgsOutput) {
+            return $result;
+        }
+
+        [$persistAnnotation, $persistAnnotationHandling, $hooks] = $result;
         $result = $this->handlePersistenceData($persistAnnotation, $record, $hooks, $output);
         if ($result instanceof ArgsOutput) {
             return $result;

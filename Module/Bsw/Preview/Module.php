@@ -11,6 +11,7 @@ use Leon\BswBundle\Module\Bsw\ArgsOutput;
 use Leon\BswBundle\Module\Bsw\Bsw;
 use Leon\BswBundle\Module\Bsw\Message;
 use Leon\BswBundle\Module\Error\Entity\ErrorParameter;
+use Leon\BswBundle\Module\Error\Error;
 use Leon\BswBundle\Module\Exception\AnnotationException;
 use Leon\BswBundle\Module\Exception\FilterException;
 use Leon\BswBundle\Module\Filter\Dispatcher as FilterDispatcher;
@@ -353,7 +354,7 @@ class Module extends Bsw
      * @param array  $query
      * @param Output $output
      *
-     * @return array
+     * @return array|ArgsOutput
      * @throws
      */
     protected function handleAnnotation(array $query, Output $output): array
@@ -371,7 +372,12 @@ class Module extends Bsw
         $fn = self::ANNOTATION_ONLY;
         $operate = Abs::TR_ACT;
 
-        $previewAnnotationExtra = $this->caller($this->method, $fn, Abs::T_ARRAY, null);
+        $previewAnnotationExtra = $this->caller($this->method, $fn, [Message::class, Error::class, Abs::T_ARRAY], null);
+        if ($previewAnnotationExtra instanceof Error) {
+            return $this->showError($previewAnnotationExtra->tiny());
+        } elseif ($previewAnnotationExtra instanceof Message) {
+            return $this->showMessage($previewAnnotationExtra);
+        }
 
         $arguments = $this->arguments(
             ['target' => $previewAnnotationExtra, 'level' => $this->level],
@@ -396,14 +402,20 @@ class Module extends Bsw
              */
 
             $fn = self::ANNOTATION;
-
             $previewAnnotationExtra = $this->caller(
                 $this->method,
                 $fn,
-                Abs::T_ARRAY,
+                [Message::class, Error::class, Abs::T_ARRAY],
                 [],
                 $this->arguments($this->input->args, ['level' => $this->level])
             );
+
+            if ($previewAnnotationExtra instanceof Error) {
+                return $this->showError($previewAnnotationExtra->tiny());
+            } elseif ($previewAnnotationExtra instanceof Message) {
+                return $this->showMessage($previewAnnotationExtra);
+            }
+
             if (!isset($previewAnnotationExtra[$operate])) {
                 $previewAnnotationExtra[$operate] = ['show' => true];
             }
@@ -1086,8 +1098,12 @@ class Module extends Bsw
             return $this->showError($e->getMessage(), ErrorParameter::CODE);
         }
 
-        [$hooks, $previewAnnotation, $mixedAnnotation] = $this->handleAnnotation($query, $output);
+        $result = $this->handleAnnotation($query, $output);
+        if ($result instanceof ArgsOutput) {
+            return $result;
+        }
 
+        [$hooks, $previewAnnotation, $mixedAnnotation] = $result;
         $list = $this->getPreviewData($query, $output, $mixedAnnotation);
         if ($list instanceof ArgsOutput) {
             return $list;

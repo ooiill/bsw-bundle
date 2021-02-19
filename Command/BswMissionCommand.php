@@ -101,7 +101,8 @@ class BswMissionCommand extends Command
             $condition = $m['condition'] ? Helper::parseJsonString($m['condition']) : [];
 
             if (!empty($condition['entity'])) {
-                if (!Helper::validateSignature($condition, $this->web->parameter('salt'))) {
+                $oldSignMd5 = Helper::dig($condition, 'signature');
+                if (!Helper::validateSignature($condition, $this->web->parameter('salt'), $oldSignMd5)) {
                     $missionRepo->modify(
                         [Abs::PK => $m['id']],
                         ['state' => 4, 'remark' => "[{$date}] validate signature failed"]

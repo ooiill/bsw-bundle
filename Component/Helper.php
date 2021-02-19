@@ -1522,8 +1522,8 @@ class Helper
      * @param string $salt
      * @param bool   $debug
      * @param string $timeKey
-     * @param string $signKey
      * @param string $splitSalt
+     * @param string $mode
      *
      * @return array
      */
@@ -1532,21 +1532,23 @@ class Helper
         string $salt,
         bool $debug,
         string $timeKey = 'time',
-        string $signKey = 'signature',
-        string $splitSalt = '#'
+        string $splitSalt = '#',
+        string $mode = Abs::SORT_DESC
     ): array {
+
         if (!isset($param[$timeKey])) {
-            $param[$timeKey] = time();
+            $param[$timeKey] = self::milliTime();
         }
 
         $param = http_build_query($param);
         parse_str($param, $params);
-        ksort($params);
+        $mode = strtoupper($mode);
+        $mode === Abs::SORT_DESC ? krsort($params) : ksort($params);
 
-        $sign = self::jsonStringify($params) . $splitSalt . $salt;
-        $params[$signKey] = $debug ? $sign : strtolower(sha1(md5($sign)));
+        $signStr = self::jsonStringify($params) . $splitSalt . $salt;
+        $signMd5 = $debug ? $signStr : strtolower(sha1(md5($signStr)));
 
-        return $params;
+        return [$params, $signMd5];
     }
 
     /**
@@ -1554,9 +1556,9 @@ class Helper
      *
      * @param array  $param
      * @param string $salt
+     * @param string $oldSignMd5
      * @param bool   $debug
      * @param string $timeKey
-     * @param string $signKey
      * @param string $splitSalt
      *
      * @return bool
@@ -1564,20 +1566,14 @@ class Helper
     public static function validateSign(
         array $param,
         string $salt,
+        string $oldSignMd5,
         bool $debug,
         string $timeKey = 'time',
-        string $signKey = 'signature',
         string $splitSalt = '#'
     ): bool {
-        if (empty($param[$signKey])) {
-            return false;
-        }
+        [$param, $newSignMd5] = self::createSign($param, $salt, $debug, $timeKey, $splitSalt);
 
-        $oldSign = self::dig($param, $signKey);
-        $newSign = self::createSign($param, $salt, $debug, $timeKey, $signKey, $splitSalt);
-        $newSign = $newSign[$signKey];
-
-        return strcmp($oldSign, $newSign) === 0;
+        return strcmp($oldSignMd5, $newSignMd5) === 0;
     }
 
     /**
@@ -1587,10 +1583,10 @@ class Helper
      * @param string $salt
      * @param bool   $debug
      * @param string $timeKey
-     * @param string $signKey
      * @param string $splitKvp
      * @param string $splitArgs
      * @param string $splitSalt
+     * @param string $mode
      *
      * @return array
      */
@@ -1599,26 +1595,29 @@ class Helper
         string $salt,
         bool $debug = false,
         string $timeKey = 'time',
-        string $signKey = 'signature',
         string $splitKvp = ' is ',
         string $splitArgs = ' and ',
-        string $splitSalt = ' & '
+        string $splitSalt = ' & ',
+        string $mode = Abs::SORT_DESC
     ): array {
         if (!isset($param[$timeKey])) {
-            $param[$timeKey] = time();
+            $param[$timeKey] = self::milliTime();
         }
 
-        krsort($param);
-
         $sign = [];
+        $mode = strtoupper($mode);
+        $mode === Abs::SORT_DESC ? krsort($param) : ksort($param);
         foreach ($param as $key => $value) {
+            if (is_bool($value)) {
+                $value = $value ? 'true' : 'false';
+            }
             array_push($sign, $key . $splitKvp . $value);
         }
 
-        $sign = implode($splitArgs, $sign) . $splitSalt . $salt;
-        $param[$signKey] = $debug ? $sign : strtolower(md5($sign));
+        $signStr = implode($splitArgs, $sign) . $splitSalt . $salt;
+        $signMd5 = $debug ? $signStr : strtolower(md5($signStr));
 
-        return $param;
+        return [$param, $signMd5];
     }
 
     /**
@@ -1626,9 +1625,9 @@ class Helper
      *
      * @param array  $param
      * @param string $salt
+     * @param string $oldSignMd5
      * @param bool   $debug
      * @param string $timeKey
-     * @param string $signKey
      * @param string $splitKvp
      * @param string $splitArgs
      * @param string $splitSalt
@@ -1638,22 +1637,24 @@ class Helper
     public static function validateSignature(
         array $param,
         string $salt,
+        string $oldSignMd5,
         bool $debug = false,
         string $timeKey = 'time',
-        string $signKey = 'signature',
         string $splitKvp = ' is ',
         string $splitArgs = ' and ',
         string $splitSalt = ' & '
     ): bool {
-        if (empty($param[$signKey])) {
-            return false;
-        }
+        [$param, $newSignMd5] = self::createSignature(
+            $param,
+            $salt,
+            $debug,
+            $timeKey,
+            $splitKvp,
+            $splitArgs,
+            $splitSalt
+        );
 
-        $oldSign = self::dig($param, $signKey);
-        $newSign = self::createSignature($param, $salt, $debug, $timeKey, $signKey, $splitKvp, $splitArgs, $splitSalt);
-        $newSign = $newSign[$signKey];
-
-        return strcmp($oldSign, $newSign) === 0;
+        return strcmp($oldSignMd5, $newSignMd5) === 0;
     }
 
 
@@ -4440,7 +4441,7 @@ class Helper
      * Get client IP address
      *
      * @param int  $type 0:IP 1:IPv4
-     * @param bool $adv Advance mode
+     * @param bool $adv  Advance mode
      *
      * @return mixed
      */

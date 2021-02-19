@@ -659,13 +659,14 @@ class Module extends Bsw
             $query = $this->tailor($this->methodTailor, $fn, Abs::T_ARRAY, $arguments);
 
             if ($this->isExport) {
-                $sets = Helper::createSignature(
+                [$sets, $signMd5] = Helper::createSignature(
                     [
                         'entity' => base64_encode($this->entity),
                         'query'  => Helper::objectToString($query),
                     ],
                     $this->web->parameter('salt')
                 );
+                $sets['signature'] = $signMd5;
 
                 return $this->showMessage((new Message())->setSets($sets));
             }

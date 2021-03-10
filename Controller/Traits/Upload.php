@@ -182,7 +182,6 @@ trait Upload
             );
 
         } catch (OssException $e) {
-
             $this->logger->error("Ali oss upload error: {$e->getMessage()}");
 
             return $file;

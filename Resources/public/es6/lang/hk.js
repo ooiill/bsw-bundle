@@ -28,4 +28,5 @@ window.lang = Object.assign(window.lang || {}, {
     copy_failed: '內容復制出錯',
     is_far_left: '已達最左側',
     is_far_right: '已達最右側',
+    real_iframe_height: '實際高度',
 });

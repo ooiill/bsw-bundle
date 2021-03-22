@@ -441,3 +441,8 @@ Operational department:         '运营部门'
 Backend:                        '后端'
 Frontend:                       '前端'
 Client:                         '客户端'
+
+Type string:                    '字符串'
+Type int:                       '整数'
+Type float:                     '浮点数'
+Type boolean:                   '布尔值'

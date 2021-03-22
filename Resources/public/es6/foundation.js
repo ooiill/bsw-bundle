@@ -2052,7 +2052,7 @@ class FoundationAntD extends FoundationTools {
         let height = content.height() + bsw.pam(content.parent(), content).column;
         height = Math.ceil(height);
         if (debugHeight) {
-            bsw.info(`Real iframe height: ${height}`);
+            bsw.info(`${bsw.lang.real_iframe_height}: ${height}`);
         }
 
         if (!maxHeight) {

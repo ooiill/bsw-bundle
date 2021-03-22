@@ -28,4 +28,5 @@ window.lang = Object.assign(window.lang || {}, {
     copy_failed: 'Content copied failed',
     is_far_left: 'It\'s far left',
     is_far_right: 'It\'s far right',
+    real_iframe_height: 'Real iframe height',
 });

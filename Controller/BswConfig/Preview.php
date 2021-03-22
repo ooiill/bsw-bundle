@@ -35,7 +35,8 @@ trait Preview
             'text' => [
                 'label'      => 'Key and value',
                 'sort'       => 1.01,
-                'field'      => 'bc.key',
+                'adopt'      => true,
+                'field'      => 'bc.text',
                 'filter'     => Mixed::class,
                 'filterArgs' => [
                     'fields' => [

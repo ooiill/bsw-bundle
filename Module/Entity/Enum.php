@@ -1054,4 +1054,14 @@ class Enum
         0 => Abs::COMMON,
         1 => 'Login backend',
     ];
+
+    /**
+     * @const array 配合类型
+     */
+    const BSW_CONFIG_TYPE = [
+        1 => 'Type string',
+        2 => 'Type int',
+        3 => 'Type float',
+        4 => 'Type boolean',
+    ];
 }

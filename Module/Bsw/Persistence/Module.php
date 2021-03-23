@@ -654,7 +654,7 @@ class Module extends Bsw
             if (isset($item['value'])) {
                 $v = $item['value'];
                 if (is_callable($v)) {
-                    $form->setValue(call_user_func_array($v, [$recordHandling, $record]));
+                    $form->setValue(call_user_func_array($v, [$recordHandling, $record, $original]));
                 } else {
                     $form->setValue($v);
                 }
@@ -663,7 +663,7 @@ class Module extends Bsw
             if (isset($item['valueShadow'])) {
                 $v = $item['valueShadow'];
                 if (is_callable($v)) {
-                    $form->setValueShadow(call_user_func_array($v, [$recordHandling, $record]));
+                    $form->setValueShadow(call_user_func_array($v, [$recordHandling, $record, $original]));
                 } else {
                     $form->setValueShadow($v);
                 }

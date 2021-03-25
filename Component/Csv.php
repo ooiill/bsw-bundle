@@ -27,6 +27,14 @@ class Csv
      */
     public function setCsvFile(string $filePath)
     {
+        if (Helper::isUrlAlready($filePath)) {
+            $_filePath = $filePath;
+            $filePath = (new Download())->remoteSave($filePath, Helper::generateUnique() . '.csv');
+            if ($filePath === false) {
+                throw new Exception("Csv file is {$_filePath} but download failed");
+            }
+        }
+
         if (!file_exists($filePath)) {
             throw new Exception("Csv file not exists {$filePath}");
         }

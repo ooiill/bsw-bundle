@@ -5342,4 +5342,49 @@ class Helper
 
         return $result;
     }
+
+    /**
+     * Cli show process
+     *
+     * @param string $message
+     * @param float  $current
+     * @param float  $total
+     * @param array  $stepConfig
+     */
+    public static function cliShowProgress(string $message, float $current, float $total, array $stepConfig = [])
+    {
+        static $inProgress = false;
+
+        if ($inProgress !== false && $inProgress <= $current) {
+            fwrite(STDOUT, "\033[1A");
+        }
+        $inProgress = $current;
+        $stepConfig = array_merge(
+            [
+                'step'  => 30,
+                'space' => '-',
+                'reach' => '#',
+                'left'  => '   [',
+                'right' => ' {process}%]',
+            ],
+            $stepConfig
+        );
+
+        if ($current !== false) {
+            $current = abs($current);
+            $total = $total < 1 ? 1 : $total;
+
+            $percent = number_format(($current / $total) * 100, 2);
+            $barStepNow = (int)round($stepConfig['step'] * ($current / $total));
+            $barStepSurplus = $stepConfig['step'] - $barStepNow;
+            $barStepSurplus = $barStepSurplus < 0 ? 0 : $barStepSurplus;
+
+            $bar = str_repeat($stepConfig['reach'], $barStepNow) . str_repeat($stepConfig['space'], $barStepSurplus);
+            $right = str_replace(['%', '{process}'], ['%%', '%3d'], $stepConfig['right']);
+            $suffix = sprintf("{$right} %s", $percent, $message);
+            fwrite(STDOUT, "{$stepConfig['left']}\033[32m{$bar}\033[0m{$suffix}" . PHP_EOL);
+        } else {
+            fwrite(STDOUT, "\007");
+        }
+    }
 }

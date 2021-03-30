@@ -13,6 +13,7 @@
     :disabled="{{ form.disabled ? 'true' : 'false' }}"
   {% endif %}
   placeholder="{{ form.placeholder }}"
+  data-toolbar="{{ form.toolbarStringify }}"
   {{ form.attributes|raw }}
 >
   <div class="bsw-ck-toolbar"></div>

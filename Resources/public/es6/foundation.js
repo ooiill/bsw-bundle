@@ -2500,10 +2500,15 @@ class FoundationAntD extends FoundationTools {
             let em = this;
             let id = $(em).prev('textarea').attr('id');
             let container = $(em).find('.bsw-ck-editor');
-            DecoupledEditor.create(container[0], {
+            let options = {
                 language: that.lang.i18n_editor,
                 placeholder: $(em).attr('placeholder'),
-            }).then(editor => {
+            };
+            let toolbar = $(em).data('toolbar');
+            if (toolbar.length > 0) {
+                options.toolbar = toolbar;
+            }
+            DecoupledEditor.create(container[0], options).then(editor => {
                 v.ckEditor[id] = editor;
                 editor.isReadOnly = $(em).attr('disabled') === 'disabled';
                 editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {

@@ -11,6 +11,7 @@ use Leon\BswBundle\Module\Form\Entity\Traits\Prefix;
 use Leon\BswBundle\Module\Form\Entity\Traits\Rows;
 use Leon\BswBundle\Module\Form\Entity\Traits\Separator;
 use Leon\BswBundle\Module\Form\Entity\Traits\Split;
+use Leon\BswBundle\Module\Form\Entity\Traits\ValueTpl;
 use Leon\BswBundle\Module\Form\Entity\Traits\VarNameForMeta;
 use Leon\BswBundle\Module\Form\Form;
 
@@ -23,7 +24,7 @@ class Mentions extends Form
     use Prefix;
     use Separator;
     use Rows;
-    use Split;
+    use ValueTpl;
 
     /**
      * @const array Demo
@@ -41,7 +42,7 @@ class Mentions extends Form
     {
         $this->setPlacement(Abs::POS_BOTTOM);
         $this->setPrefix('@');
-        $this->setSplit('!');
+        $this->setValueTpl('{$label}!{$value}');
         $this->setSeparator(' ');
         $this->setFilterOption('');
         $this->setFilterOption('bsw.filterOptionForMentions');

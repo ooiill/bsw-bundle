@@ -27,6 +27,7 @@ class AppExtension extends AbstractExtension
             new TwigFilter('joinClass', [$this, 'joinClass']),
             new TwigFilter('vueType', [$this, 'vueType']),
             new TwigFilter('formArea', [$this, 'formArea']),
+            new TwigFilter('tplReplace', [$this, 'tplReplace']),
         ];
     }
 
@@ -211,5 +212,19 @@ class AppExtension extends AbstractExtension
         }
 
         return false;
+    }
+
+    /**
+     * @param string $tpl
+     * @param array  $variables
+     *
+     * @return string
+     */
+    public static function tplReplace(string $tpl, array $variables): string
+    {
+        $variables = Helper::arrayMapKey($variables, '{$%s}');
+        $tpl = str_replace(array_keys($variables), array_values($variables), $tpl);
+
+        return $tpl;
     }
 }

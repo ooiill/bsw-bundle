@@ -438,6 +438,7 @@ class BswInitCommand extends Command
                     'debug_uuid'            => '_',
                     'debug_cost'            => true,
                     'route_default'         => $routeDefault[$this->app],
+                    'login_container_class' => 'login-container',
                 ],
             ],
             'services'   => [],

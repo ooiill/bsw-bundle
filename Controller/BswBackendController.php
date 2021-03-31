@@ -137,6 +137,8 @@ class BswBackendController extends BswWebController
                 $this->appendSrcJsWithKey($key, Abs::JS_VUE, Abs::POS_TOP);
             }
         }
+        
+        $this->appendSrcCssWithKey('ant-d', Abs::CSS_ANT_D_BSW, Abs::POS_TOP);
     }
 
     /**

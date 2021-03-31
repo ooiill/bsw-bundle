@@ -145,10 +145,10 @@ abstract class RecursionDateCommand extends Command
         }
 
         if (empty($this->params->{'begin-date'})) {
-            $this->params->{'begin-date'} = date(Abs::FMT_DAY);
+            $this->params->{'begin-date'} = Helper::dateDayDiff(-1);
         }
         if (empty($this->params->{'end-date'})) {
-            $this->params->{'end-date'} = date(Abs::FMT_DAY);
+            $this->params->{'end-date'} = Helper::dateDayDiff(-1);
         }
         if (Helper::compareDateTime($this->params->{'begin-date'}, $this->params->{'end-date'}) == 1) {
             return;

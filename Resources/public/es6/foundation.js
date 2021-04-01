@@ -2300,6 +2300,20 @@ class FoundationAntD extends FoundationTools {
     }
 
     /**
+     * Get data
+     *
+     * @param object
+     * @param field
+     * @param def
+     *
+     * @returns {*|{}}
+     */
+    getXData(object, field, def = {}) {
+        let _field = bsw.ucFirst(field);
+        return object[0][`data${_field}`] || object.data(field) || def;
+    }
+
+    /**
      * Get bsw data
      *
      * @param object
@@ -2307,7 +2321,7 @@ class FoundationAntD extends FoundationTools {
      * @returns {*|{}}
      */
     getBswData(object) {
-        let data = object[0].dataBsw || object.data('bsw') || {};
+        let data = bsw.getXData(object, 'bsw');
         data = bsw.arrayUrlDecode(data, ['location', 'href', 'url', 'query']);
         return data;
     }
@@ -2491,7 +2505,8 @@ class FoundationAntD extends FoundationTools {
      * @param selector
      */
     initCkEditor(form = 'persistenceForm', selector = '.bsw-persistence .bsw-ck') {
-        if (!window.DecoupledEditor) {
+        let CKE = window.DecoupledEditor || window.DecoupledDocumentEditor;
+        if (typeof CKE === 'undefined' || !CKE) {
             return;
         }
         let that = this;
@@ -2503,12 +2518,32 @@ class FoundationAntD extends FoundationTools {
             let options = {
                 language: that.lang.i18n_editor,
                 placeholder: $(em).attr('placeholder'),
+                removePlugins: ['Title'],
+                toolbar: {
+                    items: [
+                        'heading', '|',
+                        'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'todoList', '|',
+                        'removeFormat', 'strikethrough', 'underline', 'subscript', 'superscript', 'horizontalLine', '|',
+                        'fontSize', 'fontColor', 'fontBackgroundColor', 'fontFamily', 'highlight', '|',
+                        'outdent', 'indent', 'alignment', '|',
+                        'imageUpload', 'imageInsert', 'blockQuote', 'insertTable', 'mediaEmbed', '|',
+                        'htmlEmbed', 'codeBlock', 'code', 'specialCharacters', '|',
+                        'undo', 'redo'
+                    ]
+                },
+                image: {
+                    toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side', 'linkImage']
+                },
+                table: {
+                    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableCellProperties', 'tableProperties']
+                },
             };
-            let toolbar = $(em).data('toolbar');
-            if (toolbar.length > 0) {
-                options.toolbar = toolbar;
+            let _options = bsw.getXData($(em), 'options');
+            options = Object.assign(options, _options);
+            if (options.debug) {
+                console.log("For debug CkEditor options: ", options, _options);
             }
-            DecoupledEditor.create(container[0], options).then(editor => {
+            CKE.create(container[0], options).then(editor => {
                 v.ckEditor[id] = editor;
                 editor.isReadOnly = $(em).attr('disabled') === 'disabled';
                 editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {

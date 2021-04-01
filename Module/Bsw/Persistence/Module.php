@@ -1279,11 +1279,11 @@ class Module extends Bsw
             if (get_class($form) == CkEditor::class) {
                 $this->web->appendSrcJsWithKey(
                     'ck-editor-lang',
-                    Abs::JS_EDITOR_LANG[$this->web->langLatest($this->web->langMap)]
+                    Abs::JS_EDITOR_BUILD_LANG[$this->web->langLatest($this->web->langMap)]
                 );
-                $this->web->appendSrcJsWithKey('ck-editor', Abs::JS_EDITOR);
+                $this->web->appendSrcJsWithKey('ck-editor', Abs::JS_EDITOR_BUILD);
                 $this->web->appendSrcJsWithKey('ck-editor-custom', Abs::JS_EDITOR_CUSTOM);
-                $this->web->appendSrcCssWithKey('ck-editor', Abs::CSS_EDITOR);
+                $this->web->appendSrcCssWithKey('ck-editor-custom', Abs::CSS_EDITOR_CUSTOM);
             }
         }
 

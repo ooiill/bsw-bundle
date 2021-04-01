@@ -1,6 +1,6 @@
 window.lang = Object.assign(window.lang || {}, {
-    i18n_ant: 'zh_CN',
-    i18n_editor: 'zh-cn',
+    i18n_ant: 'zh',
+    i18n_editor: 'zh',
     success: '成功',
     info: '信息',
     warning: '警告',

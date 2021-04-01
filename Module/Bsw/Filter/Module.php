@@ -160,6 +160,12 @@ class Module extends Bsw
         if (!is_null($filterAnnotationExtra)) {
 
             $filterAnnotationOnlyKey = array_keys($filterAnnotationExtra);
+            $filterAnnotationOnlyKey = Helper::arrayMap(
+                $filterAnnotationOnlyKey,
+                function ($key) {
+                    return strpos($key, '@') === false ? "{$key}@0" : $key;
+                }
+            );
             $filterAnnotation = Helper::arrayPull($filterAnnotation, $filterAnnotationOnlyKey);
 
         } else {
@@ -271,7 +277,7 @@ class Module extends Bsw
     {
         $filter = $this->web->getArgs($this->input->key) ?? [];
         $filter = Helper::urlDecodeValues(Helper::numericValues($filter));
-        
+
         $filterHandling = [];
         foreach ($filter as $key => $value) {
             if (strpos($key, Abs::FILTER_INDEX_SPLIT) === false) {

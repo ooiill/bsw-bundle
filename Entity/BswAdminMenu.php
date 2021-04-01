@@ -27,7 +27,7 @@ class BswAdminMenu extends FoundationEntity
      * @BswAnnotation\Preview(sort=1, align="center", width=90, render=BswAbs::RENDER_CODE)
      * @BswAnnotation\Persistence(sort=1, type=BswForm\Number::class)
      * @BswAnnotation\Filter(sort=1, type=BswForm\Number::class)
-     * @BswAnnotation\Mixed(sort=true)
+     * @BswAnnotation\Mixed(order=true)
      */
     protected $id;
 

@@ -27,7 +27,7 @@ class BswWorkTask extends FoundationEntity
      * @BswAnnotation\Preview(sort=1, align="center", width=90, render=BswAbs::RENDER_CODE)
      * @BswAnnotation\Persistence(sort=1, type=BswForm\Number::class)
      * @BswAnnotation\Filter(sort=1, type=BswForm\Number::class, show=false)
-     * @BswAnnotation\Mixed(sort=true)
+     * @BswAnnotation\Mixed(order=true)
      */
     protected $id;
 
@@ -38,7 +38,7 @@ class BswWorkTask extends FoundationEntity
      * @BswAnnotation\Preview(sort=2, align="left", width=130, align="center", enumExtra=true)
      * @BswAnnotation\Persistence(sort=2, type=BswForm\Select::class, enumExtra=true)
      * @BswAnnotation\Filter(sort=2, column=3, type=BswForm\Select::class, enumExtra=true)
-     * @BswAnnotation\Mixed(sort=true)
+     * @BswAnnotation\Mixed(order=true)
      */
     protected $userId = 0;
 
@@ -70,7 +70,7 @@ class BswWorkTask extends FoundationEntity
      * @BswAnnotation\Preview(sort=5, align="center", render=BswAbs::RENDER_CODE, hook={0:BswHook\Timestamp::class}, width=190)
      * @BswAnnotation\Persistence(sort=5, type=BswForm\Datetime::class, hook={0:BswHook\Timestamp::class}, show=false)
      * @BswAnnotation\Filter(sort=5, type=BswForm\DatetimeRange::class, column=4, filter=BswFilter\Between::class, filterArgs={"timestamp":true}, show=false)
-     * @BswAnnotation\Mixed(sort=true)
+     * @BswAnnotation\Mixed(order=true)
      */
     protected $startTime;
 
@@ -81,7 +81,7 @@ class BswWorkTask extends FoundationEntity
      * @BswAnnotation\Preview(sort=6, align="center", render=BswAbs::RENDER_CODE, hook={0:BswHook\Timestamp::class}, width=190)
      * @BswAnnotation\Persistence(sort=6, type=BswForm\Datetime::class, hook={0:BswHook\Timestamp::class}, show=false)
      * @BswAnnotation\Filter(sort=6, type=BswForm\DatetimeRange::class, column=4, filter=BswFilter\Between::class, filterArgs={"timestamp":true}, show=false)
-     * @BswAnnotation\Mixed(sort=true)
+     * @BswAnnotation\Mixed(order=true)
      */
     protected $endTime;
 
@@ -92,7 +92,7 @@ class BswWorkTask extends FoundationEntity
      * @BswAnnotation\Preview(sort=5.1, width=130, align="center", render=BswAbs::RENDER_ROUND_PERCENT)
      * @BswAnnotation\Persistence(sort=7, type=BswForm\Slider::class)
      * @BswAnnotation\Filter(sort=7, show=false)
-     * @BswAnnotation\Mixed(sort=true)
+     * @BswAnnotation\Mixed(order=true)
      */
     protected $donePercent = 0;
 
@@ -103,7 +103,7 @@ class BswWorkTask extends FoundationEntity
      * @BswAnnotation\Preview(sort=8, width=130, align="center")
      * @BswAnnotation\Persistence(sort=8, type=BswForm\Slider::class, typeArgs={"min":1, "max":100, "tipFormatter":"(value) => `${value}`"})
      * @BswAnnotation\Filter(sort=8, type=BswForm\Number::class, show=false)
-     * @BswAnnotation\Mixed(sort=true)
+     * @BswAnnotation\Mixed(order=true)
      */
     protected $weight = 1;
 
@@ -125,7 +125,7 @@ class BswWorkTask extends FoundationEntity
      * @BswAnnotation\Preview(sort=10, align="center", render=BswAbs::RENDER_CODE, width=190, show=false)
      * @BswAnnotation\Persistence(sort=10, show=false, type=BswForm\Datetime::class)
      * @BswAnnotation\Filter(sort=10, type=BswForm\DatetimeRange::class, column=4, filter=BswFilter\Between::class, show=false)
-     * @BswAnnotation\Mixed(sort=true)
+     * @BswAnnotation\Mixed(order=true)
      */
     protected $addTime;
 
@@ -136,7 +136,7 @@ class BswWorkTask extends FoundationEntity
      * @BswAnnotation\Preview(sort=11, align="center", render=BswAbs::RENDER_CODE, width=190, show=false)
      * @BswAnnotation\Persistence(sort=11, show=false, type=BswForm\Datetime::class)
      * @BswAnnotation\Filter(sort=11, type=BswForm\DatetimeRange::class, column=4, filter=BswFilter\Between::class, show=false)
-     * @BswAnnotation\Mixed(sort=true)
+     * @BswAnnotation\Mixed(order=true)
      */
     protected $updateTime;
 
@@ -148,7 +148,7 @@ class BswWorkTask extends FoundationEntity
      * @BswAnnotation\Persistence(sort=12, type=BswForm\Select::class, enum=true)
      * @BswAnnotation\Filter(sort=12.01, type=BswForm\Select::class, placeholder="Mode", group="state", style={"width": "35%"}, enum=BswFilter\Senior::MODE_IN, column=4)
      * @BswAnnotation\Filter(sort=12.02, type=BswForm\Select::class, enum=true, placeholder="Value", group="state", style={"width": "65%"}, typeArgs={"mode":BswAbs::MODE_MULTIPLE})
-     * @BswAnnotation\Mixed(sort=true)
+     * @BswAnnotation\Mixed(order=true)
      */
     protected $state = 1;
 }

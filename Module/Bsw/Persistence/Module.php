@@ -795,7 +795,8 @@ class Module extends Bsw
         $document = $this->entityDocument();
         foreach ($submit as $field => $value) {
             $fieldHandling = Helper::camelToUnder($field);
-            if (!isset($document[$fieldHandling])) {
+            $fieldHandlingMixed = Helper::mixedToUnder($fieldHandling);
+            if (!isset($document[$fieldHandling]) && !isset($document[$fieldHandlingMixed])) {
                 $extraSubmit[$field] = $value;
                 unset($submit[$field]);
                 continue;

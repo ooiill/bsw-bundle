@@ -486,6 +486,22 @@ class Helper
     }
 
     /**
+     * hello666 to hello_666
+     *
+     * @param string $str
+     * @param string $split
+     *
+     * @return string
+     */
+    public static function mixedToUnder(string $str, string $split = '_'): string
+    {
+        $matches = [];
+        preg_match_all("/(\D+|\d+)/", $str, $matches);
+
+        return join($split, $matches[1]);
+    }
+
+    /**
      * hello_world to helloWorld
      *
      * @param string       $str

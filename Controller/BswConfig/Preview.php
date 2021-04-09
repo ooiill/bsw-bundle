@@ -9,6 +9,7 @@ use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Filter\Entity\Mixed;
 use Leon\BswBundle\Module\Form\Entity\Button;
 use Leon\BswBundle\Annotation\Entity\AccessControl as Access;
+use Leon\BswBundle\Module\Scene\ButtonScene;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -88,6 +89,10 @@ trait Preview
     {
         return [
             (new Button('Edit record', 'app_bsw_config_persistence'))->setArgs(['id' => $args->item['id']]),
+            (new ButtonScene('Clone'))
+                ->setType(Abs::THEME_ELE_WARNING_OL)
+                ->setRoute('app_bsw_config_persistence')
+                ->setFill($this->clonePreviewToForm($args->hooked, false)),
             (new Button('Remove', 'app_bsw_config_away'))
                 ->setType(Abs::THEME_DANGER)
                 ->setClick('requestByAjax')

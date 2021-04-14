@@ -3,6 +3,7 @@
 namespace Leon\BswBundle\Command;
 
 use Leon\BswBundle\Component\Helper;
+use Leon\BswBundle\Module\Entity\Abs;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -110,6 +111,10 @@ abstract class LogicHandlerCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->output = $output;
+        if (method_exists($this, $fn = Abs::FN_INIT)) {
+            $this->{$fn}();
+        }
+
         $this->_params = $this->options($input);
         $this->params = (object)$this->_params;
         $this->params->args = (object)Helper::jsonArray64($this->params->args);

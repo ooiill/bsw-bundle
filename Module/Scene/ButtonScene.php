@@ -276,6 +276,16 @@ class ButtonScene extends Button
     /**
      * @param string $content
      *
+     * @return ButtonScene
+     */
+    public function setContentMessage(string $content, string $theme = Abs::TAG_CLASSIFY_INFO)
+    {
+        return $this->setClick('showMessage')->appendArgs(['content' => $content, 'classify' => $theme]);
+    }
+    
+    /**
+     * @param string $content
+     *
      * @return  ButtonScene
      */
     public function setContentDrawer(string $content)

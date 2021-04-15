@@ -4680,6 +4680,42 @@ class Helper
     }
 
     /**
+     * Human money
+     *
+     * @param int $times
+     * @param int $decimals
+     *
+     * @return string
+     */
+    public static function humanMoney(string $times, int $decimals = 2, int $expansion = 1): string
+    {
+        $map = [
+            'T' => 1000000000000000000000000000000000000000000,
+            'D' => 1000000000000000000000000000000000000000,
+            'U' => 1000000000000000000000000000000000000,
+            'd' => 1000000000000000000000000000000000,
+            'n' => 1000000000000000000000000000000,
+            'o' => 1000000000000000000000000000,
+            'S' => 1000000000000000000000000,
+            's' => 1000000000000000000000,
+            'Q' => 1000000000000000000,
+            'q' => 1000000000000000,
+            't' => 1000000000000,
+            'B' => 1000000000,
+            'M' => 1000000,
+            'K' => 1000,
+        ];
+
+        foreach ($map as $unit => $size) {
+            if ($times >= $size * $expansion) {
+                return self::numberFormat($times / ($size / $expansion), $decimals, '') . $unit;
+            }
+        }
+
+        return self::numberFormat($times, $decimals, ',');
+    }
+
+    /**
      * Human duration
      *
      * @param int $duration
@@ -5075,10 +5111,15 @@ class Helper
      *
      * @return float|string
      */
-    public static function numberFormat($number, int $decimals = 1, string $thousandsSep = '', string $decPoint = '.')
-    {
+    public static function numberFormat(
+        $number,
+        int $decimals = 1,
+        string $thousandsSep = '',
+        string $decPoint = '.',
+        bool $autoFloat = true
+    ) {
         $number = number_format($number, $decimals, $decPoint, $thousandsSep);
-        $number = $thousandsSep ? $number : floatval($number);
+        $number = $thousandsSep ? $number : ($autoFloat ? floatval($number) : $number);
 
         // handler the last zero
         if (strpos($number, $decPoint) !== false) {

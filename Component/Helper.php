@@ -4687,7 +4687,7 @@ class Helper
      *
      * @return string
      */
-    public static function humanMoney(string $times, int $decimals = 2, int $expansion = 1): string
+    public static function humanMoney(string $money, int $decimals = 2, int $expansion = 1): string
     {
         $map = [
             'T' => 1000000000000000000000000000000000000000000,
@@ -4707,12 +4707,12 @@ class Helper
         ];
 
         foreach ($map as $unit => $size) {
-            if ($times >= $size * $expansion) {
-                return self::numberFormat($times / ($size / $expansion), $decimals, '') . $unit;
+            if ($money >= $size * $expansion) {
+                return self::numberFormat($money / $size, $decimals, '') . $unit;
             }
         }
 
-        return self::numberFormat($times, $decimals, ',');
+        return self::numberFormat($money, $decimals, ',');
     }
 
     /**

@@ -4680,10 +4680,9 @@ class Helper
     }
 
     /**
-     * Human money
-     *
-     * @param int $times
-     * @param int $decimals
+     * @param string $money
+     * @param int    $decimals
+     * @param int    $expansion
      *
      * @return string
      */

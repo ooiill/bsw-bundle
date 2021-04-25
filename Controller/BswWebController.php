@@ -672,7 +672,7 @@ abstract class BswWebController extends AbstractController
                 'upload'        => $this->url($this->cnf->route_upload),
                 'export'        => $this->url($this->cnf->route_export),
                 'language'      => $this->url($this->cnf->route_language),
-                'third_message' => $this->url($this->cnf->route_thrid_message),
+                'third-message' => $this->url($this->cnf->route_thrid_message),
             ];
         }
 

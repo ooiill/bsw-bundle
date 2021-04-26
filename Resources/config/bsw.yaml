@@ -160,7 +160,7 @@ parameters:
         route_upload: app_upload
         route_captcha: app_captcha
         route_export: app_export
-        route_thrid_message: app_third_message
+        route_third_message: app_third_message
         route_tg_debug: app_tg_debug
         route_tg_hooks: app_tg_hooks
         route_tg_cmd: app_tg_cmd

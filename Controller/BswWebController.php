@@ -37,7 +37,7 @@ abstract class BswWebController extends AbstractController
     /**
      * @var string
      */
-    protected $version = '1.5.64';
+    protected $version = '1.5.65';
 
     /**
      * @var bool
@@ -672,7 +672,7 @@ abstract class BswWebController extends AbstractController
                 'upload'        => $this->url($this->cnf->route_upload),
                 'export'        => $this->url($this->cnf->route_export),
                 'language'      => $this->url($this->cnf->route_language),
-                'third-message' => $this->url($this->cnf->route_thrid_message),
+                'third-message' => $this->url($this->cnf->route_third_message),
             ];
         }
 

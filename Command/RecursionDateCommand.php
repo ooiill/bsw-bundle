@@ -50,12 +50,12 @@ abstract class RecursionDateCommand extends Command
             'begin-date' => [
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Begin the date, if not configured it that be today',
+                'Begin the date, if not configured it be yesterday',
             ],
             'end-date'   => [
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'End the date (including it), if not configured it that be today',
+                'End the date (including it), if not configured it be yesterday',
             ],
         ];
     }

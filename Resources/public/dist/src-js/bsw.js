@@ -1,5 +1,7 @@
 'use strict';
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -432,18 +434,21 @@ $(function () {
                 console.warn(reason);
             });
         },
-        dynamicDataSource: function dynamicDataSource() {
+        dynamicDataSourceBySearch: function dynamicDataSourceBySearch(value, field) {
             var that = this;
             if (typeof this.ddsCore === 'undefined') {
                 this.ddsCore = bsw.debounce(200, function (args) {
-                    var item = $('#' + args[args.length - 1]);
-                    var ddsApi = item.data('dds-api');
-                    var ddsMeta = item.data('dds-meta');
+                    var item = $('#' + args.field);
+                    var ddsApi = item.data('do-logic-api');
+                    var ddsField = item.data('do-dds-field');
                     that.noLoadingOnce = true;
                     bsw.request(ddsApi, args).then(function (res) {
                         bsw.response(res).then(function () {
-                            if (ddsMeta && res.sets) {
-                                bsw.setJsonDeep(that, ddsMeta, res.sets);
+                            if (ddsField && res.sets) {
+                                bsw.setJsonDeep(that, ddsField, res.sets);
+                                var changeField = ddsField.split('.');
+                                changeField = changeField[changeField.length - 1];
+                                that.persistenceForm.setFieldsValue(_defineProperty({}, changeField, undefined));
                             }
                             bsw.responseLogic(res);
                         }).catch(function (reason) {
@@ -454,7 +459,48 @@ $(function () {
                     });
                 });
             }
-            this.ddsCore(arguments);
+            this.ddsCore({ value: value, field: field });
+        },
+        dynamicDataSourceByChange: function dynamicDataSourceByChange(value, options, field) {
+            var that = this;
+            var item = $('#' + field);
+            var ddsApi = item.data('do-logic-api');
+            var ddsField = item.data('do-dds-field');
+            that.noLoadingOnce = true;
+            bsw.request(ddsApi, { value: value, field: field }).then(function (res) {
+                bsw.response(res).then(function () {
+                    if (ddsField && res.sets) {
+                        bsw.setJsonDeep(that, ddsField, res.sets);
+                        var changeField = ddsField.split('.');
+                        changeField = changeField[changeField.length - 1];
+                        that.persistenceForm.setFieldsValue(_defineProperty({}, changeField, undefined));
+                    }
+                    bsw.responseLogic(res);
+                }).catch(function (reason) {
+                    console.warn(reason);
+                });
+            }).catch(function (reason) {
+                console.warn(reason);
+            });
+        },
+        dynamicValueByChange: function dynamicValueByChange(value, options, field) {
+            var that = this;
+            var item = $('#' + field);
+            var ddsApi = item.data('do-logic-api');
+            var changeField = item.data('do-change-field');
+            that.noLoadingOnce = true;
+            bsw.request(ddsApi, { value: value, field: field }).then(function (res) {
+                bsw.response(res).then(function () {
+                    if (changeField && res.sets) {
+                        that.persistenceForm.setFieldsValue(_defineProperty({}, changeField, res.sets.change));
+                    }
+                    bsw.responseLogic(res);
+                }).catch(function (reason) {
+                    console.warn(reason);
+                });
+            }).catch(function (reason) {
+                console.warn(reason);
+            });
         },
         copyFileLink: function copyFileLink(data, element) {
             this.copy = data.link;
@@ -484,12 +530,26 @@ $(function () {
                     keyFlag = 'data';
                     binding.arg = binding.arg.substr(5);
                 }
+
                 var key = bsw.smallHump(binding.arg, '-');
                 var value = binding.value || binding.expression;
                 if (key === 'configure') {
                     bsw.cnf = Object.assign(bsw.cnf, value);
                 } else if (keyFlag === 'data') {
-                    vnode.context[key] = value;
+                    var children = null;
+                    if (key.indexOf(':') > -1) {
+                        var _key$split = key.split(':');
+
+                        var _key$split2 = _slicedToArray(_key$split, 2);
+
+                        key = _key$split2[0];
+                        children = _key$split2[1];
+                    }
+                    if (key && key.length > 0) {
+                        vnode.context[key][bsw.lcFirst(children)] = value;
+                    } else {
+                        vnode.context[key] = value;
+                    }
                 } else {
                     vnode.context.init[key] = value;
                 }

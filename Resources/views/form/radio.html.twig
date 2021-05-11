@@ -15,7 +15,9 @@
   button-style="{{ form.buttonDress }}"
   {% if form.varNameForMeta %}
     :options="{{ form.varNameForMeta }}"
-    data-do-dds-field="{{ form.varNameForMeta }}"
+  {% endif %}
+  {% if form.varNameForMetaField %}
+    data-do-dds-field="{{ form.varNameForMetaField }}"
   {% endif %}
   {% if form.varNameForChange %}
     data-do-change-field="{{ form.varNameForChange }}"
@@ -30,7 +32,7 @@
   {{ form.attributes|raw }}
   v-decorator="['{{ form.key }}', { initialValue: `{{ form.value }}`, rules: {{ form.formRules }} }]"
 >
-  {% if not form.useOptions %}
+  {% if not form.varNameForMeta %}
     {% if form.buttonMode %}
       {% for i in form.optionsArray %}
         <a-radio-button value="{{ i.value }}" {{ i.disabled ? 'disabled' : null }}>

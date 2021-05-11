@@ -7,7 +7,6 @@ use Leon\BswBundle\Module\Form\Entity\Traits\ButtonMode;
 use Leon\BswBundle\Module\Form\Entity\Traits\Col;
 use Leon\BswBundle\Module\Form\Entity\Traits\Options;
 use Leon\BswBundle\Module\Form\Entity\Traits\Size;
-use Leon\BswBundle\Module\Form\Entity\Traits\UseOptions;
 use Leon\BswBundle\Module\Form\Form;
 
 class Radio extends Form
@@ -17,7 +16,6 @@ class Radio extends Form
     use ButtonMode;
     use ButtonDress;
     use Size;
-    use UseOptions;
 
     /**
      * @const array Demo

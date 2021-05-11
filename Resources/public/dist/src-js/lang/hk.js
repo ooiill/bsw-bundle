@@ -1,8 +1,8 @@
 'use strict';
 
 window.lang = Object.assign(window.lang || {}, {
-    i18n_ant: 'zh_CN',
-    i18n_editor: 'zh-cn',
+    i18n_ant: 'zh',
+    i18n_editor: 'zh',
     success: '成功',
     info: '信息',
     warning: '警告',
@@ -29,5 +29,6 @@ window.lang = Object.assign(window.lang || {}, {
     copy_success: '內容復制成功',
     copy_failed: '內容復制出錯',
     is_far_left: '已達最左側',
-    is_far_right: '已達最右側'
+    is_far_right: '已達最右側',
+    real_iframe_height: '實際高度'
 });

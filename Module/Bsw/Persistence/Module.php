@@ -480,16 +480,22 @@ class Module extends Bsw
             ];
         }
 
-        if (method_exists($form, 'isUseOptions') && $form->isUseOptions()) {
-            $form->setEnum([]);
+        if ($form instanceof Group) {
+            foreach ($form->getMember() as $f) {
+                $this->formConfigureForFrontend($f->getKey(), $f, $item, $output);
+            }
         }
 
-        if ($varName = $form->getVarNameForMeta() && method_exists($form, 'getEnum')) {
+        if ($vnMeta = $form->getVarNameForMeta() && method_exists($form, 'getEnum')) {
             $output->varNameForMetaCollect[$field] = $form->getEnum() ?: $form->getVarNameForMetaDefaultArray();
-            if ($varName === true) {
-                $varName = $field;
+            $form->setEnum([]);
+            if ($vnMeta === true) {
+                $vnMeta = $field;
             }
-            $form->setVarNameForMeta("persistenceVarNameForMetaCollect.{$varName}");
+            $form->setVarNameForMeta("persistenceVarNameForMetaCollect.{$vnMeta}");
+        }
+        if ($vnMetaField = $form->getVarNameForMetaField()) {
+            $form->setVarNameForMetaField("persistenceVarNameForMetaCollect.{$vnMetaField}");
         }
 
         if ($fieldHideMeta = $form->getChangeTriggerHide()) {

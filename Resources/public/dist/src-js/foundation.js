@@ -2639,7 +2639,7 @@ var FoundationAntD = function (_FoundationTools) {
             var height = content.height() + bsw.pam(content.parent(), content).column;
             height = Math.ceil(height);
             if (debugHeight) {
-                bsw.info('Real iframe height: ' + height);
+                bsw.info(bsw.lang.real_iframe_height + ': ' + height);
             }
 
             if (!maxHeight) {
@@ -2915,6 +2915,25 @@ var FoundationAntD = function (_FoundationTools) {
         }
 
         /**
+         * Get data
+         *
+         * @param object
+         * @param field
+         * @param def
+         *
+         * @returns {*|{}}
+         */
+
+    }, {
+        key: 'getXData',
+        value: function getXData(object, field) {
+            var def = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+            var _field = bsw.ucFirst(field);
+            return object[0]['data' + _field] || object.data(field) || def;
+        }
+
+        /**
          * Get bsw data
          *
          * @param object
@@ -2925,7 +2944,7 @@ var FoundationAntD = function (_FoundationTools) {
     }, {
         key: 'getBswData',
         value: function getBswData(object) {
-            var data = object[0].dataBsw || object.data('bsw') || {};
+            var data = bsw.getXData(object, 'bsw');
             data = bsw.arrayUrlDecode(data, ['location', 'href', 'url', 'query']);
             return data;
         }
@@ -3141,7 +3160,8 @@ var FoundationAntD = function (_FoundationTools) {
             var form = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'persistenceForm';
             var selector = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '.bsw-persistence .bsw-ck';
 
-            if (!window.DecoupledEditor) {
+            var CKE = window.DecoupledEditor || window.DecoupledDocumentEditor;
+            if (typeof CKE === 'undefined' || !CKE) {
                 return;
             }
             var that = this;
@@ -3150,10 +3170,26 @@ var FoundationAntD = function (_FoundationTools) {
                 var em = this;
                 var id = $(em).prev('textarea').attr('id');
                 var container = $(em).find('.bsw-ck-editor');
-                DecoupledEditor.create(container[0], {
+                var options = {
                     language: that.lang.i18n_editor,
-                    placeholder: $(em).attr('placeholder')
-                }).then(function (editor) {
+                    placeholder: $(em).attr('placeholder'),
+                    removePlugins: ['Title'],
+                    toolbar: {
+                        items: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'todoList', '|', 'removeFormat', 'strikethrough', 'underline', 'subscript', 'superscript', 'horizontalLine', '|', 'fontSize', 'fontColor', 'fontBackgroundColor', 'fontFamily', 'highlight', '|', 'outdent', 'indent', 'alignment', '|', 'imageUpload', 'imageInsert', 'blockQuote', 'insertTable', 'mediaEmbed', '|', 'htmlEmbed', 'codeBlock', 'code', 'specialCharacters', '|', 'undo', 'redo']
+                    },
+                    image: {
+                        toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side', 'linkImage']
+                    },
+                    table: {
+                        contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableCellProperties', 'tableProperties']
+                    }
+                };
+                var _options = bsw.getXData($(em), 'options');
+                options = Object.assign(options, _options);
+                if (options.debug) {
+                    console.log("For debug CkEditor options: ", options, _options);
+                }
+                CKE.create(container[0], options).then(function (editor) {
                     v.ckEditor[id] = editor;
                     editor.isReadOnly = $(em).attr('disabled') === 'disabled';
                     editor.plugins.get('FileRepository').createUploadAdapter = function (loader) {

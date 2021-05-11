@@ -5,11 +5,10 @@
 .bsw-hide {
   display: none;
 }
+.bsw-loading,
 .ant-layout-sider,
 .bsw-foundation,
-.bsw-body,
-.bsw-loading,
-.bsw-loading > .ant-spin-container {
+.bsw-body {
   height: 100%;
 }
 /* Cover */
@@ -317,6 +316,11 @@ ul.ant-pagination {
   float: right;
   margin-right: 24px;
 }
+@media screen and (max-width: 992px) {
+  .ant-layout .ant-layout-header .user-wrapper.right {
+    margin-right: 0;
+  }
+}
 .ant-layout .ant-layout-header .user-wrapper .avatar {
   color: #77bcfb;
   background-color: rgba(119, 188, 251, 0.25);
@@ -554,6 +558,16 @@ span.ant-calendar-picker {
   max-width: 128px;
   max-height: 128px;
 }
+.bsw-preview-image.small {
+  width: 80px;
+  height: 80px;
+}
+.bsw-preview-image.tiny {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+}
 .bsw-tabs-links {
   margin: 10px 0 0;
 }
@@ -610,12 +624,15 @@ span.ant-calendar-picker {
 }
 .bsw-content-grant .ant-form-item-label > label {
   font-size: 16px;
-}
-.bsw-content-grant .ant-form-item-label > label:before {
-  content: '♪';
-  margin-right: 5px;
-  font-size: 20px;
-  color: rgba(255, 165, 0, 0.3);
+  font-weight: bold;
+  /*
+    &:before {
+      content: '♪';
+      margin-right: 5px;
+      font-size: 20px;
+      color: rgba(255, 165, 0, 1);
+    }
+    */
 }
 .modal-block-only {
   display: block;

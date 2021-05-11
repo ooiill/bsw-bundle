@@ -440,18 +440,21 @@ $(function () {
             });
         },
 
-        dynamicDataSource() {
+        dynamicDataSourceBySearch(value, field) {
             let that = this;
             if (typeof this.ddsCore === 'undefined') {
                 this.ddsCore = bsw.debounce(200, function (args) {
-                    let item = $(`#${args[args.length - 1]}`);
-                    let ddsApi = item.data('dds-api');
-                    let ddsMeta = item.data('dds-meta');
+                    let item = $(`#${args.field}`);
+                    let ddsApi = item.data('do-logic-api');
+                    let ddsField = item.data('do-dds-field');
                     that.noLoadingOnce = true;
                     bsw.request(ddsApi, args).then(res => {
                         bsw.response(res).then(() => {
-                            if (ddsMeta && res.sets) {
-                                bsw.setJsonDeep(that, ddsMeta, res.sets);
+                            if (ddsField && res.sets) {
+                                bsw.setJsonDeep(that, ddsField, res.sets);
+                                let changeField = ddsField.split('.');
+                                changeField = changeField[changeField.length - 1];
+                                that.persistenceForm.setFieldsValue({[changeField]: undefined})
                             }
                             bsw.responseLogic(res);
                         }).catch(reason => {
@@ -462,7 +465,50 @@ $(function () {
                     });
                 });
             }
-            this.ddsCore(arguments);
+            this.ddsCore({value, field});
+        },
+
+        dynamicDataSourceByChange(value, options, field) {
+            let that = this;
+            let item = $(`#${field}`);
+            let ddsApi = item.data('do-logic-api');
+            let ddsField = item.data('do-dds-field');
+            that.noLoadingOnce = true;
+            bsw.request(ddsApi, {value, field}).then(res => {
+                bsw.response(res).then(() => {
+                    if (ddsField && res.sets) {
+                        bsw.setJsonDeep(that, ddsField, res.sets);
+                        let changeField = ddsField.split('.');
+                        changeField = changeField[changeField.length - 1];
+                        that.persistenceForm.setFieldsValue({[changeField]: undefined})
+                    }
+                    bsw.responseLogic(res);
+                }).catch(reason => {
+                    console.warn(reason);
+                });
+            }).catch(reason => {
+                console.warn(reason);
+            });
+        },
+
+        dynamicValueByChange(value, options, field) {
+            let that = this;
+            let item = $(`#${field}`);
+            let ddsApi = item.data('do-logic-api');
+            let changeField = item.data('do-change-field');
+            that.noLoadingOnce = true;
+            bsw.request(ddsApi, {value, field}).then(res => {
+                bsw.response(res).then(() => {
+                    if (changeField && res.sets) {
+                        that.persistenceForm.setFieldsValue({[changeField]: res.sets.change});
+                    }
+                    bsw.responseLogic(res);
+                }).catch(reason => {
+                    console.warn(reason);
+                });
+            }).catch(reason => {
+                console.warn(reason);
+            });
         },
 
         copyFileLink(data, element) {

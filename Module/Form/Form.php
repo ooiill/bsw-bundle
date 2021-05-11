@@ -30,6 +30,7 @@ use Leon\BswBundle\Module\Form\Entity\Traits\VarNameForChange;
 use Leon\BswBundle\Module\Form\Entity\Traits\Value;
 use Leon\BswBundle\Module\Form\Entity\Traits\ValueShadow;
 use Leon\BswBundle\Module\Form\Entity\Traits\VarNameForMeta;
+use Leon\BswBundle\Module\Form\Entity\Traits\VarNameForMetaField;
 
 abstract class Form
 {
@@ -58,6 +59,7 @@ abstract class Form
     use ChangeTriggerHide;
     use ChangeTriggerDisabled;
     use VarNameForMeta;
+    use VarNameForMetaField;
     use VarNameForChange;
     use DoLogicRoute;
 

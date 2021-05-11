@@ -15,8 +15,8 @@
   {% if form.varNameForMeta %}
     :options="{{ form.varNameForMeta }}"
   {% endif %}
-  {% if form.varNameForMeta %}
-    data-do-dds-field="{{ form.varNameForMeta }}"
+  {% if form.varNameForMetaField %}
+    data-do-dds-field="{{ form.varNameForMetaField }}"
   {% endif %}
   {% if form.varNameForChange %}
     data-do-change-field="{{ form.varNameForChange }}"
@@ -32,7 +32,7 @@
   {{ form.attributes|raw }}
   v-decorator="['{{ form.key }}', { initialValue: [{{ initial }}], rules: {{ form.formRules }} }]"
 >
-  {% if not form.useOptions %}
+  {% if not form.varNameForMeta %}
     <a-row>
       {% for i in form.optionsArray %}
         {% if form.col is empty %}

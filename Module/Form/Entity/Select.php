@@ -19,7 +19,6 @@ use Leon\BswBundle\Module\Form\Entity\Traits\ShowArrow;
 use Leon\BswBundle\Module\Form\Entity\Traits\ShowSearch;
 use Leon\BswBundle\Module\Form\Entity\Traits\Size;
 use Leon\BswBundle\Module\Form\Entity\Traits\TokenSeparators;
-use Leon\BswBundle\Module\Form\Entity\Traits\UseOptions;
 use Leon\BswBundle\Module\Form\Form;
 
 class Select extends Form
@@ -39,7 +38,6 @@ class Select extends Form
     use DropdownStyle;
     use DropdownEqualWidth;
     use Search;
-    use UseOptions;
 
     /**
      * @const array Demo

@@ -33,7 +33,9 @@
   :data-bsw.prop="{{ form.formData }}"
   {% if form.varNameForMeta %}
     :options="{{ form.varNameForMeta }}"
-    data-do-dds-field="{{ form.varNameForMeta }}"
+  {% endif %}
+  {% if form.varNameForMetaField %}
+    data-do-dds-field="{{ form.varNameForMetaField }}"
   {% endif %}
   {% if form.varNameForChange %}
     data-do-change-field="{{ form.varNameForChange }}"
@@ -52,7 +54,7 @@
   {{ form.attributes|raw }}
   v-decorator="['{{ form.key }}', { {{ initial }} rules: {{ form.formRules }} }]"
 >
-  {% if not form.useOptions %}
+  {% if not form.varNameForMeta %}
     {% for i in form.optionsArray %}
       <a-select-option value="{{ i.value }}" {{ i.disabled ? 'disabled' : null }}>
         {{ i.label }}

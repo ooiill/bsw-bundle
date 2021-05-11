@@ -1,0 +1,59 @@
+.bsw-ck {
+  line-height: normal;
+  border: 1px solid var(--ck-color-base-border);
+  border-radius: var(--ck-border-radius);
+  max-height: 700px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: column nowrap;
+      flex-flow: column nowrap;
+}
+.bsw-ck .bsw-ck-toolbar {
+  z-index: 1;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid var(--ck-color-toolbar-border);
+}
+.bsw-ck .bsw-ck-toolbar .ck-toolbar {
+  border: 0;
+  border-radius: 0;
+}
+.bsw-ck .bsw-ck-editor {
+  min-height: 220px;
+  overflow-y: auto;
+}
+.bsw-ck .bsw-ck-editor p {
+  margin-bottom: 8px;
+}
+.ck-content ul {
+  padding-left: 20px;
+}
+.ck-content ol {
+  padding-left: 20px;
+}
+.ck-content a {
+  color: #2e6da4;
+}
+.ck-content a :hover {
+  color: #6889bc;
+}
+.ck-content .todo-list .todo-list__label > input {
+  left: -20px;
+  top: -2px;
+}
+.ck.ck-content blockquote {
+  padding: 6px 10px;
+  font-style: normal;
+  line-height: 1.5;
+  background-color: #fbfbfb;
+  border-radius: 2px;
+}
+.ck.ck-content blockquote p {
+  margin: 8px 0 !important;
+}
+.ant-form-item .ck-editor {
+  line-height: normal;
+}
+.ant-form-item .ck-editor .ck-content p {
+  margin-bottom: 8px;
+}
+/*# sourceMappingURL=ckeditor5-custom.css.map */

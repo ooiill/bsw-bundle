@@ -1,5 +1,7 @@
 'use strict';
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 //
 // Copyright 2019
 //
@@ -60,12 +62,26 @@ $(function () {
                     keyFlag = 'data';
                     binding.arg = binding.arg.substr(5);
                 }
+
                 var key = bsw.smallHump(binding.arg, '-');
                 var value = binding.value || binding.expression;
                 if (key === 'configure') {
                     bsw.cnf = Object.assign(bsw.cnf, value);
                 } else if (keyFlag === 'data') {
-                    vnode.context[key] = value;
+                    var children = null;
+                    if (key.indexOf(':') > -1) {
+                        var _key$split = key.split(':');
+
+                        var _key$split2 = _slicedToArray(_key$split, 2);
+
+                        key = _key$split2[0];
+                        children = _key$split2[1];
+                    }
+                    if (key && key.length > 0) {
+                        vnode.context[key][bsw.lcFirst(children)] = value;
+                    } else {
+                        vnode.context[key] = value;
+                    }
                 } else {
                     vnode.context.init[key] = value;
                 }

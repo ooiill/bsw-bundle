@@ -8,7 +8,6 @@ use Leon\BswBundle\Module\Form\Entity\Traits\AllowClear;
 use Leon\BswBundle\Module\Form\Entity\Traits\ButtonLabel;
 use Leon\BswBundle\Module\Form\Entity\Traits\DropdownEqualWidth;
 use Leon\BswBundle\Module\Form\Entity\Traits\DropdownStyle;
-use Leon\BswBundle\Module\Form\Entity\Traits\DynamicDataSource;
 use Leon\BswBundle\Module\Form\Entity\Traits\LabelInValue;
 use Leon\BswBundle\Module\Form\Entity\Traits\Mode;
 use Leon\BswBundle\Module\Form\Entity\Traits\NotFoundContent;
@@ -20,15 +19,13 @@ use Leon\BswBundle\Module\Form\Entity\Traits\ShowArrow;
 use Leon\BswBundle\Module\Form\Entity\Traits\ShowSearch;
 use Leon\BswBundle\Module\Form\Entity\Traits\Size;
 use Leon\BswBundle\Module\Form\Entity\Traits\TokenSeparators;
-use Leon\BswBundle\Module\Form\Entity\Traits\VarNameForMeta;
+use Leon\BswBundle\Module\Form\Entity\Traits\UseOptions;
 use Leon\BswBundle\Module\Form\Form;
 
 class Select extends Form
 {
     use Size;
     use Options;
-    use VarNameForMeta;
-    use DynamicDataSource;
     use PreviewRoute;
     use AllowClear;
     use ButtonLabel;
@@ -42,6 +39,7 @@ class Select extends Form
     use DropdownStyle;
     use DropdownEqualWidth;
     use Search;
+    use UseOptions;
 
     /**
      * @const array Demo

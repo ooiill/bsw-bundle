@@ -480,9 +480,12 @@ class Module extends Bsw
             ];
         }
 
-        if (method_exists($form, 'getVarNameForMeta') && $varName = $form->getVarNameForMeta()) {
-            $output->varNameForMetaCollect[$field] = $form->getEnum() ?: $form->getVarNameForMetaDefaultArray();
+        if (method_exists($form, 'isUseOptions') && $form->isUseOptions()) {
             $form->setEnum([]);
+        }
+
+        if ($varName = $form->getVarNameForMeta() && method_exists($form, 'getEnum')) {
+            $output->varNameForMetaCollect[$field] = $form->getEnum() ?: $form->getVarNameForMetaDefaultArray();
             if ($varName === true) {
                 $varName = $field;
             }
@@ -669,7 +672,7 @@ class Module extends Bsw
                 }
             }
 
-            if (method_exists($form, 'setSize') && !$form->isSizeManual()) {
+            if (method_exists($form, 'setSize') && method_exists($form, 'isSizeManual') && !$form->isSizeManual()) {
                 $form->setSize($this->getInputAuto('size'));
             }
 
@@ -678,7 +681,7 @@ class Module extends Bsw
                  * @var Group $form
                  */
                 foreach ($form->getMember() as $f) {
-                    if (method_exists($f, 'setSize') && !$f->isSizeManual()) {
+                    if (method_exists($f, 'setSize') && method_exists($f, 'isSizeManual') && !$f->isSizeManual()) {
                         $f->setSize($this->getInputAuto('size'));
                     }
                 }

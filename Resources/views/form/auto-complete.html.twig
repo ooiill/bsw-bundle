@@ -16,12 +16,17 @@
   :data-bsw.prop="{{ form.formData }}"
   {% if form.varNameForMeta %}
     :data-source="{{ form.varNameForMeta }}"
-    data-dds-meta="{{ form.varNameForMeta }}"
   {% else %}
     :data-source="{{ form.dataSource }}"
   {% endif %}
-  {% if form.ddsRoute %}
-    data-dds-api="{{ path(form.ddsRoute, form.ddsArgs) }}"
+  {% if form.varNameForMeta %}
+    data-do-dds-field="{{ form.varNameForMeta }}"
+  {% endif %}
+  {% if form.varNameForChange %}
+    data-do-change-field="{{ form.varNameForChange }}"
+  {% endif %}
+  {% if form.doLogicRoute %}
+    data-do-logic-api="{{ path(form.doLogicRoute, form.doLogicRouteArgs) }}"
   {% endif %}
   {% if form.change %}
     @change="((value) => {this.{{ form.change }}(value, '{{ form.key }}')})"

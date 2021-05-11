@@ -33,10 +33,13 @@
   :data-bsw.prop="{{ form.formData }}"
   {% if form.varNameForMeta %}
     :options="{{ form.varNameForMeta }}"
-    data-dds-meta="{{ form.varNameForMeta }}"
+    data-do-dds-field="{{ form.varNameForMeta }}"
   {% endif %}
-  {% if form.ddsRoute %}
-    data-dds-api="{{ path(form.ddsRoute, form.ddsArgs) }}"
+  {% if form.varNameForChange %}
+    data-do-change-field="{{ form.varNameForChange }}"
+  {% endif %}
+  {% if form.doLogicRoute %}
+    data-do-logic-api="{{ path(form.doLogicRoute, form.doLogicRouteArgs) }}"
   {% endif %}
   {% if form.change %}
     @change="((value, option) => {this.{{ form.change }}(value, option, '{{ form.key }}')})"
@@ -49,7 +52,7 @@
   {{ form.attributes|raw }}
   v-decorator="['{{ form.key }}', { {{ initial }} rules: {{ form.formRules }} }]"
 >
-  {% if not form.varNameForMeta %}
+  {% if not form.useOptions %}
     {% for i in form.optionsArray %}
       <a-select-option value="{{ i.value }}" {{ i.disabled ? 'disabled' : null }}>
         {{ i.label }}

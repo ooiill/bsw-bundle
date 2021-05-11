@@ -20,6 +20,12 @@
   :allow-clear="{{ form.allowClear ? 'true' : 'false' }}"
   size="{{ form.size }}"
   :data-bsw.prop="{{ form.formData }}"
+  {% if form.varNameForChange %}
+    data-do-change-field="{{ form.varNameForChange }}"
+  {% endif %}
+  {% if form.doLogicRoute %}
+    data-do-logic-api="{{ path(form.doLogicRoute, form.doLogicRouteArgs) }}"
+  {% endif %}
   {% if form.change %}
     @change="((value) => {this.{{ form.change }}(value, '{{ form.key }}')})"
   {% endif %}

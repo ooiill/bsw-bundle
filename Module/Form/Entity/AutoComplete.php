@@ -7,11 +7,9 @@ use Leon\BswBundle\Module\Form\Entity\Traits\AllowClear;
 use Leon\BswBundle\Module\Form\Entity\Traits\BackFill;
 use Leon\BswBundle\Module\Form\Entity\Traits\DataSource;
 use Leon\BswBundle\Module\Form\Entity\Traits\DropdownStyle;
-use Leon\BswBundle\Module\Form\Entity\Traits\DynamicDataSource;
 use Leon\BswBundle\Module\Form\Entity\Traits\FilterOption;
 use Leon\BswBundle\Module\Form\Entity\Traits\Search;
 use Leon\BswBundle\Module\Form\Entity\Traits\Size;
-use Leon\BswBundle\Module\Form\Entity\Traits\VarNameForMeta;
 use Leon\BswBundle\Module\Form\Form;
 
 class AutoComplete extends Form
@@ -20,8 +18,6 @@ class AutoComplete extends Form
     use BackFill;
     use DropdownStyle;
     use DataSource;
-    use VarNameForMeta;
-    use DynamicDataSource;
     use FilterOption;
     use Search;
     use Size;

@@ -3,7 +3,6 @@
 namespace Leon\BswBundle\Module\Form\Entity;
 
 use Leon\BswBundle\Module\Form\Entity\Traits\DataSource;
-use Leon\BswBundle\Module\Form\Entity\Traits\DynamicDataSource;
 use Leon\BswBundle\Module\Form\Entity\Traits\FilterOption;
 use Leon\BswBundle\Module\Form\Entity\Traits\ListStyle;
 use Leon\BswBundle\Module\Form\Entity\Traits\SelectedKeys;
@@ -16,14 +15,11 @@ use Leon\BswBundle\Module\Form\Entity\Traits\TargetKeys;
 use Leon\BswBundle\Module\Form\Entity\Traits\TargetKeysKey;
 use Leon\BswBundle\Module\Form\Entity\Traits\TargetOperate;
 use Leon\BswBundle\Module\Form\Entity\Traits\TargetTitle;
-use Leon\BswBundle\Module\Form\Entity\Traits\VarNameForMeta;
 use Leon\BswBundle\Module\Form\Form;
 
 class Transfer extends Form
 {
     use DataSource;
-    use VarNameForMeta;
-    use DynamicDataSource;
     use SourceTitle;
     use TargetTitle;
     use SourceOperate;

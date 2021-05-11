@@ -15,10 +15,13 @@
   button-style="{{ form.buttonDress }}"
   {% if form.varNameForMeta %}
     :options="{{ form.varNameForMeta }}"
-    data-dds-meta="{{ form.varNameForMeta }}"
+    data-do-dds-field="{{ form.varNameForMeta }}"
   {% endif %}
-  {% if form.ddsRoute %}
-    data-dds-api="{{ path(form.ddsRoute, form.ddsArgs) }}"
+  {% if form.varNameForChange %}
+    data-do-change-field="{{ form.varNameForChange }}"
+  {% endif %}
+  {% if form.doLogicRoute %}
+    data-do-logic-api="{{ path(form.doLogicRoute, form.doLogicRouteArgs) }}"
   {% endif %}
   {% if form.change %}
     @change="((value) => {this.{{ form.change }}(value, '{{ form.key }}')})"
@@ -27,7 +30,7 @@
   {{ form.attributes|raw }}
   v-decorator="['{{ form.key }}', { initialValue: `{{ form.value }}`, rules: {{ form.formRules }} }]"
 >
-  {% if not form.varNameForMeta %}
+  {% if not form.useOptions %}
     {% if form.buttonMode %}
       {% for i in form.optionsArray %}
         <a-radio-button value="{{ i.value }}" {{ i.disabled ? 'disabled' : null }}>

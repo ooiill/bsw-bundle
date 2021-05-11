@@ -6,7 +6,6 @@ use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Form\Entity\Traits\AllowClear;
 use Leon\BswBundle\Module\Form\Entity\Traits\DropdownEqualWidth;
 use Leon\BswBundle\Module\Form\Entity\Traits\DropdownStyle;
-use Leon\BswBundle\Module\Form\Entity\Traits\DynamicDataSource;
 use Leon\BswBundle\Module\Form\Entity\Traits\ExpandAll;
 use Leon\BswBundle\Module\Form\Entity\Traits\LabelInValue;
 use Leon\BswBundle\Module\Form\Entity\Traits\OptionFilterProp;
@@ -15,7 +14,6 @@ use Leon\BswBundle\Module\Form\Entity\Traits\ShowCheckedStrategy;
 use Leon\BswBundle\Module\Form\Entity\Traits\ShowSearch;
 use Leon\BswBundle\Module\Form\Entity\Traits\Size;
 use Leon\BswBundle\Module\Form\Entity\Traits\TreeData;
-use Leon\BswBundle\Module\Form\Entity\Traits\VarNameForMeta;
 use Leon\BswBundle\Module\Form\Form;
 
 class SelectTree extends Form
@@ -30,8 +28,6 @@ class SelectTree extends Form
     use DropdownStyle;
     use DropdownEqualWidth;
     use TreeData;
-    use VarNameForMeta;
-    use DynamicDataSource;
     use ExpandAll;
 
     /**

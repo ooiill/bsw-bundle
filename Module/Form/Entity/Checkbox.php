@@ -3,17 +3,15 @@
 namespace Leon\BswBundle\Module\Form\Entity;
 
 use Leon\BswBundle\Module\Form\Entity\Traits\Col;
-use Leon\BswBundle\Module\Form\Entity\Traits\DynamicDataSource;
 use Leon\BswBundle\Module\Form\Entity\Traits\Options;
-use Leon\BswBundle\Module\Form\Entity\Traits\VarNameForMeta;
+use Leon\BswBundle\Module\Form\Entity\Traits\UseOptions;
 use Leon\BswBundle\Module\Form\Form;
 
 class Checkbox extends Form
 {
     use Options;
-    use VarNameForMeta;
-    use DynamicDataSource;
     use Col;
+    use UseOptions;
 
     /**
      * @const array Demo

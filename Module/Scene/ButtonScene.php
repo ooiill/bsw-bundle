@@ -512,7 +512,7 @@ class ButtonScene extends Button
      */
     public function sceneOperateModifyModal(string $route, int $id)
     {
-        return $this->sceneOperateNewlyModal($route)->setIcon('b:icon-qianming')->setId($id);
+        return $this->sceneOperateNewlyModal($route)->setIcon('b:icon-bianji1')->setId($id);
     }
 
     /**

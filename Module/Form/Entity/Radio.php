@@ -5,21 +5,19 @@ namespace Leon\BswBundle\Module\Form\Entity;
 use Leon\BswBundle\Module\Form\Entity\Traits\ButtonDress;
 use Leon\BswBundle\Module\Form\Entity\Traits\ButtonMode;
 use Leon\BswBundle\Module\Form\Entity\Traits\Col;
-use Leon\BswBundle\Module\Form\Entity\Traits\DynamicDataSource;
 use Leon\BswBundle\Module\Form\Entity\Traits\Options;
 use Leon\BswBundle\Module\Form\Entity\Traits\Size;
-use Leon\BswBundle\Module\Form\Entity\Traits\VarNameForMeta;
+use Leon\BswBundle\Module\Form\Entity\Traits\UseOptions;
 use Leon\BswBundle\Module\Form\Form;
 
 class Radio extends Form
 {
     use Options;
-    use VarNameForMeta;
-    use DynamicDataSource;
     use Col;
     use ButtonMode;
     use ButtonDress;
     use Size;
+    use UseOptions;
 
     /**
      * @const array Demo

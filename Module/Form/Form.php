@@ -15,6 +15,7 @@ use Leon\BswBundle\Module\Form\Entity\Traits\ChangeTriggerHide;
 use Leon\BswBundle\Module\Form\Entity\Traits\ClassCss;
 use Leon\BswBundle\Module\Form\Entity\Traits\Disabled;
 use Leon\BswBundle\Module\Form\Entity\Traits\DisabledOverall;
+use Leon\BswBundle\Module\Form\Entity\Traits\DoLogicRoute;
 use Leon\BswBundle\Module\Form\Entity\Traits\Field;
 use Leon\BswBundle\Module\Form\Entity\Traits\FormData;
 use Leon\BswBundle\Module\Form\Entity\Traits\FormScene;
@@ -25,8 +26,10 @@ use Leon\BswBundle\Module\Form\Entity\Traits\ParentStyle;
 use Leon\BswBundle\Module\Form\Entity\Traits\Placeholder;
 use Leon\BswBundle\Module\Form\Entity\Traits\FormRules;
 use Leon\BswBundle\Module\Form\Entity\Traits\Style;
+use Leon\BswBundle\Module\Form\Entity\Traits\VarNameForChange;
 use Leon\BswBundle\Module\Form\Entity\Traits\Value;
 use Leon\BswBundle\Module\Form\Entity\Traits\ValueShadow;
+use Leon\BswBundle\Module\Form\Entity\Traits\VarNameForMeta;
 
 abstract class Form
 {
@@ -54,6 +57,9 @@ abstract class Form
     use Area;
     use ChangeTriggerHide;
     use ChangeTriggerDisabled;
+    use VarNameForMeta;
+    use VarNameForChange;
+    use DoLogicRoute;
 
     /**
      * @return string

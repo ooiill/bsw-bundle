@@ -106,4 +106,14 @@ class Output extends ArgsOutput
      * @var string
      */
     public $varNameForMetaCollectJson;
+
+    /**
+     * @var int
+     */
+    public $totalColumn;
+
+    /**
+     * @var int
+     */
+    public $labelColumn;
 }

@@ -95,10 +95,6 @@ class PersistenceConverter extends AnnotationConverter
         $max = $totalColumn - $labelColumn;
         $moderate = $max < 8 ? $max : 8;
 
-        if ($this->item->type instanceof Group) {
-            return $max;
-        }
-
         if (isset($value)) {
             if ($value < 1 || $value > $max) {
                 $this->exception('column', "Must be integer between 1 and {$max}");

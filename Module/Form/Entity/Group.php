@@ -4,34 +4,26 @@ namespace Leon\BswBundle\Module\Form\Entity;
 
 use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Module\Entity\Abs;
+use Leon\BswBundle\Module\Form\Entity\Traits\Gutter;
+use Leon\BswBundle\Module\Form\Entity\Traits\MemberKeyAuto;
+use Leon\BswBundle\Module\Form\Entity\Traits\Responsive;
 use Leon\BswBundle\Module\Form\Form;
 
 class Group extends Form
 {
+    use Responsive;
+    use Gutter;
+    use MemberKeyAuto;
+
     /**
      * @var Form[]
      */
     protected $member = [];
 
     /**
-     * @var bool
-     */
-    private $memberKeyAuto = true;
-
-    /**
      * @var array
      */
     protected $column = [];
-
-    /**
-     * @var bool
-     */
-    protected $responsive = true;
-
-    /**
-     * @var int|array
-     */
-    protected $gutter = 8;
 
     /**
      * Group constructor.
@@ -46,8 +38,8 @@ class Group extends Form
      */
     public function getMember(): array
     {
-        if ($this->memberKeyAuto) {
-            $this->memberKeyAuto = false;
+        if ($this->getMemberKeyAuto()) {
+            $this->setMemberKeyAuto(false);
             foreach ($this->member as $key => $item) {
                 $item->setKey($this->getKey() . '_' . ($item->getKey() ?? $key));
             }
@@ -64,18 +56,6 @@ class Group extends Form
     public function setMember(array $member)
     {
         $this->member = $member;
-
-        return $this;
-    }
-
-    /**
-     * @param bool $memberKeyAuto
-     *
-     * @return $this
-     */
-    public function setMemberKeyAuto(bool $memberKeyAuto = true)
-    {
-        $this->memberKeyAuto = $memberKeyAuto;
 
         return $this;
     }
@@ -140,46 +120,34 @@ class Group extends Form
     }
 
     /**
-     * @return bool
-     */
-    public function isResponsive(): bool
-    {
-        return $this->responsive;
-    }
-
-    /**
-     * @param bool $responsive
+     * @param mixed $value
      *
-     * @return $this
+     * @return Group
      */
-    public function setResponsive(bool $responsive = false)
+    public function setValue($value)
     {
-        $this->responsive = $responsive;
-
-        return $this;
-    }
-
-    /**
-     * @return int|string
-     */
-    public function getGutter()
-    {
-        if (is_int($this->gutter)) {
-            return $this->gutter;
+        if (!is_array($value)) {
+            return $this;
+        }
+        foreach ($this->member as $item) {
+            if (isset($value[$item->getKey()])) {
+                $item->setValue($value[$item->getKey()]);
+            }
         }
 
-        return Helper::jsonStringify($this->gutter);
+        return $this;
     }
 
     /**
-     * @param array|int $gutter
-     *
-     * @return $this
+     * @return array
      */
-    public function setGutter($gutter)
+    public function getValue(): array
     {
-        $this->gutter = $gutter;
+        $values = [];
+        foreach ($this->member as $item) {
+            $values[$item->getKey()] = $item->getValue();
+        }
 
-        return $this;
+        return $values;
     }
 }

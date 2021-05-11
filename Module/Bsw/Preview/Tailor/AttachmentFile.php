@@ -13,8 +13,8 @@ class AttachmentFile extends Tailor
      */
     protected function initial()
     {
-        $this->web->appendSrcJsWithKey('fancy-box', Abs::JS_FANCY_BOX);
-        $this->web->appendSrcCssWithKey('fancy-box', Abs::CSS_FANCY_BOX);
+        // $this->web->appendSrcJsWithKey('fancy-box', Abs::JS_FANCY_BOX);
+        // $this->web->appendSrcCssWithKey('fancy-box', Abs::CSS_FANCY_BOX);
 
         if (!is_array($this->field) || count($this->field) !== 2) {
             $this->field = ['deep', 'filename'];

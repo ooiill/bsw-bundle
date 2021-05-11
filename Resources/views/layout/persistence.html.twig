@@ -16,14 +16,12 @@
         :style="{{ persistence.styleJson }}"
         @submit="persistenceSubmit"
       >
-        {% set totalColumn = constant(scaffold.abs ~ '::PERSISTENCE_TOTAL_COLUMN') %}
-        {% set labelColumn = constant(scaffold.abs ~ '::PERSISTENCE_LABEL_COLUMN') %}
         <!-- xs < sm < md < lg < xl < xxl -->
         {% set small = scaffold.iframe ? 'sm' : 'md' %}
         {% set large = scaffold.iframe ? 'md' : 'lg' %}
         {% for field, item in persistence.record if item.type|formArea(persistenceArea ?? null) %}
           {% set form = item.type %}
-          {% set wrapperColumn = item.column ?: (totalColumn - labelColumn) %}
+          {% set wrapperColumn = item.column ?: (persistence.totalColumn - persistence.labelColumn) %}
           {% set formClass = form.class ? 'bsw-item-' ~ form.class : null %}
           {% set fieldHide = "persistenceFieldHideNow." ~ field %}
           {% set renderHide = item.hide ? 'true' : 'false' %}
@@ -34,11 +32,11 @@
             <a-form-item
               v-show="typeof {{ fieldHide }} !== 'undefined' ? (!{{ renderHide }} && !{{ fieldHide }}) : !{{ renderHide }}"
               :label-col="{
-                {{ small }}: { span: {{ totalColumn }} },
-                {{ large }}: { span: {{ labelColumn }} }
+                {{ small }}: { span: {{ persistence.totalColumn }} },
+                {{ large }}: { span: {{ persistence.labelColumn }} }
               }"
               :wrapper-col="{
-                {{ small }}: { span: {{ totalColumn }} },
+                {{ small }}: { span: {{ persistence.totalColumn }} },
                 {{ large }}: { span: {{ wrapperColumn }} }
               }"
               label="{{ item.label|trans({}, 'twig') }}"
@@ -57,8 +55,8 @@
         {% endfor %}
         <a-form-item
           :wrapper-col="{
-            {{ small }}: { span: {{ totalColumn }}, offset: 0 },
-            {{ large }}: { span: {{ totalColumn - labelColumn }}, offset: {{ labelColumn }} }
+            {{ small }}: { span: {{ persistence.totalColumn }}, offset: 0 },
+            {{ large }}: { span: {{ persistence.totalColumn - persistence.labelColumn }}, offset: {{ persistence.labelColumn }} }
           }"
           :class="{'bsw-persistence-form-operate': true}"
           :style="{{ persistence.operateStyleJson }}"

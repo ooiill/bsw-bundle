@@ -102,4 +102,14 @@ class Input extends ArgsInput
      * @var bool
      */
     public $operatesBlockInMobile = true;
+
+    /**
+     * @var int
+     */
+    public $totalColumn = Abs::PERSISTENCE_TOTAL_COLUMN;
+
+    /**
+     * @var int
+     */
+    public $labelColumn = Abs::PERSISTENCE_LABEL_COLUMN;
 }

@@ -307,6 +307,10 @@ $(function () {
                         delete values[field];
                     }
                 }
+                var extraValuesKey = form + 'ExtraValues';
+                if (typeof that[extraValuesKey] !== 'undefined') {
+                    values = Object.assign(values, that[extraValuesKey]);
+                }
                 return that[that.submitFormMethod + 'PersistenceForm'](values);
             });
         },

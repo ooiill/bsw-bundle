@@ -27,5 +27,9 @@
   placeholder="{{ form.placeholder }}"
   format="{{ form.format }}"
   {{ form.attributes|raw }}
-  v-decorator="['{{ form.key }}', { initialValue: {{ initial }}, rules: {{ form.formRules }} }]"
+  {% if not form.vModel %}
+    v-decorator="['{{ form.key }}', { initialValue: {{ initial }}, rules: {{ form.formRules }} }]"
+  {% else %}
+    v-model="{{ form.vModel }}"
+  {% endif %}
 ></a-month-picker>

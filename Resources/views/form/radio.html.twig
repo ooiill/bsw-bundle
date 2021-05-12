@@ -30,9 +30,13 @@
   {% endif %}
   :auto-focus="{{ form.autoFocus ? 'true' : 'false' }}"
   {{ form.attributes|raw }}
-  v-decorator="['{{ form.key }}', { initialValue: `{{ form.value }}`, rules: {{ form.formRules }} }]"
+  {% if not form.vModel %}
+    v-decorator="['{{ form.key }}', { initialValue: `{{ form.value }}`, rules: {{ form.formRules }} }]"
+  {% else %}
+    v-model="{{ form.vModel }}"
+  {% endif %}
 >
-  {% if not form.varNameForMeta %}
+  {% if not form.varNameForMeta and not form.vModel %}
     {% if form.buttonMode %}
       {% for i in form.optionsArray %}
         <a-radio-button value="{{ i.value }}" {{ i.disabled ? 'disabled' : null }}>

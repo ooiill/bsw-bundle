@@ -25,5 +25,9 @@
   {% endif %}
   :auto-focus="{{ form.autoFocus ? 'true' : 'false' }}"
   {{ form.attributes|raw }}
-  v-decorator="['{{ form.key }}', { initialValue: {{ form.value ? 'true' : 'false' }}, valuePropName: 'checked' }]"
+  {% if not form.vModel %}
+    v-decorator="['{{ form.key }}', { initialValue: {{ form.value ? 'true' : 'false' }}, valuePropName: 'checked' }]"
+  {% else %}
+    v-model="{{ form.vModel }}"
+  {% endif %}
 ></a-switch>

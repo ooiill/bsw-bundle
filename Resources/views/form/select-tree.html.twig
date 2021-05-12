@@ -40,6 +40,10 @@
   {% endif %}
   placeholder="{{ form.placeholder }}"
   {{ form.attributes|raw }}
-  v-decorator="['{{ form.key }}', { {{ initial }} rules: {{ form.formRules }} }]"
   :tree-default-expand-all="{{ form.expandAll ? 'true' : 'false' }}"
+  {% if not form.vModel %}
+    v-decorator="['{{ form.key }}', { {{ initial }} rules: {{ form.formRules }} }]"
+  {% else %}
+    v-model="{{ form.vModel }}"
+  {% endif %}
 ></a-tree-select>

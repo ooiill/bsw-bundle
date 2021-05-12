@@ -34,5 +34,9 @@
   {% endif %}
   :tip-formatter="{{ form.tipFormatter }}"
   {{ form.attributes|raw }}
-  v-decorator="['{{ form.key }}', { initialValue: {{ form.value }} }]"
+  {% if not form.vModel %}
+    v-decorator="['{{ form.key }}', { initialValue: {{ form.value }} }]"
+  {% else %}
+    v-model="{{ form.vModel }}"
+  {% endif %}
 ></a-slider>

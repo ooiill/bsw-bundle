@@ -10,7 +10,6 @@
   {% else %}
     :disabled="{{ form.disabled ? 'true' : 'false' }}"
   {% endif %}
-  v-decorator="['{{ form.key }}', { initialValue: {{ form.value }} }]"
   :allow-clear="{{ form.allowClear ? 'true' : 'false' }}"
   :allow-half="{{ form.allowHalf ? 'true' : 'false' }}"
   {% if form.character %}
@@ -29,4 +28,9 @@
   :auto-focus="{{ form.autoFocus ? 'true' : 'false' }}"
   :count="{{ form.count }}"
   {{ form.attributes|raw }}
+  {% if not form.vModel %}
+    v-decorator="['{{ form.key }}', { initialValue: {{ form.value }} }]"
+  {% else %}
+    v-model="{{ form.vModel }}"
+  {% endif %}
 ></a-rate>

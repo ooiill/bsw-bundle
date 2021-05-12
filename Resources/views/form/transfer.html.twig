@@ -39,5 +39,9 @@
     @change="((targetKeys, direction, moveKeys) => {this.{{ form.change }}(targetKeys, direction, moveKeys, '{{ form.key }}')})"
   {% endif %}
   {{ form.attributes|raw }}
-  v-decorator="['{{ form.key }}', { initialValue: {{ form.targetKeysKey }}, rules: {{ form.formRules }} }]"
+  {% if not form.vModel %}
+    v-decorator="['{{ form.key }}', { initialValue: {{ form.targetKeysKey }}, rules: {{ form.formRules }} }]"
+  {% else %}
+    v-model="{{ form.vModel }}"
+  {% endif %}
 ></a-transfer>

@@ -4,6 +4,7 @@ namespace Leon\BswBundle\Module\Form\Entity;
 
 use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Module\Entity\Abs;
+use Leon\BswBundle\Module\Form\Entity\Traits\ComplexKey;
 use Leon\BswBundle\Module\Form\Entity\Traits\Gutter;
 use Leon\BswBundle\Module\Form\Entity\Traits\MemberKeyAuto;
 use Leon\BswBundle\Module\Form\Entity\Traits\Responsive;
@@ -14,6 +15,7 @@ class Group extends Form
     use Responsive;
     use Gutter;
     use MemberKeyAuto;
+    use ComplexKey;
 
     /**
      * @var Form[]
@@ -41,7 +43,12 @@ class Group extends Form
         if ($this->getMemberKeyAuto()) {
             $this->setMemberKeyAuto(false);
             foreach ($this->member as $key => $item) {
-                $item->setKey($this->getKey() . '_' . ($item->getKey() ?? $key));
+                $subKey = $item->getKey() ?? $key;
+                if ($this->isComplexKey()) {
+                    $item->setKey($this->getKey() . Helper::underToCamel($subKey, false));
+                } else {
+                    $item->setKey($subKey);
+                }
             }
         }
 

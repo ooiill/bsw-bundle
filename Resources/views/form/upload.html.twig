@@ -46,7 +46,11 @@
   {% endif %}
   @change="((object) => {this.{{ form.change }}(object, '{{ form.key }}')})"
   {{ form.attributes|raw }}
-  v-decorator="['{{ form.key }}FileList']"
+  {% if not form.vModel %}
+    v-decorator="['{{ form.key }}FileList']"
+  {% else %}
+    v-model="{{ form.vModel }}"
+  {% endif %}
 >
   {% macro button(scaffold, form, scene) %}
     <a-button

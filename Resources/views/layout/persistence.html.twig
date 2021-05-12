@@ -44,12 +44,24 @@
               class="{{ ['bsw-form-' ~ form.itemName, formClass]|joinClass }}"
               :style="{{ form.parentStyle }}"
             >
+              {% if form.dynamicRow %}
+                {{ ('<a-row :key="row" v-for="(record, row) in ' ~ form.varNameForMeta ~ '">')|raw }}
+              {% endif %}
               {% set title = ((item.title|trans({}, 'twig')) ~ ',' ~ item.titleAuto)|trim(',') %}
-              {% set begin = title ? '<a-popover><template slot="content">' ~ title ~ '</template>' : null %}
-              {% set end = title ? '</a-popover>' : null %}
-              {{ begin|raw }}
+              {% if title %}
+                {{ ('<a-popover>')|raw }}
+                {{ ('<template slot="content">' ~ title ~ '</template>')|raw }}
+              {% endif %}
               {% include "form/" ~ form.itemName ~ ".html.twig" with {form: form} %}
-              {{ end|raw }}
+              {% if title %}
+                {{ '</a-popover>'|raw }}
+              {% endif %}
+              {% if form.dynamicRow %}
+                {{ ('</a-row>')|raw }}
+                {{ ('<a-button type="dashed" style="width: 100%" @click="' ~ form.dynamicRowAdd ~ '">')|raw }}
+                {{ ('a:plus'|icon ~ form.dynamicRowLabel|trans({}, 'twig'))|raw }}
+                {{ ('</a-button><br>')|raw }}
+              {% endif %}
             </a-form-item>
           </transition>
         {% endfor %}

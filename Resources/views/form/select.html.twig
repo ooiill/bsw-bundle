@@ -52,9 +52,13 @@
   :auto-focus="{{ form.autoFocus ? 'true' : 'false' }}"
   placeholder="{{ form.placeholder }}"
   {{ form.attributes|raw }}
-  v-decorator="['{{ form.key }}', { {{ initial }} rules: {{ form.formRules }} }]"
+  {% if not form.vModel %}
+    v-decorator="['{{ form.key }}', { {{ initial }} rules: {{ form.formRules }} }]"
+  {% else %}
+    v-model="{{ form.vModel }}"
+  {% endif %}
 >
-  {% if not form.varNameForMeta %}
+  {% if not form.varNameForMeta and not form.vModel %}
     {% for i in form.optionsArray %}
       <a-select-option value="{{ i.value }}" {{ i.disabled ? 'disabled' : null }}>
         {{ i.label }}

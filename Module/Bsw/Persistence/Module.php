@@ -392,9 +392,15 @@ class Module extends Bsw
      * @param string $field
      * @param array  $item
      * @param Output $output
+     * @param bool   $fromGroup
      */
-    protected function formConfigureForFrontend(string $field, Form $form, array $item, Output $output)
-    {
+    protected function formConfigureForFrontend(
+        string $field,
+        Form $form,
+        array $item,
+        Output $output,
+        bool $fromGroup = false
+    ) {
         if ($form instanceof Upload) {
             if (!$form->getRoute()) {
                 $form->setRoute($this->input->cnf->route_upload);
@@ -487,9 +493,13 @@ class Module extends Bsw
             }
         }
 
-        if ($vnMeta = $form->getVarNameForMeta() && method_exists($form, 'getEnum')) {
-            $output->varNameForMetaCollect[$field] = $form->getEnum() ?: $form->getVarNameForMetaDefaultArray();
-            $form->setEnum([]);
+        if ($vnMeta = $form->getVarNameForMeta()) {
+            if (method_exists($form, 'getEnum')) {
+                $output->varNameForMetaCollect[$field] = $form->getEnum() ?: $form->getVarNameForMetaDefaultArray();
+                $form->setEnum([]);
+            } else {
+                $output->varNameForMetaCollect[$field] = $form->getValueShadow(); // just use value shadow when not enum
+            }
             if ($vnMeta === true) {
                 $vnMeta = $field;
             }

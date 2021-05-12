@@ -304,6 +304,10 @@ $(function () {
                         delete values[field];
                     }
                 }
+                let extraValuesKey = `${form}ExtraValues`;
+                if (typeof that[extraValuesKey] !== 'undefined') {
+                    values = Object.assign(values, that[extraValuesKey]);
+                }
                 return that[`${that.submitFormMethod}PersistenceForm`](values);
             });
         },

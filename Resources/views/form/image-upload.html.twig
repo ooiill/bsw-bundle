@@ -1,0 +1,15 @@
+<a class="bsw-preview-image"
+   data-fancybox="persistence"
+   v-show="persistenceImageUpload.{{ form.key }} && persistenceImageUpload.{{ form.key }}.url"
+   :href="persistenceImageUpload.{{ form.key }} && persistenceImageUpload.{{ form.key }}.url"
+   :data-caption="persistenceImageUpload.{{ form.key }} && persistenceImageUpload.{{ form.key }}.url"
+>
+  <p class="bsw-hide"
+     v-init:data-persistence-image-upload:{{ form.keyForInit }}='{"url":"{{ form.valueShadow }}"}'
+  ></p>
+  <img id="persistence-image-upload-{{ form.key }}"
+       :style="{ maxWidth: '{{ form.maxWidth }}px', maxHeight: '{{ form.maxHeight }}px' }"
+       :src="persistenceImageUpload.{{ form.key }} && persistenceImageUpload.{{ form.key }}.url"
+  >
+</a>
+{% include 'form/upload.html.twig' with {form: form} %}

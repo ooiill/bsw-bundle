@@ -139,8 +139,6 @@ class BswBackendController extends BswWebController
         }
 
         $this->appendSrcCssWithKey('ant-d', Abs::CSS_ANT_D_BSW, Abs::POS_TOP);
-        $this->appendSrcJsWithKey('fancy-box', Abs::JS_FANCY_BOX);
-        $this->appendSrcCssWithKey('fancy-box', Abs::CSS_FANCY_BOX);
     }
 
     /**

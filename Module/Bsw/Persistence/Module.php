@@ -340,7 +340,8 @@ class Module extends Bsw
                 $this->methodTailor,
                 self::AFTER_SUBMIT,
                 [Message::class, Error::class, Abs::T_ARRAY],
-                $arguments
+                $arguments,
+                0
             );
 
             if ($result instanceof Error) {

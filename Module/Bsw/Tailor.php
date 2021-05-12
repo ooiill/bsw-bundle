@@ -15,14 +15,14 @@ abstract class Tailor
     protected $web;
 
     /**
-     * @var array
+     * @var array|string
      */
     protected $field;
 
     /**
      * @var string
      */
-    protected $fieldUnder;
+    private $fieldUnder;
 
     /**
      * @var string
@@ -80,11 +80,10 @@ abstract class Tailor
     }
 
     /**
-     * @return mixed
+     * @return void
      */
     protected function initial()
     {
-        return null;
     }
 
     //

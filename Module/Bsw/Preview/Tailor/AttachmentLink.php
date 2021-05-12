@@ -14,14 +14,16 @@ class AttachmentLink extends Tailor
     /**
      * @var string
      */
-    protected $alias;
+    protected $newField;
 
     /**
-     * @return mixed|void
+     * @return void
      */
     protected function initial()
     {
-        $this->alias = "_tailor_{$this->keyword}";
+        parent::initial();
+
+        $this->newField = "{$this->keyword}AttachmentLink";
     }
 
     /**
@@ -36,15 +38,15 @@ class AttachmentLink extends Tailor
             [
                 'select' => [
                     empty($args->target['select']) ? $args->target['alias'] : null,
-                    "{$this->alias}.deep AS {$this->keyword}_deep",
-                    "{$this->alias}.filename AS {$this->keyword}_filename",
-                    "{$this->alias}.size AS {$this->keyword}_size",
+                    "{$this->newField}.deep AS {$this->newField}Deep",
+                    "{$this->newField}.filename AS {$this->newField}Filename",
+                    "{$this->newField}.size AS {$this->newField}Size",
                 ],
                 'join'   => [
-                    "{$this->alias}" => [
+                    "{$this->newField}" => [
                         'entity' => BswAttachment::class,
-                        'left'   => ["{$args->target['alias']}.{$this->fieldCamel}", "{$this->alias}.state"],
-                        'right'  => ["{$this->alias}.id", Abs::NORMAL],
+                        'left'   => ["{$args->target['alias']}.{$this->fieldCamel}", "{$this->newField}.state"],
+                        'right'  => ["{$this->newField}.id", Abs::NORMAL],
                     ],
                 ],
             ]
@@ -62,23 +64,22 @@ class AttachmentLink extends Tailor
      */
     public function tailorPreviewAnnotation(Arguments $args): array
     {
-        $sort = $args->previewAnnotation[$this->fieldCamel]['sort'];
-        $args->target[$this->alias] = array_merge(
+        $args->target[$this->newField] = Helper::merge(
             [
                 'label'  => $this->label,
                 'render' => Abs::RENDER_LINK,
-                'sort'   => $sort + .01,
+                'sort'   => $args->previewAnnotation[$this->fieldCamel]['sort'] + 0.01,
                 'width'  => 400,
             ],
-            $args->target[$this->alias] ?? []
+            $args->target[$this->newField] ?? []
         );
-        $args->target["{$this->keyword}_size"] = array_merge(
+        $args->target["{$this->newField}Size"] = Helper::merge(
             [
                 'hook' => FileSize::class,
-                'sort' => $sort + .02,
+                'sort' => $args->previewAnnotation[$this->fieldCamel]['sort'] + 0.02,
                 'show' => false,
             ],
-            $args->target["{$this->keyword}_size"] ?? []
+            $args->target["{$this->newField}Size"] ?? []
         );
 
         return $args->target;
@@ -92,23 +93,22 @@ class AttachmentLink extends Tailor
     public function tailorPreviewBeforeRender(Arguments $args): array
     {
         foreach ($args->target as &$item) {
-
             $item = $this->web->attachmentPreviewHandler(
                 $item,
-                $this->alias,
-                ["{$this->keyword}_deep", "{$this->keyword}_filename"]
+                $this->newField,
+                ["{$this->newField}Deep", "{$this->newField}Filename"]
             );
 
-            if (!empty($item[$this->alias])) {
+            if (!empty($item[$this->newField])) {
                 if (!empty($item['md5'])) {
-                    $item[$this->alias] .= "?" . $this->md1($item['md5']);
+                    $item[$this->newField] .= "?" . $this->md1($item['md5']);
                 } elseif (!empty($item['sha1'])) {
-                    $item[$this->alias] .= "?" . $this->md1($item['sha1']);
+                    $item[$this->newField] .= "?" . $this->md1($item['sha1']);
                 }
             }
 
             if (!empty($item[$this->fieldCamel])) {
-                $key = "{$this->keyword}_size";
+                $key = "{$this->newField}Size";
                 $item[$this->fieldCamel] = "{$item[$this->fieldCamel]} » {$item[$key]}";
             }
         }

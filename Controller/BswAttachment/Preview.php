@@ -79,7 +79,7 @@ trait Preview
             (new ButtonScene('Copy link'))
                 ->setType(Abs::THEME_DEFAULT)
                 ->setClick('copyFileLink')
-                ->setArgs(['link' => $args->item['_tailor_filename']]),
+                ->setArgs(['link' => $args->item['filenameAttachmentFile']]),
         ];
     }
 

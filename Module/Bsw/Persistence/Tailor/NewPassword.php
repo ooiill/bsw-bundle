@@ -14,7 +14,17 @@ class NewPassword extends Tailor
     /**
      * @var string
      */
-    protected $newField = 'new_password';
+    protected $newField;
+
+    /**
+     * @return void
+     */
+    public function initial()
+    {
+        parent::initial();
+
+        $this->newField = "{$this->fieldCamel}NewPassword";
+    }
 
     /**
      * @param Arguments $args
@@ -23,12 +33,15 @@ class NewPassword extends Tailor
      */
     public function tailorPersistenceAnnotation(Arguments $args): array
     {
-        $sort = $args->persistAnnotation[$this->fieldCamel]['sort'] + .01;
-        $args->target[$this->newField] = [
-            'sort'   => $sort,
-            'column' => 8,
-            'type'   => Password::class,
-        ];
+        $args->target[$this->newField] = Helper::merge(
+            [
+                'label'  => $this->label,
+                'sort'   => $args->persistAnnotation[$this->fieldCamel]['sort'] + 0.01,
+                'column' => 8,
+                'type'   => Password::class,
+            ],
+            $args->target[$this->newField] ?? []
+        );
 
         if (empty($args->id)) {
             $args->target[$this->newField]['formRules'] = [$this->web->formRuleRequired()];
@@ -54,7 +67,7 @@ class NewPassword extends Tailor
                 return new ErrorParameter($this->web->pop());
             }
 
-            $salt = $args->target["{$this->field}Salt"] ?? null;
+            $salt = $args->target["{$this->fieldCamel}NewPasswordSalt"] ?? null;
             $args->extraSubmit[$this->fieldCamel] = $this->web->password($newPassword, $salt);
         }
 

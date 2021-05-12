@@ -14,17 +14,19 @@ class AttachmentImage extends Tailor
     /**
      * @var string
      */
-    protected $table;
+    protected $newField;
 
     /**
-     * @return mixed|void
+     * @return void
      */
     protected function initial()
     {
-        // $this->web->appendSrcJsWithKey('fancy-box', Abs::JS_FANCY_BOX);
-        // $this->web->appendSrcCssWithKey('fancy-box', Abs::CSS_FANCY_BOX);
+        parent::initial();
 
-        $this->table = "_tailor_{$this->keyword}";
+        $this->web->appendSrcJsWithKey('fancy-box', Abs::JS_FANCY_BOX);
+        $this->web->appendSrcCssWithKey('fancy-box', Abs::CSS_FANCY_BOX);
+
+        $this->newField = "{$this->keyword}AttachmentImage";
     }
 
     /**
@@ -39,15 +41,15 @@ class AttachmentImage extends Tailor
             [
                 'select' => [
                     empty($args->target['select']) ? $args->target['alias'] : null,
-                    "{$this->table}.deep AS {$this->keyword}_deep",
-                    "{$this->table}.filename AS {$this->keyword}_filename",
-                    "{$this->table}.size AS {$this->keyword}_size",
+                    "{$this->newField}.deep AS {$this->newField}Deep",
+                    "{$this->newField}.filename AS {$this->newField}Filename",
+                    "{$this->newField}.size AS {$this->newField}Size",
                 ],
                 'join'   => [
-                    $this->table => [
+                    $this->newField => [
                         'entity' => BswAttachment::class,
-                        'left'   => ["{$args->target['alias']}.{$this->fieldCamel}", "{$this->table}.state"],
-                        'right'  => ["{$this->table}.id", Abs::NORMAL],
+                        'left'   => ["{$args->target['alias']}.{$this->fieldCamel}", "{$this->newField}.state"],
+                        'right'  => ["{$this->newField}.id", Abs::NORMAL],
                     ],
                 ],
             ]
@@ -65,24 +67,23 @@ class AttachmentImage extends Tailor
      */
     public function tailorPreviewAnnotation(Arguments $args): array
     {
-        $sort = $args->previewAnnotation[$this->fieldCamel]['sort'];
-        $args->target[$this->table] = array_merge(
+        $args->target[$this->newField] = Helper::merge(
             [
                 'label'  => $this->label,
                 'render' => Abs::RENDER_IMAGE,
-                'sort'   => $sort + .01,
+                'sort'   => $args->previewAnnotation[$this->fieldCamel]['sort'] + 0.01,
                 'width'  => 200,
                 'align'  => Abs::POS_CENTER,
             ],
-            $args->target[$this->table] ?? []
+            $args->target[$this->newField] ?? []
         );
-        $args->target["{$this->keyword}_size"] = array_merge(
+        $args->target["{$this->newField}Size"] = Helper::merge(
             [
                 'hook' => FileSize::class,
-                'sort' => $sort + .02,
+                'sort' => $args->previewAnnotation[$this->fieldCamel]['sort'] + 0.02,
                 'show' => false,
             ],
-            $args->target["{$this->keyword}_size"] ?? []
+            $args->target["{$this->newField}Size"] ?? []
         );
 
         return $args->target;
@@ -99,20 +100,20 @@ class AttachmentImage extends Tailor
 
             $item = $this->web->attachmentPreviewHandler(
                 $item,
-                $this->table,
-                ["{$this->keyword}_deep", "{$this->keyword}_filename"]
+                $this->newField,
+                ["{$this->newField}Deep", "{$this->newField}Filename"]
             );
 
-            if (!empty($item[$this->table])) {
+            if (!empty($item[$this->newField])) {
                 if (!empty($item['md5'])) {
-                    $item[$this->table] .= "?" . $this->md1($item['md5']);
+                    $item[$this->newField] .= "?" . $this->md1($item['md5']);
                 } elseif (!empty($item['sha1'])) {
-                    $item[$this->table] .= "?" . $this->md1($item['sha1']);
+                    $item[$this->newField] .= "?" . $this->md1($item['sha1']);
                 }
             }
 
             if (!empty($item[$this->fieldCamel])) {
-                $key = "{$this->keyword}_size";
+                $key = "{$this->newField}Size";
                 $item[$this->fieldCamel] = "{$item[$this->fieldCamel]} » {$item[$key]}";
             }
         }

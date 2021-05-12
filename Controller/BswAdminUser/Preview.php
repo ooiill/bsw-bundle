@@ -35,18 +35,16 @@ trait Preview
     public function previewAnnotation(): array
     {
         return [
-            '_tailor_avatar'  => [
-                'sort'   => 2.01,
-                'render' => Abs::RENDER_AVATAR,
-                'width'  => 150,
+            'avatarAttachmentImage' => [
+                'sort' => 2.01,
             ],
-            'roleAccessTotal' => [
+            'roleAccessTotal'       => [
                 'width'  => 130,
                 'align'  => Abs::POS_CENTER,
                 'sort'   => 3.1,
                 'render' => Abs::HTML_CODE,
             ],
-            'userAccessTotal' => [
+            'userAccessTotal'       => [
                 'width'  => 130,
                 'align'  => Abs::POS_CENTER,
                 'sort'   => 3.2,
@@ -61,7 +59,7 @@ trait Preview
     public function previewTailor(): array
     {
         return [
-            Tailor\AttachmentImage::class => [
+            Tailor\AttachmentIcon::class => [
                 0 => 'avatarAttachmentId',
             ],
         ];

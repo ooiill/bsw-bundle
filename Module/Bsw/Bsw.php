@@ -278,12 +278,19 @@ abstract class Bsw
      * @param string    $call
      * @param mixed     $type
      * @param Arguments $args
+     * @param int       $targetIndex
      *
      * @return mixed
      * @throws
      */
-    protected function tailor(string $prefix, string $call, $type = null, Arguments $args = null)
-    {
+    protected function tailor(
+        string $prefix,
+        string $call,
+        $type = null,
+        Arguments $args = null,
+        int $targetIndex = null
+    ) {
+
         $argument = $args->target;
         $method = "{$prefix}{$call}";
 
@@ -297,14 +304,21 @@ abstract class Bsw
          * @param string $class
          * @param string $method
          * @param mixed  $field
+         * @param int    $targetIndex
          *
          * @return array
          */
-        $tailorCore = function (string $class, string $method, $field) use ($type, &$args, $argument) {
-
+        $tailorCore = function (string $class, string $method, $field, int $targetIndex = null) use (
+            $type,
+            &$args,
+            $argument
+        ) {
             $tailor = new $class($this->web, $field);
             $argsHandling = $args ? [$args] : [];
             $argument = call_user_func_array([$tailor, $method], $argsHandling) ?? $argument;
+            if (is_array($argument) && isset($targetIndex)) {
+                $argument = $argument[$targetIndex];
+            }
             $args->target = $argument;
 
             if ($type) {
@@ -317,9 +331,7 @@ abstract class Bsw
         };
 
         foreach ($this->tailor as $class => $fields) {
-
             $fn = self::TAILOR;
-
             // check tailor return keys
             if (!Helper::extendClass($class, Tailor::class)) {
                 $tailorClass = Tailor::class;
@@ -340,11 +352,13 @@ abstract class Bsw
             }
 
             if ($fields === true) {
-                $argument = $tailorCore($class, $method, true);
+                $argument = $tailorCore($class, $method, true, $i > 1 ? $targetIndex : null);
                 continue;
             }
 
-            foreach ($fields as $field) {
+            $i = 0;
+            foreach ($fields as $index => $field) {
+                $i += 1;
                 // check tailor return fields
                 foreach ((array)$field as $f) {
                     if (!property_exists($this->entityInstance, $f)) {
@@ -353,7 +367,7 @@ abstract class Bsw
                         );
                     }
                 }
-                $argument = $tailorCore($class, $method, $field);
+                $argument = $tailorCore($class, $method, $field, $i > 1 ? $targetIndex : null);
             }
         }
 

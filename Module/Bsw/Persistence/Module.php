@@ -392,15 +392,9 @@ class Module extends Bsw
      * @param string $field
      * @param array  $item
      * @param Output $output
-     * @param bool   $fromGroup
      */
-    protected function formConfigureForFrontend(
-        string $field,
-        Form $form,
-        array $item,
-        Output $output,
-        bool $fromGroup = false
-    ) {
+    protected function formConfigureForFrontend(string $field, Form $form, array $item, Output $output)
+    {
         if ($form instanceof Upload) {
             if (!$form->getRoute()) {
                 $form->setRoute($this->input->cnf->route_upload);
@@ -487,12 +481,6 @@ class Module extends Bsw
             ];
         }
 
-        if ($form instanceof Group) {
-            foreach ($form->getMember() as $f) {
-                $this->formConfigureForFrontend($f->getKey(), $f, $item, $output);
-            }
-        }
-
         if ($vnMeta = $form->getVarNameForMeta()) {
             if (method_exists($form, 'getEnum')) {
                 $output->varNameForMetaCollect[$field] = $form->getEnum() ?: $form->getVarNameForMetaDefaultArray();
@@ -505,6 +493,7 @@ class Module extends Bsw
             }
             $form->setVarNameForMeta("persistenceVarNameForMetaCollect.{$vnMeta}");
         }
+
         if ($vnMetaField = $form->getVarNameForMetaField()) {
             $form->setVarNameForMetaField("persistenceVarNameForMetaCollect.{$vnMetaField}");
         }
@@ -515,6 +504,12 @@ class Module extends Bsw
 
         if ($fieldDisabledMeta = $form->getChangeTriggerDisabled()) {
             $output->fieldDisabledCollect[$field] = $fieldDisabledMeta;
+        }
+
+        if ($form instanceof Group) {
+            foreach ($form->getMember() as $f) {
+                $this->formConfigureForFrontend($f->getKey(), $f, $item, $output);
+            }
         }
     }
 
@@ -716,8 +711,6 @@ class Module extends Bsw
                 $form->setPlaceholder($item['placeholder'] ?: $form->getLabel());
             }
 
-            $this->formConfigureForFrontend($key, $form, $item, $output);
-
             $tipsAuto = $titleAuto = null;
             if (($form instanceof Select) && $form->getMode() == Abs::MODE_MULTIPLE) {
                 if (is_null($form->getValue())) {
@@ -728,6 +721,19 @@ class Module extends Bsw
                 } else {
                     $form->setMode(Abs::MODE_DEFAULT);
                 }
+            }
+
+            $this->formConfigureForFrontend($key, $form, $item, $output);
+            if ($form->isDynamicRow() && ($form instanceof Group)) {
+                $form->setColumnSingle(count($form->getMember()), 2)->pushMember(
+                    (new Button())
+                        ->setSize($this->getInputAuto('size'))
+                        ->setType(Abs::THEME_ELE_WARNING_OL)
+                        ->setShape(Abs::SHAPE_CIRCLE)
+                        ->setRootClickForVue("((e) => {bsw.cnf.v.{$form->getDynamicRowSub()}(row)})")
+                        ->setKey('delete')
+                        ->setIcon('a:delete')
+                );
             }
 
             if (in_array(JsonStringify::class, $item['hook'])) {

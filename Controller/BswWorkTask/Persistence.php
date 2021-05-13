@@ -124,8 +124,8 @@ trait Persistence
     public function persistenceAfterSubmit(Arguments $args)
     {
         $extra = $args->extraSubmit;
-        $startTime = strtotime("{$extra['lifecycle_start_day']} {$extra['lifecycle_start_time']}");
-        $endTime = strtotime("{$extra['lifecycle_end_day']} {$extra['lifecycle_end_time']}");
+        $startTime = strtotime("{$extra['lifecycleStartDay']} {$extra['lifecycleStartTime']}");
+        $endTime = strtotime("{$extra['lifecycleEndDay']} {$extra['lifecycleEndTime']}");
 
         if ($startTime >= $endTime) {
             return new Message('Start datetime should lte end');

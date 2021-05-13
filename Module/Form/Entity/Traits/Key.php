@@ -2,6 +2,8 @@
 
 namespace Leon\BswBundle\Module\Form\Entity\Traits;
 
+use Leon\BswBundle\Component\Helper;
+
 trait Key
 {
     /**
@@ -14,7 +16,11 @@ trait Key
      */
     public function getKey(): ?string
     {
-        return $this->key;
+        if (is_null($this->key)) {
+            return null;
+        }
+
+        return Helper::underToCamel($this->key);
     }
 
     /**

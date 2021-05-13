@@ -6,7 +6,6 @@ use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Form\Entity\Traits\ComplexKey;
 use Leon\BswBundle\Module\Form\Entity\Traits\Gutter;
-use Leon\BswBundle\Module\Form\Entity\Traits\MemberKeyAuto;
 use Leon\BswBundle\Module\Form\Entity\Traits\Responsive;
 use Leon\BswBundle\Module\Form\Form;
 
@@ -14,7 +13,6 @@ class Group extends Form
 {
     use Responsive;
     use Gutter;
-    use MemberKeyAuto;
     use ComplexKey;
 
     /**
@@ -40,15 +38,15 @@ class Group extends Form
      */
     public function getMember(): array
     {
-        if ($this->getMemberKeyAuto()) {
-            $this->setMemberKeyAuto(false);
-            foreach ($this->member as $key => $item) {
-                $subKey = $item->getKey() ?? $key;
-                if ($this->isComplexKey()) {
-                    $item->setKey($this->getKey() . Helper::underToCamel($subKey, false));
-                } else {
-                    $item->setKey($subKey);
-                }
+        foreach ($this->member as $key => $item) {
+            $subKey = $item->getKey() ?? $key;
+            if (strpos($subKey, $this->getKey()) !== false) {
+                continue;
+            }
+            if ($this->isComplexKey()) {
+                $item->setKey($this->getKey() . Helper::underToCamel($subKey, false));
+            } else {
+                $item->setKey($subKey);
             }
         }
 
@@ -98,6 +96,10 @@ class Group extends Form
             return $default;
         }
 
+        if (array_sum($this->column) > 24) {
+            return $default;
+        }
+
         return array_combine($keys, $this->column);
     }
 
@@ -116,11 +118,16 @@ class Group extends Form
     /**
      * @param mixed $index
      * @param int   $column
+     * @param bool  $force
      *
      * @return $this
      */
-    public function setColumnSingle($index, int $column)
+    public function setColumnSingle($index, int $column, bool $force = false)
     {
+        if (isset($this->column[$index]) && !$force) {
+            return $this;
+        }
+
         $this->column[$index] = $column;
 
         return $this;

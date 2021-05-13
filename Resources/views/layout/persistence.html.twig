@@ -23,7 +23,7 @@
           {% set form = item.type %}
           {% set wrapperColumn = item.column ?: (persistence.totalColumn - persistence.labelColumn) %}
           {% set formClass = form.class ? 'bsw-item-' ~ form.class : null %}
-          {% set fieldHide = "persistenceFieldHideNow." ~ field %}
+          {% set fieldHide = "persistenceFieldHideNow." ~ form.key %}
           {% set renderHide = item.hide ? 'true' : 'false' %}
           <transition
             enter-active-class="animated {{ scaffold.cnf.twigPersistenceItemAnimateIn }}"
@@ -58,7 +58,7 @@
               {% endif %}
               {% if form.dynamicRow %}
                 {{ ('</a-row>')|raw }}
-                {{ ('<a-button type="dashed" style="width: 100%" @click="' ~ form.dynamicRowAdd ~ '">')|raw }}
+                {{ ('<a-button type="dashed" :style=\'' ~ form.dynamicRowButtonStyle ~ '\' @click="' ~ form.dynamicRowAdd ~ '">')|raw }}
                 {{ ('a:plus'|icon ~ form.dynamicRowLabel|trans({}, 'twig'))|raw }}
                 {{ ('</a-button><br>')|raw }}
               {% endif %}

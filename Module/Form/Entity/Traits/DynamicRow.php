@@ -2,6 +2,9 @@
 
 namespace Leon\BswBundle\Module\Form\Entity\Traits;
 
+use Leon\BswBundle\Component\Helper;
+use Leon\BswBundle\Component\Html;
+
 trait DynamicRow
 {
     /**
@@ -23,6 +26,11 @@ trait DynamicRow
      * @var string
      */
     protected $dynamicRowLabel = 'Add field';
+
+    /**
+     * @var array
+     */
+    protected $dynamicRowButtonStyle = ['width' => '100%'];
 
     /**
      * @return bool
@@ -100,6 +108,54 @@ trait DynamicRow
     public function setDynamicRowLabel(string $dynamicRowLabel)
     {
         $this->dynamicRowLabel = $dynamicRowLabel;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDynamicRowButtonStyle(): string
+    {
+        return Helper::jsonStringify($this->dynamicRowButtonStyle);
+    }
+
+    /**
+     * @return array
+     */
+    public function getDynamicRowButtonStyleArray(): array
+    {
+        return $this->dynamicRowButtonStyle;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDynamicRowButtonStyleStringify(): ?string
+    {
+        return Html::cssStyleFromArray($this->dynamicRowButtonStyle);
+    }
+
+    /**
+     * @param array $dynamicRowButtonStyle
+     *
+     * @return $this
+     */
+    public function setDynamicRowButtonStyle(array $dynamicRowButtonStyle)
+    {
+        $this->dynamicRowButtonStyle = $dynamicRowButtonStyle;
+
+        return $this;
+    }
+
+    /**
+     * @param array $dynamicRowButtonStyle
+     *
+     * @return $this
+     */
+    public function appendDynamicRowButtonStyle(array $dynamicRowButtonStyle)
+    {
+        $this->dynamicRowButtonStyle = array_merge($this->dynamicRowButtonStyle, $dynamicRowButtonStyle);
 
         return $this;
     }

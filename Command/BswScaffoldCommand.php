@@ -62,23 +62,21 @@ class BswScaffoldCommand extends Command
      */
     public function args(): array
     {
+        $opt = InputOption::VALUE_OPTIONAL;
+
         return [
             'table'     => [null, InputOption::VALUE_REQUIRED, 'Table name'],
-            'tabled'    => [null, InputOption::VALUE_OPTIONAL, 'Table real name'],
-            'doctrine'  => [null, InputOption::VALUE_OPTIONAL, 'Doctrine database flag'],
-            'info'      => [null, InputOption::VALUE_OPTIONAL, 'Module information'],
-            'app'       => [null, InputOption::VALUE_OPTIONAL, 'App type'],
-            'cover'     => [null, InputOption::VALUE_OPTIONAL, 'Cover file if exists', 'no'],
-            'exclude'   => [null, InputOption::VALUE_OPTIONAL, 'Exclude module split by comma'],
-            'args'      => [null, InputOption::VALUE_OPTIONAL, 'Args string like query string'],
-            'path'      => [null, InputOption::VALUE_OPTIONAL, 'File save path'],
-            'namespace' => [null, InputOption::VALUE_OPTIONAL, 'Namespace for Controller\Entity\Repository'],
-            'directory' => [null, InputOption::VALUE_OPTIONAL, 'The directory where is scaffold template'],
-            'acme'      => [
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Acme controller class for preview/persistence/filter annotation hint',
-            ],
+            'tabled'    => [null, $opt, 'Table real name'],
+            'doctrine'  => [null, $opt, 'Doctrine database flag'],
+            'info'      => [null, $opt, 'Module information'],
+            'app'       => [null, $opt, 'App type'],
+            'cover'     => [null, $opt, 'Cover file if exists', 'no'],
+            'exclude'   => [null, $opt, 'Exclude module split by comma'],
+            'args'      => [null, $opt, 'Args string like query string'],
+            'path'      => [null, $opt, 'File save path'],
+            'namespace' => [null, $opt, 'Namespace for Controller\Entity\Repository'],
+            'directory' => [null, $opt, 'The directory where is scaffold template'],
+            'acme'      => [null, $opt, 'Acme controller class for preview/persistence/filter annotation hint'],
         ];
     }
 
@@ -205,7 +203,6 @@ class BswScaffoldCommand extends Command
         /**
          * Template variables
          */
-
         if (!empty($doctrine)) {
             $this->doctrine = $doctrine;
         }
@@ -418,7 +415,7 @@ class BswScaffoldCommand extends Command
      */
     private function entityDocument(string $table, bool $tabled = false): array
     {
-        $document = $this->web->mysqlSchemeDocument($table);
+        $document = $this->web->mysqlSchemeDocument($table, $this->doctrine);
         if (empty($document)) {
             return [];
         }

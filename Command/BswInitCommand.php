@@ -54,6 +54,7 @@ class BswInitCommand extends Command
             'scaffold-ns'        => [null, $opt, 'Scaffold namespace for MVC class'],
             'config-need'        => [null, $opt, 'Config need?', 'yes'],
             'document-need'      => [null, $opt, 'Document need?', 'yes'],
+            'directory'          => [null, $opt, 'The directory where is scaffold template'],
             'acme'               => [null, $opt, 'Acme controller class for annotation hint'],
         ];
     }
@@ -539,7 +540,7 @@ class BswInitCommand extends Command
             );
         }
 
-        $pdo = $this->pdo($params['doctrine'] ?: 'default');
+        $pdo = $this->pdo($params['doctrine'] ?: Abs::DOCTRINE_DEFAULT);
         $database = $pdo->getDatabase();
 
         $schemeOnly = Helper::stringToArray($params['scheme-only']);
@@ -601,11 +602,13 @@ class BswInitCommand extends Command
                     new ArrayInput(
                         [
                             '--table'     => $table,
+                            '--doctrine'  => $params['doctrine'] ?? Abs::DOCTRINE_DEFAULT,
                             '--app'       => $this->app,
                             '--cover'     => $params['scaffold-cover'] ?: 'no',
                             '--path'      => $params['scaffold-path'] ?: null,
                             '--namespace' => $params['scaffold-ns'] ?: null,
                             '--acme'      => $params['acme'],
+                            '--directory' => $params['directory'] ?: null,
                         ]
                     ),
                     $output

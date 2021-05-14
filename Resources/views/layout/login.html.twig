@@ -10,6 +10,7 @@
 {% block content %}
   {% block loginBefore %}{% endblock %}
   {% block login %}
+    <p class="bsw-hide" v-init:data-form-items='{needPassword: {{ password is defined ? 'constTrue' : 'constFalse' }}, needGoogleCaptcha: {{ googleCaptcha is defined ? 'constTrue' : 'constFalse' }}}'></p>
     <div class="{{ ['bsw-login-container', scaffold.cnf.loginContainerClass ?? null]|joinClass }}">
       <div class="header">
         <a href="{{ void }}">
@@ -26,9 +27,11 @@
         <a-form-item>
           {% include "form/" ~ account.itemName ~ ".html.twig" with {form: account} %}
         </a-form-item>
-        <a-form-item>
-          {% include "form/" ~ password.itemName ~ ".html.twig" with {form: password} %}
-        </a-form-item>
+        {% if password is defined %}
+          <a-form-item>
+            {% include "form/" ~ password.itemName ~ ".html.twig" with {form: password} %}
+          </a-form-item>
+        {% endif %}
         <a-form-item class="bsw-captcha-item">
           {% include "form/" ~ captcha.itemName ~ ".html.twig" with {form: captcha} %}
           <img class="bsw-captcha" src="{{ path(scaffold.cnf.routeCaptcha) }}">

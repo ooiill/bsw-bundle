@@ -10,6 +10,8 @@ use Leon\BswBundle\Module\Error\Entity\ErrorAccountFrozen;
 use Leon\BswBundle\Module\Error\Entity\ErrorCaptcha;
 use Leon\BswBundle\Module\Error\Entity\ErrorGoogleCaptcha;
 use Leon\BswBundle\Module\Error\Entity\ErrorMetaData;
+use Leon\BswBundle\Module\Error\Entity\ErrorNotSupported;
+use Leon\BswBundle\Module\Error\Entity\ErrorParameter;
 use Leon\BswBundle\Module\Error\Entity\ErrorPassword;
 use Leon\BswBundle\Module\Error\Entity\ErrorProhibitedCountry;
 use Leon\BswBundle\Module\Error\Entity\ErrorUsername;
@@ -66,6 +68,12 @@ trait Login
                 ->setIcon($this->cnf->icon_captcha)
                 ->setIconAttribute(['slot' => 'prefix']),
 
+            'googleCaptcha' => (new Input())
+                ->setPlaceholder('Google dynamic captcha')
+                ->setKey('google_captcha')
+                ->setIcon($this->cnf->icon_captcha)
+                ->setIconAttribute(['slot' => 'prefix']),
+
             'submit' => (new Button())
                 ->setLabel('SIGN IN')
                 ->setHtmlType(Abs::TYPE_SUBMIT)
@@ -73,12 +81,11 @@ trait Login
                 ->setBindLoading('btnLoading'),
         ];
 
-        if ($this->parameter('backend_with_google_secret')) {
-            $form['googleCaptcha'] = (new Input())
-                ->setPlaceholder('Google dynamic captcha')
-                ->setKey('google_captcha')
-                ->setIcon($this->cnf->icon_captcha)
-                ->setIconAttribute(['slot' => 'prefix']);
+        if (!$this->parameter('backend_with_password')) {
+            unset($form['password']);
+        }
+        if (!$this->parameter('backend_with_google_secret')) {
+            unset($form['googleCaptcha']);
         }
 
         return $this->show($form, 'layout/login.html');
@@ -98,7 +105,7 @@ trait Login
      * @Route("/bsw-admin-user/login-handler", name="app_bsw_admin_user_login_handler", methods="POST")
      *
      * @I("account")
-     * @I("password", rules="rsa|password")
+     * @I("password", rules="~|rsa|password")
      * @I("captcha", rules="length,4")
      * @I("google_captcha", rules="~|length,6")
      *
@@ -109,6 +116,12 @@ trait Login
     {
         if (($args = $this->valid(Abs::V_NOTHING | Abs::V_AJAX)) instanceof Response) {
             return $args;
+        }
+
+        $needPassword = $this->parameter('backend_with_password');
+        $needGoogleCaptcha = $this->parameter('backend_with_google_secret');
+        if (!$needPassword && !$needGoogleCaptcha) {
+            return $this->failedAjax(new ErrorNotSupported());
         }
 
         /**
@@ -147,12 +160,10 @@ trait Login
          * google captcha
          */
 
-        if ($this->parameter('backend_with_google_secret')) {
-
+        if ($needGoogleCaptcha) {
             if (empty($user->googleAuthSecret) || strlen($user->googleAuthSecret) !== 16) {
                 return $this->failedAjax(new ErrorMetaData());
             }
-
             $ga = new GoogleAuthenticator();
             $googleCaptcha = $ga->verifyCode($user->googleAuthSecret, $args->google_captcha, 2);
             if (!$googleCaptcha && !$salt) {
@@ -164,9 +175,11 @@ trait Login
          * password
          */
 
-        $password = $this->password($args->password);
-        if ($user->password !== $password && !$salt) {
-            return $this->failedAjax(new ErrorPassword());
+        if ($needPassword) {
+            $password = $this->password($args->password);
+            if ($user->password !== $password && !$salt) {
+                return $this->failedAjax(new ErrorPassword());
+            }
         }
 
         $ip = $this->getClientIp();

@@ -1061,6 +1061,28 @@ var FoundationTools = function (_FoundationPrototype) {
         }
 
         /**
+         * Deep clone
+         *
+         * @param obj
+         * @returns {[]|{}}
+         */
+
+    }, {
+        key: 'deepClone',
+        value: function deepClone(obj) {
+            var that = this;
+            var newObj = Array.isArray(obj) ? [] : {};
+            if (obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === "object") {
+                for (var key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                        newObj[key] = obj && _typeof(obj[key]) === 'object' ? that.deepClone(obj[key]) : obj[key];
+                    }
+                }
+            }
+            return newObj;
+        }
+
+        /**
          * Count px of padding and margin
          *
          * @param parentElement

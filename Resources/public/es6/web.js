@@ -75,7 +75,7 @@ $(function () {
                     if (key.indexOf(':') > -1) {
                         [key, children] = key.split(':');
                     }
-                    if (key && key.length > 0) {
+                    if (children && children.length > 0) {
                         vnode.context[key][bsw.lcFirst(children)] = value;
                     } else {
                         vnode.context[key] = value;

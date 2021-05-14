@@ -28,6 +28,7 @@ parameters:
     telegram_bot_token: null
     telegram_hooks_host: null
 
+    backend_with_password: true
     backend_with_google_secret: true
     backend_with_ip_strict: true
     backend_ip_limit: false

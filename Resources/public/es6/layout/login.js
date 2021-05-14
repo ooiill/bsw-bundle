@@ -2,6 +2,7 @@ bsw.configure({
     data: {
         loginForm: null,
         btnLoading: false,
+        formItems: {},
         submitFormMethod: 'doLogin',
         rsaPublicKey: `-----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCyhl+6jZ/ENQvs24VpT4+o7Ltc
@@ -20,14 +21,15 @@ NydhxUEs0y8aMzWbGwIDAQAB
                 return bsw.error(bsw.lang.username_required, 3).then(() => this.btnLoading = false);
             }
 
-            if (!login.password.length) {
-                this.btnLoading = true;
-                return bsw.error(bsw.lang.password_required, 3).then(() => this.btnLoading = false);
-            }
-
-            if (login.password.length < 8 || login.password.length > 20) {
-                this.btnLoading = true;
-                return bsw.warning(bsw.lang.password_length_error, 3).then(() => this.btnLoading = false);
+            if (this.formItems.needPassword) {
+                if (!login.password.length) {
+                    this.btnLoading = true;
+                    return bsw.error(bsw.lang.password_required, 3).then(() => this.btnLoading = false);
+                }
+                if (login.password.length < 8 || login.password.length > 20) {
+                    this.btnLoading = true;
+                    return bsw.warning(bsw.lang.password_length_error, 3).then(() => this.btnLoading = false);
+                }
             }
 
             if (!login.captcha.length) {
@@ -35,7 +37,12 @@ NydhxUEs0y8aMzWbGwIDAQAB
                 return bsw.error(bsw.lang.captcha_required, 3).then(() => this.btnLoading = false);
             }
 
-            login.password = bsw.rsaEncrypt(login.password);
+            if (this.formItems.needGoogleCaptcha && !login.google_captcha.length) {
+                this.btnLoading = true;
+                return bsw.error(bsw.lang.google_captcha_required, 3).then(() => this.btnLoading = false);
+            }
+
+            login.password = login.password ? bsw.rsaEncrypt(login.password) : login.password;
             bsw.request(this.init.loginApiUrl, login).then((res) => {
                 this.btnLoading = true;
                 if (res.error === 4901) {

@@ -805,6 +805,25 @@ class FoundationTools extends FoundationPrototype {
     }
 
     /**
+     * Deep clone
+     *
+     * @param obj
+     * @returns {[]|{}}
+     */
+    deepClone(obj) {
+        let that = this;
+        let newObj = Array.isArray(obj) ? [] : {};
+        if (obj && typeof obj === "object") {
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    newObj[key] = (obj && typeof obj[key] === 'object') ? that.deepClone(obj[key]) : obj[key];
+                }
+            }
+        }
+        return newObj
+    }
+
+    /**
      * Count px of padding and margin
      *
      * @param parentElement

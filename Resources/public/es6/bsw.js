@@ -26,6 +26,8 @@ $(function () {
         noLoadingOnce: false,
         spinning: false,
         vConsole: null,
+        constTrue: true,
+        constFalse: false,
         init: { // from v-init
             configure: {},
             message: {},
@@ -557,7 +559,7 @@ $(function () {
                     if (key.indexOf(':') > -1) {
                         [key, children] = key.split(':');
                     }
-                    if (key && key.length > 0) {
+                    if (children && children.length > 0) {
                         vnode.context[key][bsw.lcFirst(children)] = value;
                     } else {
                         vnode.context[key] = value;

@@ -2,7 +2,7 @@
 
 namespace {Namespace}\Controller\{Name};
 
-use {Namespace}\Entity\{Name};
+use {Namespace}\{EntityName}\{Name};
 use Leon\BswBundle\Module\Form\Entity\Button;
 use Leon\BswBundle\Module\Bsw\Persistence\Tailor;
 use Leon\BswBundle\Annotation\Entity\AccessControl as Access;

@@ -5443,4 +5443,21 @@ class Helper
             fwrite(STDOUT, "\007");
         }
     }
+
+    /**
+     * @param string $tag
+     *
+     * @return null|string
+     */
+    public static function parseDoctrineName(string $tag): ?string
+    {
+        $result = [];
+        $doctrineName = null;
+        preg_match_all("/.*?\\\\(Entity|Repository)(.*?)\\\\/", $tag, $result);
+        if (!empty($result[2][0])) {
+            $doctrineName = Helper::camelToUnder($result[2][0]);
+        }
+
+        return $doctrineName;
+    }
 }

@@ -69,6 +69,11 @@ abstract class Bsw
     protected $entity;
 
     /**
+     * @var string
+     */
+    protected $doctrineName = Abs::DOCTRINE_DEFAULT;
+
+    /**
      * @var FoundationEntity
      */
     protected $entityInstance;
@@ -218,6 +223,9 @@ abstract class Bsw
         $this->entityInstance = new $this->entity;
 
         // repository
+        if ($autoDoctrine = Helper::parseDoctrineName($this->entity)) {
+            $this->doctrineName = $autoDoctrine;
+        }
         $this->repository = $this->web->repo($this->entity);
     }
 
@@ -352,7 +360,7 @@ abstract class Bsw
             }
 
             if ($fields === true) {
-                $argument = $tailorCore($class, $method, true, $i > 1 ? $targetIndex : null);
+                $argument = $tailorCore($class, $method, true);
                 continue;
             }
 
@@ -735,7 +743,7 @@ abstract class Bsw
         return $this->web->caching(
             function () {
                 $table = Helper::tableNameFromCls($this->entity);
-                $document = $this->web->mysqlSchemeDocument($table);
+                $document = $this->web->mysqlSchemeDocument($table, $this->doctrineName);
                 if (empty($document)) {
                     return [];
                 }

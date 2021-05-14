@@ -58,6 +58,11 @@ class BswScaffoldCommand extends Command
     protected $doctrine = Abs::DOCTRINE_DEFAULT;
 
     /**
+     * @var bool
+     */
+    protected $doctrineIsDefault;
+
+    /**
      * @return array
      */
     public function args(): array
@@ -65,18 +70,23 @@ class BswScaffoldCommand extends Command
         $opt = InputOption::VALUE_OPTIONAL;
 
         return [
-            'table'     => [null, InputOption::VALUE_REQUIRED, 'Table name'],
-            'tabled'    => [null, $opt, 'Table real name'],
-            'doctrine'  => [null, $opt, 'Doctrine database flag'],
-            'info'      => [null, $opt, 'Module information'],
-            'app'       => [null, $opt, 'App type'],
-            'cover'     => [null, $opt, 'Cover file if exists', 'no'],
-            'exclude'   => [null, $opt, 'Exclude module split by comma'],
-            'args'      => [null, $opt, 'Args string like query string'],
-            'path'      => [null, $opt, 'File save path'],
-            'namespace' => [null, $opt, 'Namespace for Controller\Entity\Repository'],
-            'directory' => [null, $opt, 'The directory where is scaffold template'],
-            'acme'      => [null, $opt, 'Acme controller class for preview/persistence/filter annotation hint'],
+            'table'               => [null, InputOption::VALUE_REQUIRED, 'Table name'],
+            'tabled'              => [null, $opt, 'Table real name'],
+            'doctrine'            => [null, $opt, 'Doctrine database flag'],
+            'doctrine-is-default' => [null, $opt, 'Doctrine is default doctrine', 'yes'],
+            'info'                => [null, $opt, 'Module information'],
+            'app'                 => [null, $opt, 'App type'],
+            'cover'               => [null, $opt, 'Cover file if exists', 'no'],
+            'exclude'             => [null, $opt, 'Exclude module split by comma'],
+            'args'                => [null, $opt, 'Args string like query string'],
+            'path'                => [null, $opt, 'File save path'],
+            'namespace'           => [null, $opt, 'Namespace for Controller\Entity\Repository'],
+            'directory'           => [null, $opt, 'The directory where is scaffold template'],
+            'acme'                => [
+                null,
+                $opt,
+                'Acme controller class for preview/persistence/filter annotation hint',
+            ],
         ];
     }
 
@@ -206,6 +216,7 @@ class BswScaffoldCommand extends Command
         if (!empty($doctrine)) {
             $this->doctrine = $doctrine;
         }
+        $this->doctrineIsDefault = $params['doctrine-is-default'] === 'yes';
 
         $entityDocument = $this->entityDocument($tabled ?: $table, !!$tabled);
         if (empty($entityDocument)) {
@@ -214,6 +225,14 @@ class BswScaffoldCommand extends Command
 
         $previewDocument = $this->previewDocument($tabled ?: $table);
         $persistenceDocument = $this->persistenceDocument($tabled ?: $table);
+
+        $entityName = 'Entity';
+        $repositoryName = 'Repository';
+        $doctrineInDir = Helper::underToCamel($this->doctrine, false);
+        if (!$this->doctrineIsDefault) {
+            $entityName = "Entity{$doctrineInDir}";
+            $repositoryName = "Repository{$doctrineInDir}";
+        }
 
         $variables = array_merge(
             [
@@ -229,6 +248,8 @@ class BswScaffoldCommand extends Command
                 'Info'              => ucfirst($info ?: str_replace('_', ' ', $table)),
                 'AcmeNamespace'     => $this->acme,
                 'Acme'              => Helper::clsName($this->acme ?? ''),
+                'EntityName'        => $entityName,
+                'RepositoryName'    => $repositoryName,
             ],
             $args
         );
@@ -243,7 +264,7 @@ class BswScaffoldCommand extends Command
                 $content = str_replace('\\\\', '\\', $content);
             }
 
-            $info = $this->move($new, $content);
+            $info = $this->move($new, $content, $entityName, $repositoryName);
             $output->writeln("<info> Mission: {$info} </info>");
         }
 
@@ -255,10 +276,12 @@ class BswScaffoldCommand extends Command
      *
      * @param string $file
      * @param string $content
+     * @param string $entityName
+     * @param string $repositoryName
      *
      * @return string
      */
-    private function move(string $file, string $content): string
+    private function move(string $file, string $content, string $entityName, string $repositoryName): string
     {
         $file = str_replace($this->directory, $this->path, $file);
         $file = str_replace($this->app, null, $file);
@@ -271,8 +294,8 @@ class BswScaffoldCommand extends Command
 
             $map = [
                 '/Controller/' => $coverAble,
-                '/Repository/' => $coverAble,
                 '/Entity/'     => 'yes',
+                '/Repository/' => $coverAble,
             ];
 
             foreach ($map as $keyword => $coverAble) {
@@ -284,6 +307,11 @@ class BswScaffoldCommand extends Command
         }
 
         $content = preg_replace("/\n([ \n]+)\n/", "\n\n", $content);
+        $file = str_replace(
+            ['/Controller/', '/Entity/', '/Repository/'],
+            ["/Controller/", "/{$entityName}/", "/{$repositoryName}/"],
+            $file
+        );
 
         if (!file_exists($file)) {
             file_put_contents($file, $content);
@@ -439,7 +467,7 @@ class BswScaffoldCommand extends Command
 
         $EntityClassMap = [
             'begin'      => "/**",
-            'entity'     => " * @ORM\Entity(repositoryClass=\"{Namespace}\Repository\{Name}Repository\")",
+            'entity'     => " * @ORM\Entity(repositoryClass=\"{Namespace}\{RepositoryName}\{Name}Repository\")",
             'name'       => " * @ORM\Table(name=\"{$table}\")",
             'unique'     => " * @UniqueEntity(fields=%s, errorPath=\"%s\", message=\"Record exists\"%s)",
             'uniques'    => [],

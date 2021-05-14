@@ -45,12 +45,14 @@ trait Database
      */
     public function repo(string $table, string $db = null)
     {
+        $dbAuto = Helper::parseDoctrineName($table);
+
         /**
          * @var ManagerRegistry $manager
          */
         $manager = $this->getDoctrine();
         $collect = $manager->getConnectionNames();
-        $db = $db ?? Abs::DOCTRINE_DEFAULT;
+        $db = $db ?? $dbAuto ?? Abs::DOCTRINE_DEFAULT;
 
         if (!isset($collect[$db])) {
             throw new RepositoryException("Doctrine connections '{$db}' don't exist");

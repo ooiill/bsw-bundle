@@ -53,6 +53,11 @@ abstract class FoundationRepository extends SFRepository
     protected $container;
 
     /**
+     * @var string
+     */
+    protected $doctrineName = Abs::DOCTRINE_DEFAULT;
+
+    /**
      * @var ManagerRegistry
      */
     protected $doctrine;
@@ -134,7 +139,12 @@ abstract class FoundationRepository extends SFRepository
         $this->translator = $translator;
         $this->logger = $logger;
 
-        $this->em = $this->getEntityManager();
+        if ($autoDoctrine = Helper::parseDoctrineName(static::class)) {
+            $this->doctrineName = $autoDoctrine;
+        }
+
+        // $this->setEm($this->getEntityManager());
+        $this->setEm($this->doctrine->getManager($this->doctrineName));
         $this->expr = new Expr();
         $this->pk = $this->_class->getSingleIdentifierColumnName();
 

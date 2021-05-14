@@ -2,7 +2,7 @@
 
 namespace {Namespace}\Controller\{Name};
 
-use {Namespace}\Entity\{Name};
+use {Namespace}\{EntityName}\{Name};
 use Leon\BswBundle\Module\Bsw\Arguments;
 use Leon\BswBundle\Module\Form\Entity\Button;
 use Leon\BswBundle\Module\Bsw\Preview\Tailor;

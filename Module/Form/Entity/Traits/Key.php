@@ -2,8 +2,6 @@
 
 namespace Leon\BswBundle\Module\Form\Entity\Traits;
 
-use Leon\BswBundle\Component\Helper;
-
 trait Key
 {
     /**

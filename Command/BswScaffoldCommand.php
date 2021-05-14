@@ -392,7 +392,7 @@ class BswScaffoldCommand extends Command
      */
     private function previewDocument(string $table): array
     {
-        $document = $this->web->mysqlSchemeDocument($table);
+        $document = $this->web->mysqlSchemeDocument($table, $this->doctrine);
         if (empty($document)) {
             return [];
         }
@@ -417,7 +417,7 @@ class BswScaffoldCommand extends Command
      */
     private function persistenceDocument(string $table): array
     {
-        $document = $this->web->mysqlSchemeDocument($table);
+        $document = $this->web->mysqlSchemeDocument($table, $this->doctrine);
         if (empty($document)) {
             return [];
         }

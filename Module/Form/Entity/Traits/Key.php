@@ -16,14 +16,7 @@ trait Key
      */
     public function getKey(): ?string
     {
-        if (is_null($this->key)) {
-            return null;
-        }
-        if (strpos($this->key, '__') === 0) {
-            return $this->key;
-        }
-
-        return Helper::underToCamel($this->key);
+        return $this->key;
     }
 
     /**

@@ -418,7 +418,7 @@ class BswBackendController extends BswWebController
 
         foreach ($moduleList as $module => $extraArgs) {
 
-            $extraArgs = array_merge($extraArgs, (array)($globalArgs[$module] ?? []));
+            $extraArgs = array_merge((array)($globalArgs[$module] ?? []), $extraArgs);
             [$name, $twig, $input, $output] = $dispatcher->execute(
                 $module,
                 $globalArgs,

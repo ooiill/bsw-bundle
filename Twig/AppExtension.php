@@ -23,7 +23,7 @@ class AppExtension extends AbstractExtension
             new TwigFilter('nativeIcon', [$this, 'nativeIcon']),
             new TwigFilter('implode', [$this, 'implode']),
             new TwigFilter('imageStyle', [$this, 'imageStyle']),
-            new TwigFilter('stringify', [Helper::class, 'jsonStringify']),
+            new TwigFilter('stringify', [$this, 'stringify']),
             new TwigFilter('joinClass', [$this, 'joinClass']),
             new TwigFilter('vueType', [$this, 'vueType']),
             new TwigFilter('formArea', [$this, 'formArea']),
@@ -151,6 +151,19 @@ class AppExtension extends AbstractExtension
         $attributes = implode('; ', $attributes);
 
         return $boundary ? "{ {$attributes} }" : $attributes;
+    }
+
+    /**
+     * @param        $target
+     * @param string $default
+     * @param int    $jsonFlag
+     *
+     * @return string
+     */
+    public static function stringify($target, string $default = '', int $jsonFlag = 0)
+    {
+        $stringify = Helper::jsonStringify($target, $default, $jsonFlag);
+        return preg_replace('/[\'|"]{var:(.*)}[\'|"]/', "$1", $stringify);
     }
 
     /**

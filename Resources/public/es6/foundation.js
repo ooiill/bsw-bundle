@@ -371,6 +371,26 @@ class FoundationPrototype {
         }
         return this.swap(source, index, index + 1);
     }
+
+    /**
+     * Get width & height
+     *
+     * @returns {{eleH: number, eleW: number, srlY: number, srlW: number, scnW: number, bodyW: number, srlX: number, bodyH: number, srlH: number, scnH: number}}
+     */
+    getWH() {
+        return {
+            bodyW: document.body.clientWidth, // Body area
+            bodyH: document.body.clientHeight,
+            eleW: document.documentElement.clientWidth, // Element area
+            eleH: document.documentElement.clientHeight,
+            srlW: document.body.scrollWidth, // Scroll area
+            srlH: document.body.scrollHeight,
+            srlX: document.body.scrollLeft,
+            srlY: document.body.scrollTop,
+            scnH: window.screen.availHeight, // Screen area
+            scnW: window.screen.availWidth,
+        }
+    }
 }
 
 //
@@ -802,25 +822,6 @@ class FoundationTools extends FoundationPrototype {
         }
 
         return this.trim(url, '?');
-    }
-
-    /**
-     * Deep clone
-     *
-     * @param obj
-     * @returns {[]|{}}
-     */
-    deepClone(obj) {
-        let that = this;
-        let newObj = Array.isArray(obj) ? [] : {};
-        if (obj && typeof obj === "object") {
-            for (let key in obj) {
-                if (obj.hasOwnProperty(key)) {
-                    newObj[key] = (obj && typeof obj[key] === 'object') ? that.deepClone(obj[key]) : obj[key];
-                }
-            }
-        }
-        return newObj
     }
 
     /**

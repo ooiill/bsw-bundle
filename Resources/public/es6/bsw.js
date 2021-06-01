@@ -49,6 +49,8 @@ $(function () {
             visible: true,
         },
 
+        WH: bsw.getWH(),
+
     }, bsw.config.data)).computed(Object.assign({}, bsw.config.computed || {})).method(Object.assign({
 
         moment,
@@ -606,6 +608,7 @@ $(function () {
             } else {
                 operates();
             }
+            v.WH = bsw.getWH()
         }, timeout);
     });
 

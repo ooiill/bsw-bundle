@@ -190,6 +190,9 @@ $(function () {
                     that.previewPaginationData = res.sets.preview.page;
                     that.previewImageChange();
                     bsw.responseLogic(res);
+                    bsw.cnf.v.$nextTick(function () {
+                        bsw.initUpwardInfect();
+                    });
                     history.replaceState({}, '', url);
                 }).catch(function (reason) {
                     console.warn(reason);

@@ -109,6 +109,11 @@ class Input extends ArgsInput
     public $pageSizeOptions = Abs::PG_PAGE_SIZE_OPTIONS;
 
     /**
+     * @var bool
+     */
+    public $paginationShow = true;
+
+    /**
      * @var string
      */
     public $paginationClsName = 'bsw-align-center';

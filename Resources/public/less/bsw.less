@@ -249,23 +249,39 @@ ul.ant-pagination {
 }
 
 .bsw-align-left {
-  text-align: left;
+  text-align: left !important;;
 }
 
 .bsw-align-right {
-  text-align: right;
+  text-align: right !important;;
 }
 
 .bsw-align-center {
-  text-align: center;
+  text-align: center !important;;
 }
 
 .bsw-float-left {
-  float: left;
+  float: left !important;;
 }
 
 .bsw-float-right {
-  float: right;
+  float: right !important;;
+}
+
+.bsw-no-margin {
+  margin: 0 !important;;
+}
+
+.bsw-no-padding {
+  padding: 0 !important;
+}
+
+.bsw-no-border {
+  border: none !important;;
+}
+
+.bsw-none-border {
+  border: 1px solid transparent !important;;
 }
 
 .bsw-operate {
@@ -1193,4 +1209,70 @@ body.bsw-foundation pre code.hljs {
 
 div.ant-table-body {
   overflow-x: auto !important;
+}
+
+.bsw-inline-edit-input {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  height: 30px;
+  min-width: 60px;
+  max-width: 200px;
+
+  label {
+    display: inline-block;
+    font-size: inherit;
+    line-height: normal;
+    visibility: hidden;
+    font-family: inherit;
+    padding: 0 6px;
+  }
+
+  input {
+    background: transparent;
+    box-sizing: border-box;
+    position: absolute;
+    display: inline;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: normal;
+    border-radius: inherit;
+    height: 100%;
+    width: 100%;
+    outline: 0;
+    border: 0;
+    margin: 0;
+    padding: 0 6px;
+    cursor: default;
+  }
+
+  &.active {
+    border: 1px solid #e8edfa;
+
+    input {
+      background: white;
+      cursor: auto;
+    }
+  }
+
+  &.align-left {
+    input {
+      text-align: left;
+    }
+  }
+
+  &.align-center {
+    input {
+      text-align: center;
+    }
+  }
+
+  &.align-right {
+    input {
+      text-align: right;
+    }
+  }
 }

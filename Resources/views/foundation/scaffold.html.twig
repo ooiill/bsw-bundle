@@ -9,7 +9,8 @@
       </div>
     {% endblock %}
   {% endif %}
-  <div class="{{ ['bsw-vue', 'bsw-body', tplBodyClass ?? null]|joinClass }}">
+  {% set bswClsBody = scaffold.get.bswClsBody ?? null %}
+  <div class="{{ ['bsw-vue', 'bsw-body', tplBodyClass ?? null, bswClsBody]|joinClass }}">
     <template>
       <a-config-provider :locale="locale" :auto-insert-space-in-button="true">
         {% block bodyBefore %}{% endblock %}

@@ -108,6 +108,11 @@ class Output extends ArgsOutput
     public $pageJson;
 
     /**
+     * @var bool
+     */
+    public $paginationShow;
+
+    /**
      * @var array
      */
     public $pageSizeOptions;

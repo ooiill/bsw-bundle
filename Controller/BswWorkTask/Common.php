@@ -603,6 +603,6 @@ trait Common
 
         $leader = $leader ? ' 🚩' : null;
         $this->cnf->copyright = "{$title} © {$this->usr('usr_account')}{$leader}";
-        $this->logicMerge('display', ['menu', 'header', 'crumbs']);
+        $this->logicMerge('display', [Abs::MODULE_MENU, Abs::MODULE_HEADER, Abs::MODULE_CRUMBS]);
     }
 }

@@ -26,7 +26,8 @@
 
 <!-- Global class variable -->
 <!-- tplFoundationClass >> tplBodyClass >> tplScaffoldClass >> tplContentClass -->
-<body class="{{ ['bsw-foundation', tplFoundationClass ?? null]|joinClass }}">
+{% set bswClsFoundation = scaffold.get.bswClsFoundation ?? null %}
+<body class="{{ ['bsw-foundation', tplFoundationClass ?? null, bswClsFoundation]|joinClass }}">
 {% block w3cBefore %}{% endblock %}
 {% block w3c %}{% endblock %}
 {% block w3cAfter %}{% endblock %}

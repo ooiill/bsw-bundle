@@ -191,6 +191,7 @@ $(function () {
                     bsw.responseLogic(res);
                     bsw.cnf.v.$nextTick(function () {
                         bsw.initUpwardInfect();
+                        that.doubleClickForEdit();
                     })
                     history.replaceState({}, '', url);
                 }).catch(reason => {
@@ -451,6 +452,49 @@ $(function () {
             });
         },
 
+        urlParamsTrigger(data) {
+            location.href = bsw.triggerParams(data.params, null, true);
+        },
+
+        doubleClickForEdit(selector = '.bsw-inline-edit-input') {
+            let that = this;
+            let save = function (ele, inp) {
+                let args = bsw.getBswData(ele);
+                args.postValue = inp.val();
+                that.noLoadingOnce = true;
+                bsw.request(ele.data('api'), args).then(res => {
+                    bsw.response(res).then(() => {
+                        bsw.responseLogic(res);
+                    }).catch(reason => {
+                        console.warn(reason);
+                    });
+                    ele.removeClass('active').attr('title', bsw.lang.double_click_for_edit);
+                    inp.attr('disabled', true);
+                    if (typeof args.refresh !== 'undefined' && args.refresh) {
+                        that.previewPaginationRefresh(false);
+                    }
+                    if (typeof res.sets.args !== 'undefined') {
+                        ele.data('bsw', res.sets.args);
+                    }
+                }).catch(reason => {
+                    console.warn(reason);
+                });
+            };
+            $(selector).each(function () {
+                let element = $(this);
+                element.off('dblclick').on('dblclick', () => {
+                    element.addClass('active').attr('title', bsw.lang.enter_for_save);
+                    let input = element.find('input')
+                    input.attr('disabled', false).focus();
+                    input.off('keypress').on('keypress', (event) => {
+                        if (event.keyCode === 13) {
+                            save(element, input)
+                        }
+                    })
+                });
+            });
+        },
+
         dynamicDataSourceBySearch(value, field) {
             let that = this;
             if (typeof this.ddsCore === 'undefined') {
@@ -592,6 +636,7 @@ $(function () {
 
         bsw.initClipboard();
         bsw.initUpwardInfect();
+        v.doubleClickForEdit();
         bsw.initHighlight();
         bsw.initVConsole();
 

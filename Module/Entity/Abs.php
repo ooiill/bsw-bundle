@@ -221,6 +221,7 @@ class Abs
     const JS_MD5            = 'npm;blueimp-md5/js/md5.min.js';
     const JS_EDITOR         = 'npm;@ckeditor/ckeditor5-build-decoupled-document/build/ckeditor.js';
     const JS_HIGHLIGHT      = 'npm;@highlightjs/cdn-assets/highlight.min.js';
+    const JS_SCROLL_BAR     = 'npm;perfect-scrollbar/dist/perfect-scrollbar.min.js';
     const JS_FOUNDATION     = 'diy;foundation.js';
     const JS_BSW            = 'diy;bsw.js';
     const JS_WEB            = 'diy;web.js';
@@ -260,6 +261,7 @@ class Abs
     const CSS_FANCY_BOX     = 'npm;@fancyapps/fancybox/dist/jquery.fancybox.min.css';
     const CSS_HIGHLIGHT     = 'npm;@highlightjs/cdn-assets/styles/default.min.css';
     const CSS_HIGHLIGHT_GH  = 'npm;@highlightjs/cdn-assets/styles/github.min.css';
+    const CSS_SCROLL_BAR    = 'npm;perfect-scrollbar/css/perfect-scrollbar.css';
     const CSS_ANT_D_BSW     = 'diy;antd.bsw.keep.css';
     const CSS_ANT_D_ALI     = 'diy;antd.aliyun.keep.css';
     const CSS_ANT_D_TALK    = 'diy;antd.talk.keep.css';
@@ -613,21 +615,37 @@ class Abs
     const VW_LOGIN_STRICT = self::V_LOGIN_STRICT ^ self::V_SIGN;            // should、must、strict
     const VW_LOGIN_AS     = self::VW_LOGIN_ACCESS | self::V_STRICT_AUTH;    // should、must、access、strict
 
+    const MODULE_MENU             = 'menu';
     const MODULE_MENU_SORT        = 10;
+    const MODULE_HEADER           = 'header';
     const MODULE_HEADER_SORT      = 20;
+    const MODULE_CRUMBS           = 'crumbs';
     const MODULE_CRUMBS_SORT      = 30;
+    const MODULE_TABS             = 'tabs';
     const MODULE_TABS_SORT        = 40;
+    const MODULE_FILTER           = 'filter';
     const MODULE_FILTER_SORT      = 50;
+    const MODULE_WELCOME          = 'welcome';
     const MODULE_WELCOME_SORT     = 60;
+    const MODULE_OPERATE          = 'operate';
     const MODULE_OPERATE_SORT     = 70;
+    const MODULE_DATA             = 'data';
     const MODULE_DATA_SORT        = 80;
+    const MODULE_PREVIEW          = 'preview';
     const MODULE_PREVIEW_SORT     = 90;
+    const MODULE_PERSISTENCE      = 'persistence';
     const MODULE_PERSISTENCE_SORT = 90;
+    const MODULE_CHART            = 'chart';
     const MODULE_CHART_SORT       = 90;
+    const MODULE_AWAY             = 'away';
     const MODULE_AWAY_SORT        = 90;
+    const MODULE_FOOTER           = 'footer';
     const MODULE_FOOTER_SORT      = 100;
+    const MODULE_MODAL            = 'modal';
     const MODULE_MODAL_SORT       = 110;
+    const MODULE_DRAWER           = 'drawer';
     const MODULE_DRAWER_SORT      = 120;
+    const MODULE_RESULT           = 'result';
     const MODULE_RESULT_SORT      = 130;
 
     /**

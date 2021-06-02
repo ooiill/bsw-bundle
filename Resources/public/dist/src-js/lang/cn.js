@@ -30,5 +30,7 @@ window.lang = Object.assign(window.lang || {}, {
     copy_failed: '内容复制出错',
     is_far_left: '已达最左侧',
     is_far_right: '已达最右侧',
-    real_iframe_height: '实际高度'
+    real_iframe_height: '实际高度',
+    enter_for_save: '回车进行保存或者ESC取消',
+    double_click_for_edit: '双击进行编辑'
 });

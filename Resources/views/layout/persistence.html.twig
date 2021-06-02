@@ -1,5 +1,6 @@
 {% extends 'layout/blank.html.twig' %}
-{% set tplContentClass = ['bsw-content-persistence', tplContentChildrenClass ?? null]|joinClass %}
+{% set bswClsPersistence = scaffold.get.bswClsPersistence ?? null %}
+{% set tplContentClass = ['bsw-content-persistence', tplContentChildrenClass ?? null, bswClsPersistence]|joinClass %}
 
 {% use 'layout/nothing.html.twig' %}
 {% use 'javascript/persistence.md.twig' %}

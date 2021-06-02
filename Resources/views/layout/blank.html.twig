@@ -9,7 +9,8 @@
 {% use 'limbs/footer.html.twig' %}
 
 {% block content %}
-  <a-layout class="{{ ['bsw-scaffold', tplScaffoldClass ?? null]|joinClass }}">
+  {% set bswClsScaffold = scaffold.get.bswClsScaffold ?? null %}
+  <a-layout class="{{ ['bsw-scaffold', tplScaffoldClass ?? null, bswClsScaffold]|joinClass }}">
     {% if menu is defined and 'menu' not in logic.display ?? [] %}
       <!-- menu mobile -->
       <a-drawer
@@ -41,7 +42,8 @@
         {% endblock %}
       {% endif %}
       {% block headerAfter %}{% endblock %}
-      <a-layout-content class="{{ scaffold.iframe ? 'iframe' : null }}">
+      {% set bswClsContent = scaffold.get.bswClsContent ?? null %}
+      <a-layout-content class="{{ [scaffold.iframe ? 'iframe' : null, bswClsContent]|joinClass }}">
         <!-- crumbs -->
         {% block crumbsBefore %}{% endblock %}
         {% if crumbs is defined and 'crumbs' not in logic.display ?? [] %}
@@ -76,7 +78,8 @@
           {% endblock %}
         {% endif %}
         {% block tabsAfter %}{% endblock %}
-        <div class="{{ ['bsw-content', tplContentClass ?? null]|joinClass }}">
+        {% set bswClsContent = scaffold.get.bswClsContent ?? null %}
+        <div class="{{ ['bsw-content', tplContentClass ?? null, bswClsContent]|joinClass }}">
           <!-- page -->
           {% block pageBefore %}{% endblock %}
           {% block page %}{% endblock %}

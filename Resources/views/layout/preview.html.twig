@@ -1,5 +1,6 @@
 {% extends 'layout/blank.html.twig' %}
-{% set tplContentClass = ['bsw-content-preview', tplContentChildrenClass ?? null]|joinClass %}
+{% set bswClsPreview = scaffold.get.bswClsPreview ?? null %}
+{% set tplContentClass = ['bsw-content-preview', tplContentChildrenClass ?? null, bswClsPreview]|joinClass %}
 
 {% use 'layout/nothing.html.twig' %}
 {% use 'limbs/filter.html.twig' %}
@@ -87,6 +88,7 @@
       {% block pagination %}
         <a-pagination
           class="{{ preview.paginationClsName }}"
+          v-show="{{ preview.paginationShow }}"
           :show-quick-jumper="true"
           :hide-on-single-page="{{ preview.paginationAnyCase ? 'false' : 'true' }}"
           :show-total="(total, range) => `${bsw.lang.total} ${total}`"

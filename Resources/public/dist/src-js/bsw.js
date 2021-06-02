@@ -192,6 +192,7 @@ $(function () {
                     bsw.responseLogic(res);
                     bsw.cnf.v.$nextTick(function () {
                         bsw.initUpwardInfect();
+                        that.doubleClickForEdit();
                     });
                     history.replaceState({}, '', url);
                 }).catch(function (reason) {
@@ -445,6 +446,49 @@ $(function () {
                 console.warn(reason);
             });
         },
+        urlParamsTrigger: function urlParamsTrigger(data) {
+            location.href = bsw.triggerParams(data.params, null, true);
+        },
+        doubleClickForEdit: function doubleClickForEdit() {
+            var selector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '.bsw-inline-edit-input';
+
+            var that = this;
+            var save = function save(ele, inp) {
+                var args = bsw.getBswData(ele);
+                args.postValue = inp.val();
+                that.noLoadingOnce = true;
+                bsw.request(ele.data('api'), args).then(function (res) {
+                    bsw.response(res).then(function () {
+                        bsw.responseLogic(res);
+                    }).catch(function (reason) {
+                        console.warn(reason);
+                    });
+                    ele.removeClass('active').attr('title', bsw.lang.double_click_for_edit);
+                    inp.attr('disabled', true);
+                    if (typeof args.refresh !== 'undefined' && args.refresh) {
+                        that.previewPaginationRefresh(false);
+                    }
+                    if (typeof res.sets.args !== 'undefined') {
+                        ele.data('bsw', res.sets.args);
+                    }
+                }).catch(function (reason) {
+                    console.warn(reason);
+                });
+            };
+            $(selector).each(function () {
+                var element = $(this);
+                element.off('dblclick').on('dblclick', function () {
+                    element.addClass('active').attr('title', bsw.lang.enter_for_save);
+                    var input = element.find('input');
+                    input.attr('disabled', false).focus();
+                    input.off('keypress').on('keypress', function (event) {
+                        if (event.keyCode === 13) {
+                            save(element, input);
+                        }
+                    });
+                });
+            });
+        },
         dynamicDataSourceBySearch: function dynamicDataSourceBySearch(value, field) {
             var that = this;
             if (typeof this.ddsCore === 'undefined') {
@@ -584,6 +628,7 @@ $(function () {
 
         bsw.initClipboard();
         bsw.initUpwardInfect();
+        v.doubleClickForEdit();
         bsw.initHighlight();
         bsw.initVConsole();
 

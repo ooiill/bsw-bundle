@@ -29,4 +29,6 @@ window.lang = Object.assign(window.lang || {}, {
     is_far_left: '已達最左側',
     is_far_right: '已達最右側',
     real_iframe_height: '實際高度',
+    enter_for_save: '回車進行保存或者ESC取消',
+    double_click_for_edit: '雙擊進行編輯',
 });

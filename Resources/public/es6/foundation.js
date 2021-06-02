@@ -724,6 +724,40 @@ class FoundationTools extends FoundationPrototype {
         return query.length ? query.substr(0, query.length - 1) : query;
     }
 
+    /**
+     * Parse url params
+     *
+     * @param url
+     * @returns {(*|Array)[]}
+     */
+    parseParams(url = null) {
+        let queryParams = this.parseQueryString(url, true);
+        let host = queryParams.hostPart;
+        let anchor = queryParams.anchorPart;
+        delete queryParams.hostPart;
+        delete queryParams.anchorPart;
+
+        return [host, anchor, queryParams];
+    }
+
+    /**
+     * Combine url
+     *
+     * @param host
+     * @param anchor
+     * @param params
+     * @param needEncode
+     * @returns {string}
+     */
+    combineUrl(host, anchor, params, needEncode = false) {
+        let queryString = this.jsonBuildQuery(params, false, needEncode);
+        let url = `${host}?${queryString}`;
+        if (anchor.length) {
+            url = this.trim(url, '?') + '#' + anchor;
+        }
+
+        return this.trim(url, '?');
+    }
 
     /**
      * Url add items
@@ -735,20 +769,10 @@ class FoundationTools extends FoundationPrototype {
      * @return {string}
      */
     setParams(items, url = null, needEncode = false) {
-        let queryParams = this.parseQueryString(url, true);
-        let host = queryParams.hostPart;
-        let anchor = queryParams.anchorPart;
-        delete queryParams.hostPart;
-        delete queryParams.anchorPart;
+        let [host, anchor, queryParams] = this.parseParams(url);
+        queryParams = Object.assign(queryParams, this.jsonBuildQuery(items, true, needEncode));
 
-        items = Object.assign(queryParams, this.jsonBuildQuery(items, true, needEncode));
-        let queryString = this.jsonBuildQuery(items);
-        url = `${host}?${queryString}`;
-        if (anchor.length) {
-            url = this.trim(url, '?') + '#' + anchor;
-        }
-
-        return this.trim(url, '?');
+        return this.combineUrl(host, anchor, queryParams);
     }
 
     /**
@@ -762,9 +786,7 @@ class FoundationTools extends FoundationPrototype {
      * @return {string}
      */
     unsetParams(items, url, needEncode = false, effect = {}) {
-        url = url || location.href;
-        let queryParams = this.parseQueryString(url, true);
-
+        let [host, anchor, queryParams] = this.parseParams(url);
         for (let v of (items || [])) {
             if (typeof queryParams[v] !== 'undefined') {
                 effect[v] = queryParams[v];
@@ -772,17 +794,30 @@ class FoundationTools extends FoundationPrototype {
             }
         }
 
-        let host = queryParams.hostPart;
-        let anchor = queryParams.anchorPart;
-        delete queryParams.hostPart;
-        delete queryParams.anchorPart;
+        return this.combineUrl(host, anchor, queryParams, needEncode);
+    }
 
-        url = host + '?' + this.jsonBuildQuery(queryParams, needEncode);
-        if (anchor.length) {
-            url = this.trim(url, '?') + '#' + anchor;
+    /**
+     * Trigger params
+     *
+     * @param items
+     * @param url
+     * @param needEncode
+     */
+    triggerParams(items, url, needEncode = false) {
+        let [host, anchor, queryParams] = this.parseParams(url);
+        for (let v in items) {
+            if (!items.hasOwnProperty(v)) {
+                continue;
+            }
+            if (typeof queryParams[v] !== 'undefined') {
+                delete queryParams[v];
+            } else {
+                queryParams[v] = items[v];
+            }
         }
 
-        return this.trim(url, '?');
+        return this.combineUrl(host, anchor, queryParams, needEncode);
     }
 
     /**
@@ -796,9 +831,7 @@ class FoundationTools extends FoundationPrototype {
      * @return {string}
      */
     unsetParamsBeginWith(items, url, needEncode = false, effect = {}) {
-        url = url || location.href;
-        let queryParams = this.parseQueryString(url, true);
-
+        let [host, anchor, queryParams] = this.parseParams(url);
         for (let v of (items || [])) {
             for (let w in queryParams) {
                 if (!queryParams.hasOwnProperty(w)) {
@@ -811,17 +844,7 @@ class FoundationTools extends FoundationPrototype {
             }
         }
 
-        let host = queryParams.hostPart;
-        let anchor = queryParams.anchorPart;
-        delete queryParams.hostPart;
-        delete queryParams.anchorPart;
-
-        url = host + '?' + this.jsonBuildQuery(queryParams, needEncode);
-        if (anchor.length) {
-            url = this.trim(url, '?') + '#' + anchor;
-        }
-
-        return this.trim(url, '?');
+        return this.combineUrl(host, anchor, queryParams, needEncode);
     }
 
     /**
@@ -2712,6 +2735,14 @@ class FoundationAntD extends FoundationTools {
     }
 
     /**
+     * Cancel selection
+     */
+    cancelSelection() {
+        document.selection && document.selection.empty && document.selection.empty();
+        window.getSelection && window.getSelection().removeAllRanges();
+    }
+
+    /**
      * Upward infect class
      *
      * @param selector
@@ -2833,26 +2864,6 @@ class FoundationAntD extends FoundationTools {
         } else {
             console.warn('Your browser is not supported.');
         }
-    }
-
-    /**
-     * WeChat pay by js api
-     *
-     * @param config object
-     *
-     * @returns void
-     */
-    wxJsApiPay(config) {
-        if (!window.WeixinJSBridge) {
-            console.warn('The api just work in WeChat browser.');
-            return;
-        }
-        WeixinJSBridge.invoke('getBrandWCPayRequest', config, function (result) {
-            console.log(result);
-            if (result.err_msg === 'get_brand_wcpay_request:ok') {
-                console.log('Success');
-            }
-        });
     }
 }
 

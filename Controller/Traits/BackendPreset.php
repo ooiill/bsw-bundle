@@ -186,4 +186,40 @@ trait BackendPreset
 
         return $filter;
     }
+
+    /**
+     * Create input inline for edit
+     *
+     * @param        $value
+     * @param string $route
+     * @param array  $args
+     * @param array  $style
+     * @param null   $class
+     *
+     * @return string
+     */
+    public function createInlineEditInput(
+        $value,
+        string $route,
+        array $args = [],
+        array $style = [],
+        $class = null
+    ): string {
+
+        $class = array_merge(['bsw-inline-edit-input', 'bsw-float-left'], (array)$class);
+        $class = array_unique(array_filter($class));
+        $input = Html::tag('input', null, ['type' => 'text', 'value' => $value, 'disabled' => true]);
+
+        return Html::tag(
+            'div',
+            Html::tag('label') . $input,
+            [
+                'class'    => $class,
+                'style'    => $style,
+                'title'    => $this->twigLang('Double click for edit mode'),
+                'data-api' => $this->url($route),
+                'data-bsw' => Helper::jsonStringify($args),
+            ]
+        );
+    }
 }

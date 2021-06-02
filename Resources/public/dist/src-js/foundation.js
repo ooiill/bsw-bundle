@@ -1,5 +1,7 @@
 'use strict';
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -925,6 +927,51 @@ var FoundationTools = function (_FoundationPrototype) {
         }
 
         /**
+         * Parse url params
+         *
+         * @param url
+         * @returns {(*|Array)[]}
+         */
+
+    }, {
+        key: 'parseParams',
+        value: function parseParams() {
+            var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            var queryParams = this.parseQueryString(url, true);
+            var host = queryParams.hostPart;
+            var anchor = queryParams.anchorPart;
+            delete queryParams.hostPart;
+            delete queryParams.anchorPart;
+
+            return [host, anchor, queryParams];
+        }
+
+        /**
+         * Combine url
+         *
+         * @param host
+         * @param anchor
+         * @param params
+         * @param needEncode
+         * @returns {string}
+         */
+
+    }, {
+        key: 'combineUrl',
+        value: function combineUrl(host, anchor, params) {
+            var needEncode = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+            var queryString = this.jsonBuildQuery(params, false, needEncode);
+            var url = host + '?' + queryString;
+            if (anchor.length) {
+                url = this.trim(url, '?') + '#' + anchor;
+            }
+
+            return this.trim(url, '?');
+        }
+
+        /**
          * Url add items
          *
          * @param items
@@ -940,20 +987,15 @@ var FoundationTools = function (_FoundationPrototype) {
             var url = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
             var needEncode = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
-            var queryParams = this.parseQueryString(url, true);
-            var host = queryParams.hostPart;
-            var anchor = queryParams.anchorPart;
-            delete queryParams.hostPart;
-            delete queryParams.anchorPart;
+            var _parseParams = this.parseParams(url),
+                _parseParams2 = _slicedToArray(_parseParams, 3),
+                host = _parseParams2[0],
+                anchor = _parseParams2[1],
+                queryParams = _parseParams2[2];
 
-            items = Object.assign(queryParams, this.jsonBuildQuery(items, true, needEncode));
-            var queryString = this.jsonBuildQuery(items);
-            url = host + '?' + queryString;
-            if (anchor.length) {
-                url = this.trim(url, '?') + '#' + anchor;
-            }
+            queryParams = Object.assign(queryParams, this.jsonBuildQuery(items, true, needEncode));
 
-            return this.trim(url, '?');
+            return this.combineUrl(host, anchor, queryParams);
         }
 
         /**
@@ -973,8 +1015,11 @@ var FoundationTools = function (_FoundationPrototype) {
             var needEncode = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
             var effect = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
-            url = url || location.href;
-            var queryParams = this.parseQueryString(url, true);
+            var _parseParams3 = this.parseParams(url),
+                _parseParams4 = _slicedToArray(_parseParams3, 3),
+                host = _parseParams4[0],
+                anchor = _parseParams4[1],
+                queryParams = _parseParams4[2];
 
             var _iteratorNormalCompletion2 = true;
             var _didIteratorError2 = false;
@@ -1004,17 +1049,40 @@ var FoundationTools = function (_FoundationPrototype) {
                 }
             }
 
-            var host = queryParams.hostPart;
-            var anchor = queryParams.anchorPart;
-            delete queryParams.hostPart;
-            delete queryParams.anchorPart;
+            return this.combineUrl(host, anchor, queryParams, needEncode);
+        }
 
-            url = host + '?' + this.jsonBuildQuery(queryParams, needEncode);
-            if (anchor.length) {
-                url = this.trim(url, '?') + '#' + anchor;
+        /**
+         * Trigger params
+         *
+         * @param items
+         * @param url
+         * @param needEncode
+         */
+
+    }, {
+        key: 'triggerParams',
+        value: function triggerParams(items, url) {
+            var needEncode = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+            var _parseParams5 = this.parseParams(url),
+                _parseParams6 = _slicedToArray(_parseParams5, 3),
+                host = _parseParams6[0],
+                anchor = _parseParams6[1],
+                queryParams = _parseParams6[2];
+
+            for (var v in items) {
+                if (!items.hasOwnProperty(v)) {
+                    continue;
+                }
+                if (typeof queryParams[v] !== 'undefined') {
+                    delete queryParams[v];
+                } else {
+                    queryParams[v] = items[v];
+                }
             }
 
-            return this.trim(url, '?');
+            return this.combineUrl(host, anchor, queryParams, needEncode);
         }
 
         /**
@@ -1034,8 +1102,11 @@ var FoundationTools = function (_FoundationPrototype) {
             var needEncode = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
             var effect = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
-            url = url || location.href;
-            var queryParams = this.parseQueryString(url, true);
+            var _parseParams7 = this.parseParams(url),
+                _parseParams8 = _slicedToArray(_parseParams7, 3),
+                host = _parseParams8[0],
+                anchor = _parseParams8[1],
+                queryParams = _parseParams8[2];
 
             var _iteratorNormalCompletion3 = true;
             var _didIteratorError3 = false;
@@ -1070,17 +1141,7 @@ var FoundationTools = function (_FoundationPrototype) {
                 }
             }
 
-            var host = queryParams.hostPart;
-            var anchor = queryParams.anchorPart;
-            delete queryParams.hostPart;
-            delete queryParams.anchorPart;
-
-            url = host + '?' + this.jsonBuildQuery(queryParams, needEncode);
-            if (anchor.length) {
-                url = this.trim(url, '?') + '#' + anchor;
-            }
-
-            return this.trim(url, '?');
+            return this.combineUrl(host, anchor, queryParams, needEncode);
         }
 
         /**
@@ -3387,6 +3448,17 @@ var FoundationAntD = function (_FoundationTools) {
         }
 
         /**
+         * Cancel selection
+         */
+
+    }, {
+        key: 'cancelSelection',
+        value: function cancelSelection() {
+            document.selection && document.selection.empty && document.selection.empty();
+            window.getSelection && window.getSelection().removeAllRanges();
+        }
+
+        /**
          * Upward infect class
          *
          * @param selector
@@ -3533,29 +3605,6 @@ var FoundationAntD = function (_FoundationTools) {
             } else {
                 console.warn('Your browser is not supported.');
             }
-        }
-
-        /**
-         * WeChat pay by js api
-         *
-         * @param config object
-         *
-         * @returns void
-         */
-
-    }, {
-        key: 'wxJsApiPay',
-        value: function wxJsApiPay(config) {
-            if (!window.WeixinJSBridge) {
-                console.warn('The api just work in WeChat browser.');
-                return;
-            }
-            WeixinJSBridge.invoke('getBrandWCPayRequest', config, function (result) {
-                console.log(result);
-                if (result.err_msg === 'get_brand_wcpay_request:ok') {
-                    console.log('Success');
-                }
-            });
         }
     }]);
 

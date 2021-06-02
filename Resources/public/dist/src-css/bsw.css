@@ -392,19 +392,31 @@ ul.ant-pagination {
   white-space: pre-wrap;
 }
 .bsw-align-left {
-  text-align: left;
+  text-align: left !important;
 }
 .bsw-align-right {
-  text-align: right;
+  text-align: right !important;
 }
 .bsw-align-center {
-  text-align: center;
+  text-align: center !important;
 }
 .bsw-float-left {
-  float: left;
+  float: left !important;
 }
 .bsw-float-right {
-  float: right;
+  float: right !important;
+}
+.bsw-no-margin {
+  margin: 0 !important;
+}
+.bsw-no-padding {
+  padding: 0 !important;
+}
+.bsw-no-border {
+  border: none !important;
+}
+.bsw-none-border {
+  border: 1px solid transparent !important;
 }
 .bsw-operate.top {
   margin-bottom: 15px;
@@ -1139,10 +1151,10 @@ textarea[size="large"] {
   margin: 0;
 }
 div.modal-container-center div.ant-modal-body > div {
-  text-align: center;
+  text-align: center !important;
 }
 .bsw-modal-title-center .ant-modal-title {
-  text-align: center;
+  text-align: center !important;
 }
 .bsw-persistence-form .ant-form-item {
   animation-duration: .4s;
@@ -1279,5 +1291,59 @@ body.bsw-foundation pre code.hljs {
 }
 div.ant-table-body {
   overflow-x: auto !important;
+}
+.bsw-inline-edit-input {
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-align: center;
+      align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  height: 30px;
+  min-width: 60px;
+  max-width: 200px;
+}
+.bsw-inline-edit-input label {
+  display: inline-block;
+  font-size: inherit;
+  line-height: normal;
+  visibility: hidden;
+  font-family: inherit;
+  padding: 0 6px;
+}
+.bsw-inline-edit-input input {
+  background: transparent;
+  box-sizing: border-box;
+  position: absolute;
+  display: inline;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: normal;
+  border-radius: inherit;
+  height: 100%;
+  width: 100%;
+  outline: 0;
+  border: 0;
+  margin: 0;
+  padding: 0 6px;
+  cursor: default;
+}
+.bsw-inline-edit-input.active {
+  border: 1px solid #e8edfa;
+}
+.bsw-inline-edit-input.active input {
+  background: white;
+  cursor: auto;
+}
+.bsw-inline-edit-input.align-left input {
+  text-align: left;
+}
+.bsw-inline-edit-input.align-center input {
+  text-align: center;
+}
+.bsw-inline-edit-input.align-right input {
+  text-align: right;
 }
 /*# sourceMappingURL=bsw.css.map */

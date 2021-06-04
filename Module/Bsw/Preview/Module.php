@@ -70,6 +70,11 @@ class Module extends Bsw
     ];
 
     /**
+     * @var array
+     */
+    public $query;
+
+    /**
      * @return string
      */
     public function name(): string
@@ -671,12 +676,12 @@ class Module extends Bsw
                 return $this->showMessage((new Message())->setSets($sets));
             }
 
-            $list = $this->repository->lister($query);
+            $list = $this->repository->lister($this->query = $query);
 
         } else {
             $arguments = $this->arguments(['target' => $query, 'level' => $this->level], $this->input->args);
             $query = $this->tailor($this->methodTailor, $fn, Abs::T_ARRAY, $arguments);
-            $list = $this->manualLister($query);
+            $list = $this->manualLister($this->query = $query);
         }
 
         if (!$parentId) {
@@ -742,7 +747,10 @@ class Module extends Bsw
             }
             $arguments = $this->arguments(
                 compact('original', 'extraArgs', 'number'),
-                ['level' => $this->level],
+                [
+                    'level' => $this->level,
+                    'query' => $this->query,
+                ],
                 $this->input->args
             );
             $original = $this->caller($this->method, self::BEFORE_HOOK, Abs::T_ARRAY, $original, $arguments);
@@ -769,7 +777,10 @@ class Module extends Bsw
             $number = $basicNumber + $index;
             $arguments = $this->arguments(
                 compact('hooked', 'original', 'extraArgs', 'number'),
-                ['level' => $this->level],
+                [
+                    'level' => $this->level,
+                    'query' => $this->query,
+                ],
                 $this->input->args
             );
             $hooked = $this->caller($this->method, self::AFTER_HOOK, Abs::T_ARRAY, $hooked, $arguments);
@@ -793,7 +804,14 @@ class Module extends Bsw
 
         $args = compact('hooked', 'original');
 
-        $arguments = $this->arguments($args, ['level' => $this->level], $this->input->args);
+        $arguments = $this->arguments(
+            $args,
+            [
+                'level' => $this->level,
+                'query' => $this->query,
+            ],
+            $this->input->args
+        );
         $list = $this->caller($this->method, self::BEFORE_RENDER, Abs::T_ARRAY, $hooked, $arguments);
 
         $arguments->set('target', $list);
@@ -831,6 +849,7 @@ class Module extends Bsw
                     'original'  => $original[$key],
                     'condition' => $this->input->condition,
                     'level'     => $this->level,
+                    'query'     => $this->query,
                 ],
                 $this->input->args
             );
@@ -917,6 +936,7 @@ class Module extends Bsw
                         'valueHooked'   => $hooked[$key][$field],
                         'valueOriginal' => $original[$key][$field] ?? null, // when addition by yourself it's be null
                         'level'         => $this->level,
+                        'query'         => $this->query,
                     ],
                     $this->input->args
                 );

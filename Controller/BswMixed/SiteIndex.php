@@ -83,7 +83,6 @@ trait SiteIndex
                 'value' => $_SERVER['SERVER_ADDR'],
             ],
             [
-                'id'    => 5,
                 'name'  => $this->twigLang('Service port'),
                 'value' => $_SERVER['SERVER_PORT'],
             ],
@@ -101,7 +100,6 @@ trait SiteIndex
                 'value' => Zend_Version(),
             ],
             [
-                'id'    => 8,
                 'name'  => $this->twigLang('MySQL version'),
                 'value' => current($version),
             ],

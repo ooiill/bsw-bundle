@@ -308,6 +308,9 @@ class Abs
     const HEX_SIZE          = 1024;
     const HEX_SIZE_2        = self::HEX_SIZE ** 2;
     const HEX_SIZE_3        = self::HEX_SIZE ** 3;
+    const HOUR_SECOND       = self::HEX_SECOND_MINUTE * self::HEX_MINUTE_HOUR;
+    const DAY_SECOND        = self::HOUR_SECOND * self::HEX_HOUR_DAY;
+    const WEEK_SECOND       = self::DAY_SECOND * self::HEX_DAY_WEEK;
 
     const TAG_UNKNOWN        = 'unknown';
     const TAG_MESSAGE        = 'message';

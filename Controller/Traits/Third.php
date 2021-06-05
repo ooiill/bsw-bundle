@@ -10,7 +10,12 @@ use Mexitek\PHPColors\Color;
 use Yansongda\Pay\Gateways\Alipay;
 use Yansongda\Pay\Pay as WxAliPayment;
 use EasyWeChat\OfficialAccount\Application as WxOfficial;
+use EasyWeChat\MiniProgram\Application as WxApplet;
 use EasyWeChat\Payment\Application as WxPayment;
+use EasyWeChat\OpenPlatform\Application as WxOpen;
+use EasyWeChat\Work\Application as WxWork;
+use EasyWeChat\OpenWork\Application as WxWorkOpen;
+use EasyWeChat\MicroMerchant\Application as WxMicro;
 use Leon\BswBundle\Module\Entity\Abs;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Gregwar\Captcha\CaptchaBuilder;
@@ -251,13 +256,64 @@ trait Third
     /**
      * Get WeChat official account
      *
+     * @param array $config
+     *
+     * @return WxOfficial
+     */
+    public function wxOfficialCreate(array $config): WxOfficial
+    {
+        return WxFactory::officialAccount($config);
+    }
+
+    /**
+     * Get WeChat official account
+     *
      * @param string $flag
      *
      * @return WxOfficial
      */
     public function wxOfficial(string $flag = 'default'): WxOfficial
     {
-        return WxFactory::officialAccount($this->parameter("wx_official_{$flag}"));
+        return $this->wxOfficialCreate($this->parameter("wx_official_{$flag}"));
+    }
+
+    /**
+     * Get WeChat mini applet
+     *
+     * @param array $config
+     *
+     * @return WxApplet
+     */
+    public function wxAppletCreate(array $config): WxApplet
+    {
+        return WxFactory::miniProgram($config);
+    }
+
+    /**
+     * Get WeChat mini applet
+     *
+     * @param string $flag
+     *
+     * @return WxApplet
+     */
+    public function wxApplet(string $flag = 'default'): WxApplet
+    {
+        return $this->wxAppletCreate($this->parameter("wx_applet_{$flag}"));
+    }
+
+    /**
+     * Get WeChat payment
+     *
+     * @param array $config
+     * @param bool  $sandbox
+     *
+     * @return WxPayment
+     */
+    public function wxPaymentCreate(array $config, bool $sandbox = false): WxPayment
+    {
+        $sandbox = $sandbox ? ['sandbox' => true] : [];
+
+        return WxFactory::payment(array_merge($config, $sandbox));
     }
 
     /**
@@ -271,9 +327,104 @@ trait Third
     public function wxPayment(string $flag = 'default', bool $sandbox = false): WxPayment
     {
         $config = $this->parameter("wx_payment_{$flag}");
-        $sandbox = $sandbox ? ['sandbox' => true] : [];
 
-        return WxFactory::payment(array_merge($config, $sandbox));
+        return $this->wxPaymentCreate($config, $sandbox);
+    }
+
+    /**
+     * Get WeChat open platform
+     *
+     * @param array $config
+     *
+     * @return WxOpen
+     */
+    public function wxOpenPlatformCreate(array $config): WxOpen
+    {
+        return WxFactory::openPlatform($config);
+    }
+
+    /**
+     * Get WeChat open platform
+     *
+     * @param string $flag
+     *
+     * @return WxOpen
+     */
+    public function wxOpenPlatform(string $flag = 'default'): WxOpen
+    {
+        return $this->wxOpenPlatformCreate($this->parameter("wx_open_{$flag}"));
+    }
+
+    /**
+     * Get WeChat work
+     *
+     * @param array $config
+     *
+     * @return WxWork
+     */
+    public function wxWorkCreate(array $config): WxWork
+    {
+        return WxFactory::work($config);
+    }
+
+    /**
+     * Get WeChat work
+     *
+     * @param string $flag
+     *
+     * @return WxWork
+     */
+    public function wxWork(string $flag = 'default'): WxWork
+    {
+        return $this->wxWorkCreate($this->parameter("wx_work_{$flag}"));
+    }
+
+    /**
+     * Get WeChat work open platform
+     *
+     * @param array $config
+     *
+     * @return WxWorkOpen
+     */
+    public function wxWorkOpenCreate(array $config): WxWorkOpen
+    {
+        return WxFactory::openWork($config);
+    }
+
+    /**
+     * Get WeChat work open platform
+     *
+     * @param string $flag
+     *
+     * @return WxWorkOpen
+     */
+    public function wxWorkOpen(string $flag = 'default'): WxWorkOpen
+    {
+        return $this->wxWorkOpenCreate($this->parameter("wx_work_open_{$flag}"));
+    }
+
+    /**
+     * Get WeChat micro merchant
+     *
+     * @param array $config
+     *
+     * @return WxMicro
+     */
+    public function wxMicroCreate(array $config): WxMicro
+    {
+        return WxFactory::microMerchant($config);
+    }
+
+    /**
+     * Get WeChat micro merchant
+     *
+     * @param string $flag
+     *
+     * @return WxMicro
+     */
+    public function wxMicro(string $flag = 'default'): WxMicro
+    {
+        return $this->wxMicroCreate($this->parameter("wx_micro_{$flag}"));
     }
 
     /**

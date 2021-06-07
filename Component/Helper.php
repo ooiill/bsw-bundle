@@ -1536,7 +1536,6 @@ class Helper
      *
      * @param array  $param
      * @param string $salt
-     * @param bool   $debug
      * @param string $timeKey
      * @param string $splitSalt
      * @param string $mode
@@ -1546,7 +1545,6 @@ class Helper
     public static function createSign(
         array $param,
         string $salt,
-        bool $debug,
         string $timeKey = 'time',
         string $splitSalt = '#',
         string $mode = Abs::SORT_DESC
@@ -1562,9 +1560,8 @@ class Helper
         $mode === Abs::SORT_DESC ? krsort($params) : ksort($params);
 
         $signStr = self::jsonStringify($params) . $splitSalt . $salt;
-        $signMd5 = $debug ? $signStr : strtolower(sha1(md5($signStr)));
 
-        return [$params, $signMd5];
+        return [$params, strtolower(sha1(md5($signStr))), $signStr];
     }
 
     /**
@@ -1573,7 +1570,6 @@ class Helper
      * @param array  $param
      * @param string $salt
      * @param string $oldSignMd5
-     * @param bool   $debug
      * @param string $timeKey
      * @param string $splitSalt
      *
@@ -1583,11 +1579,10 @@ class Helper
         array $param,
         string $salt,
         string $oldSignMd5,
-        bool $debug,
         string $timeKey = 'time',
         string $splitSalt = '#'
     ): bool {
-        [$param, $newSignMd5] = self::createSign($param, $salt, $debug, $timeKey, $splitSalt);
+        [$param, $newSignMd5] = self::createSign($param, $salt, $timeKey, $splitSalt);
 
         return strcmp($oldSignMd5, $newSignMd5) === 0;
     }
@@ -1597,7 +1592,6 @@ class Helper
      *
      * @param array  $param
      * @param string $salt
-     * @param bool   $debug
      * @param string $timeKey
      * @param string $splitKvp
      * @param string $splitArgs
@@ -1609,7 +1603,6 @@ class Helper
     public static function createSignature(
         array $param,
         string $salt,
-        bool $debug = false,
         string $timeKey = 'time',
         string $splitKvp = ' is ',
         string $splitArgs = ' and ',
@@ -1619,6 +1612,7 @@ class Helper
         if (!isset($param[$timeKey])) {
             $param[$timeKey] = self::milliTime();
         }
+        $param[$timeKey] = intval($param[$timeKey]);
 
         $sign = [];
         $mode = strtoupper($mode);
@@ -1631,9 +1625,8 @@ class Helper
         }
 
         $signStr = implode($splitArgs, $sign) . $splitSalt . $salt;
-        $signMd5 = $debug ? $signStr : strtolower(md5($signStr));
 
-        return [$param, $signMd5];
+        return [$param, strtolower(md5($signStr)), $signStr];
     }
 
     /**
@@ -1642,7 +1635,6 @@ class Helper
      * @param array  $param
      * @param string $salt
      * @param string $oldSignMd5
-     * @param bool   $debug
      * @param string $timeKey
      * @param string $splitKvp
      * @param string $splitArgs
@@ -1654,7 +1646,6 @@ class Helper
         array $param,
         string $salt,
         string $oldSignMd5,
-        bool $debug = false,
         string $timeKey = 'time',
         string $splitKvp = ' is ',
         string $splitArgs = ' and ',
@@ -1663,7 +1654,6 @@ class Helper
         [$param, $newSignMd5] = self::createSignature(
             $param,
             $salt,
-            $debug,
             $timeKey,
             $splitKvp,
             $splitArgs,
@@ -1673,6 +1663,35 @@ class Helper
         return strcmp($oldSignMd5, $newSignMd5) === 0;
     }
 
+    /**
+     * Safe base64_encode
+     *
+     * @param string $target
+     *
+     * @return string
+     */
+    public static function safeBase64Encode(string $target): string
+    {
+        $target = base64_encode($target);
+        $target = str_replace(['+', '/', '='], ['-', '_', '.'], $target);
+
+        return $target;
+    }
+
+    /**
+     * Safe base64_decode
+     *
+     * @param string $target
+     *
+     * @return string
+     */
+    public static function safeBase64Decode(string $target): string
+    {
+        $target = str_replace(['-', '_', '.'], ['+', '/', '='], $target);
+        $target = base64_decode($target);
+
+        return $target;
+    }
 
     /**
      * Transformation image to base64
@@ -3864,7 +3883,7 @@ class Helper
      */
     public static function objectToString($target): string
     {
-        return base64_encode(gzdeflate(serialize($target)));
+        return self::safeBase64Encode(gzdeflate(serialize($target)));
     }
 
     /**
@@ -3876,7 +3895,7 @@ class Helper
      */
     public static function stringToObject(string $target)
     {
-        return unserialize(gzinflate(base64_decode($target)));
+        return unserialize(gzinflate(self::safeBase64Decode($target)));
     }
 
     /**

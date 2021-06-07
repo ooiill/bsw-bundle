@@ -72,7 +72,7 @@ class BswExportPreviewCommand extends ExportCsvCommand
      */
     public function params($params)
     {
-        $params->entity = base64_decode($params->entity);
+        $params->entity = Helper::safeBase64Decode($params->entity);
         $params->query = Helper::stringToObject($params->query);
 
         $title = Pinyin::getPinyin($params->args->title, ' ');

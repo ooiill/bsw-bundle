@@ -35,7 +35,7 @@ class BswCommandQueue extends FoundationEntity
      * @Assert\Type(type="string", groups={"modify", "newly"})
      * @Assert\NotNull(groups={"modify", "newly"})
      * @Assert\Length(max=128, groups={"modify", "newly"})
-     * @BswAnnotation\Preview(sort=2, render=BswAbs::HTML_TEXT)
+     * @BswAnnotation\Preview(sort=2, render=BswAbs::HTML_TEXT, width=200, align="center")
      * @BswAnnotation\Persistence(sort=2, type=BswForm\Input::class)
      * @BswAnnotation\Filter(sort=2)
      */
@@ -46,7 +46,7 @@ class BswCommandQueue extends FoundationEntity
      * @Assert\Type(type="string", groups={"modify", "newly"})
      * @Assert\NotNull(groups={"modify", "newly"})
      * @Assert\Length(max=128, groups={"modify", "newly"})
-     * @BswAnnotation\Preview(sort=3, render=BswAbs::HTML_TEXT, enumExtra=true)
+     * @BswAnnotation\Preview(sort=3, render=BswAbs::HTML_TEXT, enumExtra=true, width=240)
      * @BswAnnotation\Persistence(sort=3, type=BswForm\Select::class, enumExtra=true)
      * @BswAnnotation\Filter(sort=3, type=BswForm\Select::class, enumExtra=true)
      */
@@ -55,7 +55,7 @@ class BswCommandQueue extends FoundationEntity
     /**
      * @ORM\Column(type="string", name="`condition`")
      * @Assert\Type(type="string", groups={"modify", "newly"})
-     * @BswAnnotation\Preview(sort=4, width=360, hook={0:BswHook\JsonStringify::class}, render=BswAbs::HTML_JSON)
+     * @BswAnnotation\Preview(sort=4, width=120, align="center", hook={0:BswHook\JsonStringify::class}, render=BswAbs::HTML_JSON)
      * @BswAnnotation\Persistence(sort=4, hook={0:BswHook\JsonStringify::class}, type=BswForm\TextArea::class, typeArgs={"minRows":5})
      * @BswAnnotation\Filter(sort=4)
      */
@@ -65,7 +65,7 @@ class BswCommandQueue extends FoundationEntity
      * @ORM\Column(type="smallint", name="`resource_need`")
      * @Assert\Type(type="integer", groups={"modify"})
      * @Assert\NotNull(groups={"modify"})
-     * @BswAnnotation\Preview(sort=5, align="center", render="{value} %")
+     * @BswAnnotation\Preview(sort=6, align="center", render="#{value}")
      * @BswAnnotation\Persistence(sort=10.1, type=BswForm\Slider::class, tips="Higher percentage, than lower execution priority", typeArgs={"max":20, "marks": {2:"2%", 4:"4%", 6:"6%", 8:"8%", 10:"10%", 15:"15%"}})
      * @BswAnnotation\Filter(sort=5, type=BswForm\Number::class)
      */
@@ -75,7 +75,7 @@ class BswCommandQueue extends FoundationEntity
      * @ORM\Column(type="float", name="`done_percent`")
      * @Assert\Type(type="numeric", groups={"modify"})
      * @Assert\NotNull(groups={"modify"})
-     * @BswAnnotation\Preview(sort=6, width=140, align="center", render="{value} %")
+     * @BswAnnotation\Preview(sort=5, width=140, align="center", render="{value} %")
      * @BswAnnotation\Persistence(sort=6, type=BswForm\Number::class, show=false)
      * @BswAnnotation\Filter(sort=6)
      */

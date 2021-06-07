@@ -666,7 +666,7 @@ class Module extends Bsw
             if ($this->isExport) {
                 [$sets, $signMd5] = Helper::createSignature(
                     [
-                        'entity' => base64_encode($this->entity),
+                        'entity' => Helper::safeBase64Encode($this->entity),
                         'query'  => Helper::objectToString($query),
                     ],
                     $this->web->parameter('salt')

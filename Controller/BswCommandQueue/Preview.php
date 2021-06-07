@@ -3,12 +3,15 @@
 namespace Leon\BswBundle\Controller\BswCommandQueue;
 
 use Leon\BswBundle\Component\Helper;
+use Leon\BswBundle\Component\Html;
 use Leon\BswBundle\Entity\BswCommandQueue;
 use Leon\BswBundle\Module\Bsw\Arguments;
+use Leon\BswBundle\Module\Bsw\Preview\Entity\Charm;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Form\Entity\Button;
 use Leon\BswBundle\Module\Bsw\Preview\Tailor;
 use Leon\BswBundle\Annotation\Entity\AccessControl as Access;
+use Leon\BswBundle\Module\Scene\ButtonScene;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -89,6 +92,18 @@ trait Preview
         $args->hooked['condition'] = Helper::formatPrintJson($condition, 4, ': ');
 
         return $args->hooked;
+    }
+
+    /**
+     * @param Arguments $args
+     *
+     * @return mixed
+     */
+    public function previewCharmCondition(Arguments $args)
+    {
+        $button = (new ButtonScene($this->fieldLang('Condition')))->sceneCharmCodeModal($args->value);
+
+        return new Charm($this->getButtonHtml($button));
     }
 
     /**

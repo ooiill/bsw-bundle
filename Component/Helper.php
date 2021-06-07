@@ -5126,6 +5126,7 @@ class Helper
      * @param int    $decimals
      * @param string $thousandsSep
      * @param string $decPoint
+     * @param bool   $autoFloat
      *
      * @return float|string
      */
@@ -5137,12 +5138,15 @@ class Helper
         bool $autoFloat = true
     ) {
         $number = number_format($number, $decimals, $decPoint, $thousandsSep);
-        $number = $thousandsSep ? $number : ($autoFloat ? floatval($number) : $number);
 
         // handler the last zero
         if (strpos($number, $decPoint) !== false) {
             $number = rtrim($number, "0");
             $number = rtrim($number, "{$decPoint}{$thousandsSep}");
+        }
+
+        if (!$thousandsSep && $autoFloat) {
+            $number = floatval($number);
         }
 
         return $number;

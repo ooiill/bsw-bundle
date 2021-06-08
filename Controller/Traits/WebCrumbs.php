@@ -105,11 +105,28 @@ trait WebCrumbs
     }
 
     /**
+     * Any crumbs
+     *
+     * @param array $crumbs
+     *
+     * @return int
+     */
+    public function anyCrumbs(array $crumbs): int
+    {
+        if (empty($crumbs['mode'])) {
+            return 0;
+        }
+
+        return array_push($this->correctCrumbs, $crumbs);
+    }
+
+    /**
      * Change crumbs
      *
      * @param string $title
      * @param string $icon
      * @param string $route
+     * @param array  $args
      * @param int    $index
      *
      * @return int
@@ -118,6 +135,7 @@ trait WebCrumbs
         ?string $title = null,
         ?string $icon = null,
         ?string $route = null,
+        array $args = [],
         ?int $index = null
     ): int {
         return array_push(
@@ -127,6 +145,7 @@ trait WebCrumbs
                 'title' => urldecode($title),
                 'icon'  => $icon,
                 'route' => $route,
+                'args'  => $args,
                 'index' => $index,
             ]
         );
@@ -138,10 +157,11 @@ trait WebCrumbs
      * @param string $title
      * @param string $icon
      * @param string $route
+     * @param array  $args
      *
      * @return int
      */
-    public function appendCrumbs(string $title, ?string $icon = null, ?string $route = null): int
+    public function appendCrumbs(string $title, ?string $icon = null, ?string $route = null, array $args = []): int
     {
         return array_push(
             $this->correctCrumbs,
@@ -150,6 +170,39 @@ trait WebCrumbs
                 'title' => $title,
                 'icon'  => $icon,
                 'route' => $route,
+                'args'  => $args,
+            ]
+        );
+    }
+
+    /**
+     * Insert crumbs
+     *
+     * @param int    $index
+     * @param string $title
+     * @param string $icon
+     * @param string $route
+     * @param array  $args
+     *
+     * @return int
+     */
+    public function insertCrumbs(
+        int $index,
+        string $title,
+        ?string $icon = null,
+        ?string $route = null,
+        array $args = []
+    ): int {
+
+        return array_push(
+            $this->correctCrumbs,
+            [
+                'mode'  => 'insert',
+                'title' => $title,
+                'icon'  => $icon,
+                'route' => $route,
+                'args'  => $args,
+                'index' => $index,
             ]
         );
     }
@@ -189,12 +242,14 @@ trait WebCrumbs
              * @var string $title
              * @var string $icon
              * @var string $route
+             * @var array  $args
              * @var int    $index
              */
             extract($item);
 
             if ($mode == 'append') {
-                array_push($this->crumbs, new Crumb($title, $route, $icon));
+                $c = new Crumb($title, $route, $icon);
+                array_push($this->crumbs, $c->setArgs($args ?? []));
                 continue;
             }
 
@@ -209,25 +264,29 @@ trait WebCrumbs
                 continue;
             }
 
-            /**
-             * @var Crumb $crumb
-             */
-            $crumb = $this->crumbs[$index];
-
-            if (strpos($title, '%s') !== false) {
-                $title = sprintf($title, $crumb->getLabel());
+            if ($mode == 'insert') {
+                $c = new Crumb($title, $route, $icon ?? null);
+                $this->crumbs = Helper::arrayInsert($this->crumbs, $index, [$c->setArgs($args ?? [])]);
+                continue;
             }
 
-            if (isset($title)) {
-                $crumb->setLabel($title);
-            }
+            if ($mode == 'change') {
+                /**
+                 * @var Crumb $crumb
+                 */
+                $crumb = $this->crumbs[$index];
 
-            if (isset($icon)) {
-                $crumb->setIcon($icon);
-            }
-
-            if (isset($route)) {
-                $crumb->setRoute($route);
+                if (strpos($title, '%s') !== false) {
+                    $title = sprintf($title, $crumb->getLabel());
+                }
+                if (isset($title)) {
+                    $crumb->setLabel($title);
+                }
+                if (isset($route)) {
+                    $crumb->setRoute($route);
+                }
+                $crumb->setArgs($args ?? []);
+                $crumb->setIcon($icon ?? null);
             }
         }
 

@@ -46,6 +46,9 @@ class Module extends Bsw
             array_merge($this->input->masterMenuDetail, $this->input->slaveMenuDetail)
         );
 
+        $getCrumbs = $this->web->getDecodeArgs('crumbs') ?? [];
+        $this->web->anyCrumbs($getCrumbs);
+
         $this->web->correctCrumbs();
         $output->list = $this->web->crumbs;
 

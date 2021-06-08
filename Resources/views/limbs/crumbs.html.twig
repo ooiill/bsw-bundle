@@ -9,7 +9,11 @@
           {% if item.route is empty %}
             {{ item.label|trans({}, 'twig') }}
           {% else %}
-            <a href="{{ path(item.route, item.args) }}">{{ item.label|trans({}, 'twig') }}</a>
+            {% if ('/' in item.route) or ('?' in item.route) %}
+              <a href="{{ item.route }}">{{ item.label|trans({}, 'twig') }}</a>
+            {% else %}
+              <a href="{{ path(item.route, item.args) }}">{{ item.label|trans({}, 'twig') }}</a>
+            {% endif %}
           {% endif %}
         </a-breadcrumb-item>
       {% endfor %}

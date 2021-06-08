@@ -4,7 +4,7 @@ namespace Leon\BswBundle\Module\Hook\Entity;
 
 use Leon\BswBundle\Component\Helper;
 
-class RateStringify extends Rate
+class RateStringify extends Money
 {
     /**
      * @param mixed $value
@@ -15,8 +15,8 @@ class RateStringify extends Rate
     public function preview($value, array $args)
     {
         $value /= static::REDOUBLE;
-        $tpl = $args['tpl'] ?? '%.2f %%';
+        $digit = $args['decimals'] ?? 2;
 
-        return sprintf($tpl, Helper::numberFormat($value, $args['decimals'] ?? 2));
+        return sprintf("%s %%", Helper::numberFormat($value, $digit));
     }
 }

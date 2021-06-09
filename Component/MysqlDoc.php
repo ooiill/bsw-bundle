@@ -140,7 +140,9 @@ EOS;
      */
     protected function sqlTableIndex(string $database, string $table): string
     {
-        return "SHOW INDEX FROM {$database}.{$table}";
+        $target = Helper::tableFieldAddTag("{$database}.{$table}");
+
+        return "SHOW INDEX FROM {$target}";
     }
 
     /**

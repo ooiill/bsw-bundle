@@ -81,6 +81,16 @@ class Preview extends Annotation
     public $dress;
 
     /**
+     * @var array
+     */
+    public $slots = [];
+
+    /**
+     * @var string
+     */
+    public $slotsTips = null;
+
+    /**
      * @var string For vue-slot (Priority latest)
      */
     public $render;

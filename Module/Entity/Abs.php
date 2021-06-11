@@ -824,6 +824,7 @@ class Abs
     const RENDER_IMAGE_SMALL     = "part/render-image-small.html";
     const RENDER_IMAGE_TINY      = "part/render-image-tiny.html";
     const RENDER_LINK            = "part/render-link.html";
+    const RENDER_TD_TIPS         = "part/render-td-tips.html";
 
     /**
      * HTML_ / BSW_ 开头的渲染模板仅支持普通渲染 (Charm 仅支持此类模板)

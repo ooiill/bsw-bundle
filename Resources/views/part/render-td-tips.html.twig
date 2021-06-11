@@ -1,0 +1,9 @@
+<span slot="{field}">
+  {title}
+  <a-popover placement="top">
+    <template slot="content">
+      {tips}
+    </template>
+    {{ 'b:icon-icon-20'|icon(true, {}, {style: {color: 'gray'}})|raw }}
+  </a-popover>
+</span>

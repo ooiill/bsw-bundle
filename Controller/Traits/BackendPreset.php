@@ -222,4 +222,19 @@ trait BackendPreset
             ]
         );
     }
+
+    /**
+     * Create struct for slots tips
+     *
+     * @param string $tips
+     *
+     * @return array
+     */
+    public function slotsTips(string $tips): array
+    {
+        return [
+            'tpl' => Abs::RENDER_TD_TIPS,
+            'var' => ['tips' => $tips],
+        ];
+    }
 }

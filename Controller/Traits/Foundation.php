@@ -22,6 +22,7 @@ use Leon\BswBundle\Module\Error\Entity\ErrorOS;
 use Leon\BswBundle\Module\Error\Entity\ErrorUA;
 use Leon\BswBundle\Module\Error\Error;
 use Leon\BswBundle\Module\Exception\FileNotExistsException;
+use Leon\BswBundle\Module\Exception\ModuleException;
 use Leon\BswBundle\Module\Filter\Filter;
 use Leon\BswBundle\Module\Form\Form;
 use Leon\BswBundle\Module\Traits as MT;
@@ -1708,6 +1709,114 @@ trait Foundation
     public function useTpl(string $tpl, string $content): string
     {
         return str_replace(['{value}', '{#value}', '{:value}'], [$content, $content, $content], $tpl);
+    }
+
+    /**
+     * Render handler
+     *
+     * @param string $render
+     *
+     * @return string
+     */
+    public function renderHandler(string $render): string
+    {
+        if (Helper::strEndWith($render, Abs::HTML_SUFFIX)) {
+            $render = $this->caching(
+                function () use ($render) {
+                    return $this->renderPart($render);
+                }
+            );
+        }
+
+        return $render;
+    }
+
+    /**
+     * @param string $tpl
+     * @param string $field
+     * @param array  $var
+     * @param string $container
+     *
+     * @return string
+     * @throws
+     */
+    public function parseSlot(string $tpl, string $field, array $var = [], string $container = null): string
+    {
+        static $constants;
+
+        /**
+         * constants variable
+         */
+
+        if (!isset($constants)) {
+            $constantsHandling = (new ReflectionClass(Abs::class))->getConstants();
+            $beginWith = [
+                'NIL',
+                'DIRTY',
+                'NOT_SET',
+                'NOT_FILE',
+                'SECRET',
+                'UNKNOWN',
+                'UNALLOCATED',
+                'COMMON',
+                'TPL_',
+                'SLOT_',
+            ];
+            foreach ($constantsHandling as $key => $value) {
+                foreach ($beginWith as $target) {
+                    if (strpos($key, $target) === 0) {
+                        $constants["Abs::{$key}"] = $value;
+                    }
+                }
+            }
+        }
+
+        /**
+         * custom variables
+         */
+
+        $variables = array_merge(
+            $constants,
+            [
+                'uuid'   => "__{$field}",
+                ':value' => 'value',
+                '@value' => '{{ value }}',
+                '#value' => '{{ value === null ? "{Abs::NIL}" : value }}',
+                'value'  => '{{ value }}', // may be covered, then set @value
+                'title'  => $var['title'] ?? null,
+                'field'  => Helper::camelToUnder($field, '-'),
+            ],
+            $var
+        );
+
+        /**
+         * out container tpl
+         */
+
+        $template = $tpl;
+        if ($container) {
+            $template = str_replace('{tpl}', $template, $container);
+        }
+
+        /**
+         * parse
+         */
+
+        foreach ($variables as $key => $value) {
+            $find = "{{$key}}";
+            if (strpos($value, $find) !== false) {
+                throw new ModuleException(
+                    "Slot variable doesn't seem right, is looks like replace `{$find}` use `{$value}`"
+                );
+            }
+            $template = str_replace($find, $value, $template);
+        }
+
+        if ($tpl == $template) {
+            return $template;
+        }
+
+        return $this->parseSlot($template, $field, $var);
     }
 
     /**

@@ -17,7 +17,6 @@ use Leon\BswBundle\Module\Form\Entity\SelectTree;
 use Leon\BswBundle\Module\Form\Entity\Transfer;
 use Leon\BswBundle\Module\Form\Form;
 use Leon\BswBundle\Repository\FoundationRepository;
-use ReflectionClass;
 
 abstract class Bsw
 {
@@ -380,94 +379,6 @@ abstract class Bsw
         }
 
         return $argument;
-    }
-
-    /**
-     * @param string $tpl
-     * @param string $field
-     * @param array  $var
-     * @param string $container
-     *
-     * @return string
-     * @throws
-     */
-    protected function parseSlot(string $tpl, string $field, array $var = [], string $container = null): string
-    {
-        static $constants;
-
-        /**
-         * constants variable
-         */
-
-        if (!isset($constants)) {
-            $constantsHandling = (new ReflectionClass(Abs::class))->getConstants();
-            $beginWith = [
-                'NIL',
-                'DIRTY',
-                'NOT_SET',
-                'NOT_FILE',
-                'SECRET',
-                'UNKNOWN',
-                'UNALLOCATED',
-                'COMMON',
-                'TPL_',
-                'SLOT_',
-            ];
-            foreach ($constantsHandling as $key => $value) {
-                foreach ($beginWith as $target) {
-                    if (strpos($key, $target) === 0) {
-                        $constants["Abs::{$key}"] = $value;
-                    }
-                }
-            }
-        }
-
-        /**
-         * custom variables
-         */
-
-        $variables = array_merge(
-            $constants,
-            [
-                'uuid'   => "__{$field}",
-                ':value' => 'value',
-                '@value' => '{{ value }}',
-                '#value' => '{{ value === null ? "{Abs::NIL}" : value }}',
-                'value'  => '{{ value }}', // may be covered, then set @value
-                'title'  => $var['title'] ?? null,
-                'field'  => Helper::camelToUnder($field, '-'),
-            ],
-            $var
-        );
-
-        /**
-         * out container tpl
-         */
-
-        $template = $tpl;
-        if ($container) {
-            $template = str_replace('{tpl}', $template, $container);
-        }
-
-        /**
-         * parse
-         */
-
-        foreach ($variables as $key => $value) {
-            $find = "{{$key}}";
-            if (strpos($value, $find) !== false) {
-                throw new ModuleException(
-                    "Slot variable doesn't seem right, is looks like replace `{$find}` use `{$value}`"
-                );
-            }
-            $template = str_replace($find, $value, $template);
-        }
-
-        if ($tpl == $template) {
-            return $template;
-        }
-
-        return $this->parseSlot($template, $field, $var);
     }
 
     /**

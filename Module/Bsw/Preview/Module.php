@@ -40,6 +40,7 @@ class Module extends Bsw
     const OPERATES       = 'RecordOperates';
     const MIXED_HANDLER  = 'MixedHandler';
     const PREVIEW_DATA   = 'PreviewData';
+    const SLOTS_CREATOR  = 'SlotsCreator';
 
     /**
      * @const string
@@ -203,26 +204,6 @@ class Module extends Bsw
     }
 
     /**
-     * Render handler
-     *
-     * @param string $render
-     *
-     * @return string
-     */
-    protected function renderHandler(string $render): string
-    {
-        if (Helper::strEndWith($render, Abs::HTML_SUFFIX)) {
-            $render = $this->web->caching(
-                function () use ($render) {
-                    return $this->web->renderPart($render);
-                }
-            );
-        }
-
-        return $render;
-    }
-
-    /**
      * Create slot template
      *
      * @param string $field
@@ -256,7 +237,7 @@ class Module extends Bsw
          */
 
         if ($item['html'] === true) {
-            return $this->parseSlot(Abs::SLOT_HTML_CONTAINER, $field);
+            return $this->web->parseSlot(Abs::SLOT_HTML_CONTAINER, $field);
         }
 
         /**
@@ -294,7 +275,7 @@ class Module extends Bsw
                 'dress' => $item['dress'],
             ];
 
-            return $this->parseSlot(Abs::TPL_SCALAR_DRESS, $field, $var, Abs::SLOT_CONTAINER);
+            return $this->web->parseSlot(Abs::TPL_SCALAR_DRESS, $field, $var, Abs::SLOT_CONTAINER);
         }
 
         /**
@@ -325,7 +306,7 @@ class Module extends Bsw
                 $var['value'] = "{{ {$enumStringify}[value] }}";
             }
 
-            return $this->parseSlot($tpl, $field, $var, Abs::SLOT_CONTAINER);
+            return $this->web->parseSlot($tpl, $field, $var, Abs::SLOT_CONTAINER);
         }
 
         /**
@@ -339,7 +320,7 @@ class Module extends Bsw
                 'value'               => "{{ {$enumStringify}[value] }}",
             ];
 
-            return $this->parseSlot(Abs::TPL_ENUM_WITHOUT_DRESS, $field, $var, Abs::SLOT_CONTAINER);
+            return $this->web->parseSlot(Abs::TPL_ENUM_WITHOUT_DRESS, $field, $var, Abs::SLOT_CONTAINER);
         }
 
         /**
@@ -347,10 +328,37 @@ class Module extends Bsw
          */
 
         if ($render = $item['render']) {
-            return $this->parseSlot($this->renderHandler($render), $field, [], Abs::SLOT_CONTAINER);
+            return $this->web->parseSlot($this->web->renderHandler($render), $field, [], Abs::SLOT_CONTAINER);
         }
 
-        return $this->parseSlot('{:value}', $field);
+        return $this->web->parseSlot('{:value}', $field);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function slotsName(string $name): string
+    {
+        return sprintf('__slots_%s', Helper::camelToUnder($name));
+    }
+
+    /**
+     * @param array  $column
+     * @param string $label
+     *
+     * @return array
+     */
+    protected function slotsTitleHandler(array $column, ?string $label = null): array
+    {
+        if (empty($column['slots']['title'])) {
+            $column['title'] = $this->web->fieldLang($label);
+        } elseif (strpos($column['slots']['title'], '__slots_') !== 0) {
+            $column['slots']['title'] = $this->slotsName($column['slots']['title']);
+        }
+
+        return $column;
     }
 
     /**
@@ -478,6 +486,7 @@ class Module extends Bsw
 
         $scrollX = 0;
         $hooks = $columns = $slots = $customRenders = [];
+        $extraSlotsFromAnnotation = [];
 
         foreach ($previewAnnotation as $field => $item) {
             $this->handleForFieldHook($field, $item['hook'], $hooks);
@@ -486,7 +495,6 @@ class Module extends Bsw
             }
 
             $column = [
-                'title'     => $this->web->fieldLang($item['label']),
                 'dataIndex' => $field,
                 'fixed'     => $item['fixed'],
                 'align'     => $item['align'],
@@ -519,6 +527,19 @@ class Module extends Bsw
             }
 
             /**
+             * td slot
+             */
+
+            if (!empty($item['slotsTips'])) {
+                $item['slots']['title'] = $this->slotsName($field);
+                $extraSlotsFromAnnotation[$field] = $this->web->slotsTips($item['slotsTips']);
+            }
+            if (!empty($item['slots'])) {
+                $column['slots'] = $item['slots'];
+            }
+            $column = $this->slotsTitleHandler($column, $item['label']);
+
+            /**
              * slot handler
              */
 
@@ -540,6 +561,23 @@ class Module extends Bsw
             }
 
             $columns[$field] = $column;
+        }
+
+        // slots creator
+        $arguments = $this->arguments($this->input->args);
+        $extraSlots = $this->caller(
+            $this->method,
+            self::SLOTS_CREATOR,
+            Abs::T_ARRAY,
+            $extraSlotsFromAnnotation,
+            $arguments
+        );
+        foreach ($extraSlots as $key => $item) {
+            $template = $this->web->renderHandler($item['tpl'] ?? '');
+            $title = $this->web->fieldLang($previewAnnotation[$key]['label'] ?? null);
+            $var = array_merge(['title' => $title], $item['var'] ?? []);
+            $key = $this->slotsName($key);
+            $slots[$key] = $this->web->parseSlot($template, $key, $var);
         }
 
         $output->scrollX = $scrollX;
@@ -946,15 +984,15 @@ class Module extends Bsw
                 if (is_object($crm) && $crm instanceof Charm) {
                     $var = $crm->getVar();
                     $var = array_merge($var, ['value' => $crm->getValue()]);
-                    $render = $this->renderHandler($crm->getCharm());
-                    $value = $this->parseSlot($render, $field, $var);
+                    $render = $this->web->renderHandler($crm->getCharm());
+                    $value = $this->web->parseSlot($render, $field, $var);
                 } elseif (is_scalar($crm)) {
                     $value = $crm;
                 } else {
                     throw new ModuleException("{$this->method}{$charm}() should return scalar or " . Charm::class);
                 }
 
-                $output->slots[$field] = $this->parseSlot(Abs::SLOT_HTML_CONTAINER, $field);
+                $output->slots[$field] = $this->web->parseSlot(Abs::SLOT_HTML_CONTAINER, $field);
             }
         }
 
@@ -985,7 +1023,6 @@ class Module extends Bsw
 
             $output->columns[$operate] = array_merge(
                 [
-                    'title'       => $this->web->fieldLang('Action'),
                     'dataIndex'   => $operate,
                     'width'       => $width,
                     'align'       => Abs::POS_CENTER,
@@ -994,7 +1031,8 @@ class Module extends Bsw
                 $output->columns[$operate] ?? []
             );
 
-            $output->slots[$operate] = $this->parseSlot(Abs::SLOT_HTML_CONTAINER, $operate);
+            $output->columns[$operate] = $this->slotsTitleHandler($output->columns[$operate], 'Action');
+            $output->slots[$operate] = $this->web->parseSlot(Abs::SLOT_HTML_CONTAINER, $operate);
 
         } else {
             unset($output->columns[$operate]);

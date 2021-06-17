@@ -1911,6 +1911,22 @@ var FoundationAntD = function (_FoundationTools) {
         }
 
         /**
+         * Show use notification once
+         *
+         * @returns {*}
+         */
+
+    }, {
+        key: 'notificationOnce',
+        value: function notificationOnce() {
+            var force = this.cnf.alertTypeForce;
+            this.cnf.alertTypeForce = false;
+            var result = this.notification.apply(this, arguments);
+            this.cnf.alertTypeForce = force;
+            return result;
+        }
+
+        /**
          * Show use message
          *
          * @param type
@@ -1934,6 +1950,22 @@ var FoundationAntD = function (_FoundationTools) {
                 duration = this.cnf.messageDuration;
             }
             return this.cnf.v.$message[type](description, duration, onClose);
+        }
+
+        /**
+         * Show use message once
+         *
+         * @returns {*}
+         */
+
+    }, {
+        key: 'messageOnce',
+        value: function messageOnce() {
+            var force = this.cnf.alertTypeForce;
+            this.cnf.alertTypeForce = false;
+            var result = this.message.apply(this, arguments);
+            this.cnf.alertTypeForce = force;
+            return result;
         }
 
         /**
@@ -1992,6 +2024,22 @@ var FoundationAntD = function (_FoundationTools) {
                     }, duration * 1000);
                 }
             });
+        }
+
+        /**
+         * Show use confirm once
+         *
+         * @returns {*}
+         */
+
+    }, {
+        key: 'confirmOnce',
+        value: function confirmOnce() {
+            var force = this.cnf.alertTypeForce;
+            this.cnf.alertTypeForce = false;
+            var result = this.confirm.apply(this, arguments);
+            this.cnf.alertTypeForce = force;
+            return result;
         }
 
         /**
@@ -2575,6 +2623,9 @@ var FoundationAntD = function (_FoundationTools) {
                 v.footer = '_footer';
             } else {
                 v.footer = 'footer';
+            }
+            if (options.debug) {
+                console.log("For debug modal options: ", options);
             }
             v.modal = options;
             if (options.afterShow) {

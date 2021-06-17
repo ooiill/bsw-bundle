@@ -354,22 +354,7 @@ trait BackendEntityHint
     {
         $options = $options ?? new stdClass();
         $options = self::entityPersistenceHint($item, $table, $fields, $options);
-        $options = self::entityFilterHintHandler($item, $table, $options);
 
-        return $options;
-    }
-
-    /**
-     * Entity filter hint handler
-     *
-     * @param object   $item
-     * @param string   $table
-     * @param stdClass $options
-     *
-     * @return stdClass
-     */
-    public static function entityFilterHintHandler($item, string $table, stdClass $options)
-    {
         if (in_array($item->name, ['add_time', 'update_time'])) {
             unset($options->show);
         }
@@ -415,6 +400,26 @@ trait BackendEntityHint
             $options->html,
             $options->validatorType
         );
+
+        return $options;
+    }
+
+    /**
+     * Entity mixed hint
+     *
+     * @param object   $item
+     * @param string   $table
+     * @param array    $fields
+     * @param stdClass $options
+     *
+     * @return stdClass
+     */
+    public static function entityMixedHint($item, string $table, array $fields, stdClass $options = null)
+    {
+        $options = $options ?? new stdClass();
+        if (strpos($item->type, 'int') !== false) {
+            $options->sort = true;
+        }
 
         return $options;
     }

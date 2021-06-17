@@ -1439,6 +1439,19 @@ class FoundationAntD extends FoundationTools {
     }
 
     /**
+     * Show use notification once
+     *
+     * @returns {*}
+     */
+    notificationOnce() {
+        let force = this.cnf.alertTypeForce;
+        this.cnf.alertTypeForce = false;
+        let result = this.notification(...arguments);
+        this.cnf.alertTypeForce = force;
+        return result;
+    }
+
+    /**
      * Show use message
      *
      * @param type
@@ -1457,6 +1470,19 @@ class FoundationAntD extends FoundationTools {
             duration = this.cnf.messageDuration;
         }
         return this.cnf.v.$message[type](description, duration, onClose);
+    }
+
+    /**
+     * Show use message once
+     *
+     * @returns {*}
+     */
+    messageOnce() {
+        let force = this.cnf.alertTypeForce;
+        this.cnf.alertTypeForce = false;
+        let result = this.message(...arguments);
+        this.cnf.alertTypeForce = force;
+        return result;
     }
 
     /**
@@ -1509,6 +1535,19 @@ class FoundationAntD extends FoundationTools {
                 }, duration * 1000);
             }
         });
+    }
+
+    /**
+     * Show use confirm once
+     *
+     * @returns {*}
+     */
+    confirmOnce() {
+        let force = this.cnf.alertTypeForce;
+        this.cnf.alertTypeForce = false;
+        let result = this.confirm(...arguments);
+        this.cnf.alertTypeForce = force;
+        return result;
     }
 
     /**
@@ -1962,6 +2001,9 @@ class FoundationAntD extends FoundationTools {
             v.footer = '_footer';
         } else {
             v.footer = 'footer';
+        }
+        if (options.debug) {
+            console.log("For debug modal options: ", options);
         }
         v.modal = options;
         if (options.afterShow) {

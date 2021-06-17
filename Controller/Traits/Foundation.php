@@ -1518,6 +1518,12 @@ trait Foundation
     {
         $application = new CmdApplication($this->kernel);
         $application->setAutoExit(false);
+        $condition = Helper::arrayMapKey(
+            $condition,
+            function ($k) {
+                return strpos($k, '--') === 0 ? $k : "--{$k}";
+            }
+        );
 
         $output = new BufferedOutput();
         $application->find($command)->run(new ArrayInput($condition), $output);

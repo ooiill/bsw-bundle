@@ -487,6 +487,7 @@ class BswScaffoldCommand extends Command
             'preview'     => " * @BswAnnotation\Preview(%s)",
             'persistence' => " * @BswAnnotation\Persistence(%s)",
             'filter'      => " * @BswAnnotation\Filter(%s)",
+            'mixed'       => " * @BswAnnotation\Mixed(%s)",
             'end'         => " */",
         ];
 
@@ -595,6 +596,7 @@ class BswScaffoldCommand extends Command
                 'preview'     => Abs::FN_ENTITY_PREVIEW_HINT,
                 'persistence' => Abs::FN_ENTITY_PERSISTENCE_HINT,
                 'filter'      => Abs::FN_ENTITY_FILTER_HINT,
+                'mixed'       => Abs::FN_ENTITY_MIXED_HINT,
             ];
 
             foreach ($annotation as $key => $fn) {
@@ -607,7 +609,11 @@ class BswScaffoldCommand extends Command
                     if (isset($options->hook) && is_array($options->hook)) {
                         $options->hook = array_filter($options->hook);
                     }
-                    $options = array_merge(['sort' => $sort], (array)$options);
+                    $extraOptions = [];
+                    if ($key !== 'mixed') {
+                        $extraOptions = ['sort' => $sort];
+                    }
+                    $options = array_merge($extraOptions, (array)$options);
                     $string = Helper::annotationJsonString($options, false, false);
                     array_push($EntityFields, sprintf($EntityFieldsMap[$key], $string));
                 }

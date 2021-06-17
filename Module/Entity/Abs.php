@@ -93,9 +93,12 @@ class Abs
     const SHAPE_ROUND  = 'round';
     const SHAPE_CIRCLE = 'circle';
 
-    const TAG_TYPE_NOTICE  = 'notification';
-    const TAG_TYPE_MESSAGE = 'message';
-    const TAG_TYPE_CONFIRM = 'confirm';
+    const TAG_TYPE_NOTICE       = 'notification';
+    const TAG_TYPE_NOTICE_ONCE  = 'notificationOnce';
+    const TAG_TYPE_MESSAGE      = 'message';
+    const TAG_TYPE_MESSAGE_ONCE = 'messageOnce';
+    const TAG_TYPE_CONFIRM      = 'confirm';
+    const TAG_TYPE_CONFIRM_ONCE = 'confirmOnce';
 
     const TAG_CLASSIFY_SUCCESS = 'success';
     const TAG_CLASSIFY_INFO    = 'info';
@@ -513,6 +516,7 @@ class Abs
     const FN_ENTITY_PREVIEW_HINT     = 'entityPreviewHint';
     const FN_ENTITY_PERSISTENCE_HINT = 'entityPersistenceHint';
     const FN_ENTITY_FILTER_HINT      = 'entityFilterHint';
+    const FN_ENTITY_MIXED_HINT       = 'entityMixedHint';
     const FN_PREVIEW_HINT            = 'previewTailorHint';
     const FN_PERSISTENCE_HINT        = 'persistenceTailorHint';
     const FN_API_DOC_FLAG            = 'apiDocFlag';

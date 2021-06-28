@@ -249,7 +249,7 @@ trait Third
                 return $markdown;
             },
             "md-path-{$path}{$keySuffix}",
-            Abs::TIME_WEEK
+            0
         );
     }
 

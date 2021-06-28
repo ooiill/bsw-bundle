@@ -168,8 +168,9 @@ class BswDocumentCommand extends Command
         if ($params['bill-only'] == 'yes') {
             foreach ($this->billError as $item) {
                 $class = ltrim($item['class'], '\\');
+                $code = $item['code'];
                 $description = $this->stringForDocument($item['description']);
-                $output->writeln("<info>| {$class} | {$description} |</info>");
+                $output->writeln("<info>| {$class} | {$code} | {$description} |</info>");
             }
 
             $output->writeln("\n<error> ------ </error>\n");

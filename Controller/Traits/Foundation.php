@@ -392,7 +392,10 @@ trait Foundation
 
         // $this->logger->debug("Using cache, ({$key})");
         $target = $this->cache->getItem(md5($key));
-        $target->expiresAfter($time ?? intval($this->cnf->cache_default_expires ?? 3600));
+        $time = $time ?? intval($this->cnf->cache_default_expires ?? 3600);
+        if ($time > 0) {
+            $target->expiresAfter($time);
+        }
 
         if (!$target->isHit()) {
             // $this->logger->warning("Cache misses so rebuilding now, ({$key})");

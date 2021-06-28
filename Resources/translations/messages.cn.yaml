@@ -161,6 +161,8 @@ No record:                                  '结果集为空'
 Without change:                             '没有任何变动'
 Please give qualified input:                '请给定符合条件的输入'
 Not supported:                              '操作不被支持'
+Record not found:                           '记录不存在'
+File not exists:                            '文件不存在'
 
 Is array:                                   '为数组'
 Set default value:                          '设置默认值'

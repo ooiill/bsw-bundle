@@ -22,21 +22,26 @@ body {
   flex-direction: row;
   height: 100vh;
 
-  .before(@text, @a: .2) {
+  .before(@text, @a: .2, @r: 0, @g: 0, @b: 0) {
     content: @text;
     margin-right: 3px;
-    color: rgba(0, 0, 0, @a);
+    color: rgba(@r, @g, @b, @a);
   }
 
-  .after(@text, @a: .2) {
+  .after(@text, @a: .2, @r: 0, @g: 0, @b: 0) {
     content: @text;
     margin-left: 3px;
-    color: rgba(0, 0, 0, @a);
+    color: rgba(@r, @g, @b, @a);
   }
 
-  > .index, > .content {
+  > .index {
     overflow: auto;
     padding: 20px;
+  }
+
+  > .content {
+    overflow: auto;
+    padding: 10px 30px 50px 40px;
   }
 
   > .index {
@@ -54,17 +59,18 @@ body {
           list-style: none;
           font-size: 120%;
           background-color: rgba(0, 0, 0, .03);
-          padding: 3px 0 3px 8px;
+          padding: 6px 10px;
         }
 
         &.indent-h2 {
           margin-left: 1.5em;
-          margin-top: 6px;
+          margin-top: 8px;
         }
 
         &.indent-h3 {
           margin-left: 3em;
-          margin-top: 3px;
+          margin-top: 6px;
+          list-style: circle;
         }
 
         a {
@@ -75,7 +81,7 @@ body {
           color: rgba(0, 109, 203, .6);
 
           &:after {
-            .after('♬', 1);
+            .after('←', 1);
           }
         }
       }
@@ -84,11 +90,14 @@ body {
 
   > .content {
     flex: 1 1 auto;
-    padding-left: 20px;
+
+    ul {
+      padding-left: 30px;
+    }
   }
 
   p, code, blockquote, table, ul, ol {
-    color: rgba(0, 0, 0, .65);
+    color: rgba(0, 0, 0, 0.7);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -154,8 +163,8 @@ body {
   }
 
   td, th {
-    border: 1px solid #D6DBDF;
-    padding: 10px 20px;
+    border: 1px solid #dfe5ea;
+    padding: 12px 20px;
   }
 
   blockquote {
@@ -175,9 +184,9 @@ body {
   code {
     font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
     border: 0;
-    background-color: rgba(214, 219, 223, .7);;
+    background-color: #e8ebf1;
     border-radius: 3px;
-    color: rgba(44, 62, 80, .8);
+    color: rgba(44, 62, 80, 0.65);
     font-size: 90%;
     padding: 2px 4px;
     white-space: nowrap;
@@ -204,8 +213,12 @@ body {
 
   ul {
     li {
-      list-style-type: circle;
+      list-style: outside;
     }
+  }
+
+  .content ul li {
+    list-style: circle;
   }
 }
 

@@ -138,7 +138,8 @@ class BswBackendController extends BswWebController
             }
         }
 
-        $this->appendSrcCssWithKey('ant-d', Abs::CSS_ANT_D_BSW, Abs::POS_TOP);
+        $theme = $this->parameter('theme', Abs::CSS_ANT_D, false);
+        $this->appendSrcCssWithKey('ant-d', $theme, Abs::POS_TOP);
     }
 
     /**

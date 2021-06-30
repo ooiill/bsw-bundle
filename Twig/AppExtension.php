@@ -28,6 +28,7 @@ class AppExtension extends AbstractExtension
             new TwigFilter('vueType', [$this, 'vueType']),
             new TwigFilter('formArea', [$this, 'formArea']),
             new TwigFilter('tplReplace', [$this, 'tplReplace']),
+            new TwigFilter('phpNativeFn', [$this, 'phpNativeFn']),
         ];
     }
 
@@ -163,6 +164,7 @@ class AppExtension extends AbstractExtension
     public static function stringify($target, string $default = '', int $jsonFlag = 0)
     {
         $stringify = Helper::jsonStringify($target, $default, $jsonFlag);
+
         return preg_replace('/[\'|"]{var:(.*)}[\'|"]/', "$1", $stringify);
     }
 
@@ -239,5 +241,20 @@ class AppExtension extends AbstractExtension
         $tpl = str_replace(array_keys($variables), array_values($variables), $tpl);
 
         return $tpl;
+    }
+
+    /**
+     * @param string $fn
+     * @param mixed  ...$args
+     *
+     * @return null
+     */
+    public static function phpNativeFn(string $fn, ...$args)
+    {
+        if (!function_exists($fn)) {
+            return null;
+        }
+
+        return $fn(...$args);
     }
 }

@@ -502,13 +502,19 @@ trait Foundation
             return $params;
         }
 
-        // null or array
-        $bundleParams = $this->parameter("{$bundle}_{$name}", null, $inController);
-        if (is_null($params) || !is_array($bundleParams)) {
-            return $bundleParams;
+        $skinParams = [];
+        $skin = $this->parameter('skin', null, $inController);
+        if ($skin) {
+            $skinParams = $this->parameter("{$skin}_{$name}", [], $inController);
         }
 
-        return Helper::merge($bundleParams, $params);
+        // null or array
+        $bundleParams = [];
+        if ($bundle) {
+            $bundleParams = $this->parameter("{$bundle}_{$name}", [], $inController);
+        }
+
+        return Helper::merge($bundleParams, (array)$params, $skinParams);
     }
 
     /**

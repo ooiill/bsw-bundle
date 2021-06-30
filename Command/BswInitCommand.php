@@ -429,7 +429,7 @@ class BswInitCommand extends Command
                 ],
                 'cnf'                        => [
                     'app_logo'              => '/img/logo.svg',
-                    'app_ico'               => '/img/favicon.ico',
+                    'app_ico'               => '/img/logo.svg',
                     'app_name'              => $project,
                     'host'                  => '%env(resolve:APP_HOST)%',
                     'host_official'         => '%env(resolve:APP_HOST_OFFICIAL)%',

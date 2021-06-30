@@ -8,6 +8,8 @@ parameters:
     locale: en
     version: 1.0.0
     sf_version: !php/const App\Kernel::VERSION
+    theme: !php/const Leon\BswBundle\Module\Entity\Abs::CSS_ANT_D # CSS_ANT_D、CSS_ANT_D_BSW、CSS_ANT_D_ALI、CSS_ANT_D_TALK
+    skin: null # diff to theme, the skin is usually user-custom
     cert: '%kernel.project_dir%/certificate'
     file: '%kernel.project_dir%/../file'
     salt: BackendSteeringWheel
@@ -83,6 +85,11 @@ parameters:
 
     currency_code: CNY
     currency_char: ￥
+
+    size_default: !php/const Leon\BswBundle\Module\Entity\Abs::SIZE_DEFAULT
+    size_large: !php/const Leon\BswBundle\Module\Entity\Abs::SIZE_LARGE
+    size_small: !php/const Leon\BswBundle\Module\Entity\Abs::SIZE_SMALL
+    line_v: !php/const Leon\BswBundle\Module\Entity\Abs::LINE_DASHED_V
 
     module_extra_path: []
 

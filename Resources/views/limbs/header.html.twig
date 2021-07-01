@@ -16,6 +16,9 @@
             @click="redirectByVue"
           >
             {% for item in header.menu %}
+              {% if item.beforeOriginal is not empty %}
+                {{ item.beforeOriginal|raw }}
+              {% endif %}
               <a-menu-item key="{{ item.route }}">
                 <div>
                   {% if item.icon is not empty %}
@@ -24,6 +27,9 @@
                   <span :data-bsw.prop="{{ item.data }}">{{ item.label|trans({}, 'twig') }}</span>
                 </div>
               </a-menu-item>
+              {% if item.afterOriginal is not empty %}
+                {{ item.afterOriginal|raw }}
+              {% endif %}
             {% endfor %}
           </a-menu>
         {% endif %}
@@ -64,12 +70,18 @@
         </span>
             <a-menu slot="overlay" @click="redirectByVue">
               {% for item in header.setting %}
+                {% if item.beforeOriginal is not empty %}
+                  {{ item.beforeOriginal|raw }}
+                {% endif %}
                 <a-menu-item>
                   <div>
                     {{ item.icon|icon|raw }}
                     <span :data-bsw.prop="{{ item.data }}">{{ item.label|trans({}, 'twig') }}</span>
                   </div>
                 </a-menu-item>
+                {% if item.afterOriginal is not empty %}
+                  {{ item.afterOriginal|raw }}
+                {% endif %}
               {% endfor %}
             </a-menu>
           </a-dropdown>
@@ -89,12 +101,18 @@
         </span>
             <a-menu slot="overlay" :default-selected-keys="['{{ scaffold.route }}']" @click="redirectByVue">
               {% for item in header.links %}
+                {% if item.beforeOriginal is not empty %}
+                  {{ item.beforeOriginal|raw }}
+                {% endif %}
                 <a-menu-item key="{{ item.route }}">
                   <div>
                     {{ item.icon|icon|raw }}
                     <span :data-bsw.prop="{{ item.data }}">{{ item.label|trans({}, 'twig') }}</span>
                   </div>
                 </a-menu-item>
+                {% if item.afterOriginal is not empty %}
+                  {{ item.afterOriginal|raw }}
+                {% endif %}
               {% endfor %}
             </a-menu>
           </a-dropdown>

@@ -21,7 +21,7 @@ trait Route
      */
     public function getRoute(string $route = ''): string
     {
-        return $this->route ?? $route;
+        return trim($this->route ?? $route);
     }
 
     /**

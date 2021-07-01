@@ -116,10 +116,8 @@ class Module extends Bsw
             /**
              * @var Menu $item
              */
-            $route = trim($item->getRoute());
-
-            // access control
-            if ($route && !$forceFull && empty($this->input->access[$route])) {
+            $route = $item->getRoute();
+            if (!$this->web->routeIsAccess([$route])) {
                 continue;
             }
 

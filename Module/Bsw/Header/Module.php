@@ -83,8 +83,8 @@ class Module extends Bsw
             Helper::objectInstanceOf($item, Menu::class, "Method {$method}():array items");
 
             // access control
-            $route = trim($item->getRoute());
-            if ($route && empty($this->input->access[$route])) {
+            $route = $item->getRoute();
+            if (!$this->web->routeIsAccess([$route])) {
                 continue;
             }
 
@@ -121,10 +121,19 @@ class Module extends Bsw
             /**
              * @var Setting $item
              */
-            Helper::objectInstanceOf($item, Setting::class, "Method {$method}():array items");
+            Helper::callReturnType(
+                $item,
+                [Setting::class, Links::class],
+                "Method {$method}():array items"
+            );
+
+            $route = $item->getRoute();
+            if (!$this->web->routeIsAccess([$route])) {
+                continue;
+            }
 
             $item->setScript(Html::scriptBuilder($item->getClick(), $item->getArgs()));
-            $item->setUrl($this->web->urlSafe($item->getRoute(), $item->getArgs(), 'Build header setting'));
+            $item->setUrl($this->web->urlSafe($route, $item->getArgs(), 'Build header setting'));
             array_push($output->setting, $item);
         }
 
@@ -136,10 +145,19 @@ class Module extends Bsw
             /**
              * @var Links $item
              */
-            Helper::objectInstanceOf($item, Links::class, "Method {$method}():array items");
+            Helper::callReturnType(
+                $item,
+                [Setting::class, Links::class],
+                "Method {$method}():array items"
+            );
+
+            $route = $item->getRoute();
+            if (!$this->web->routeIsAccess([$route])) {
+                continue;
+            }
 
             $item->setScript(Html::scriptBuilder($item->getClick(), $item->getArgs()));
-            $item->setUrl($this->web->urlSafe($item->getRoute(), $item->getArgs(), 'Build header links'));
+            $item->setUrl($this->web->urlSafe($route, $item->getArgs(), 'Build header links'));
             array_push($output->links, $item);
         }
 

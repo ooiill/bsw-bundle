@@ -406,6 +406,10 @@ div.ant-input-number, span.ant-time-picker {
   padding: 8px 16px;
 }
 
+.ant-dropdown-menu-item-divider, .ant-dropdown-menu-submenu-title-divider {
+  padding: 0 !important;
+}
+
 .ant-menu,
 .ant-tag,
 .bsw-menu-container .logo,
@@ -508,6 +512,9 @@ span.ant-calendar-picker {
     > .ant-form-item-label label {
       font-size: 12px;
       color: rgba(0, 0, 0, .60);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     &.bsw-filter-action button {

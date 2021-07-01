@@ -438,7 +438,7 @@ $(function () {
             if (typeof data.confirmIsCheck !== 'undefined') {
                 data.location = bsw.setParams({checkbox: data.confirmIsCheck ? 1 : 0}, data.location);
             }
-            bsw.request(data.location).then(res => {
+            bsw.request(data.location, data).then(res => {
                 bsw.response(res).then(() => {
                     bsw.responseLogic(res);
                 }).catch(reason => {

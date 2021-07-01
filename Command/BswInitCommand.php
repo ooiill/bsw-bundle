@@ -289,8 +289,11 @@ class BswInitCommand extends Command
 
             $extraRoutes = [
                 'app_clean_backend',
+                'app_clean_project',
                 'app_export',
                 'app_language',
+                'app_theme',
+                'app_skin',
                 'app_captcha',
                 'app_site_index',
                 'app_third_message',

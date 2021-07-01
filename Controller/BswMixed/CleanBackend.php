@@ -31,4 +31,24 @@ trait CleanBackend
 
         return $this->responseSuccess('Cache clear success', [], $this->reference());
     }
+
+    /**
+     * Clean project cache
+     *
+     * @Route("/cache/project", name="app_clean_project")
+     * @Access()
+     *
+     * @return Response
+     * @throws
+     */
+    public function getCleanProjectAction(): Response
+    {
+        if (($args = $this->valid()) instanceof Response) {
+            return $args;
+        }
+
+        $this->commandCaller('cache:clear');
+
+        return $this->responseSuccess('Cache clear success', [], $this->reference());
+    }
 }

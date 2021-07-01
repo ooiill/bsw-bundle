@@ -21,9 +21,9 @@ class BswInitRecordCommand extends Command
         return [
             'doctrine'       => [null, InputOption::VALUE_OPTIONAL, 'Doctrine database flag'],
             'force'          => [null, InputOption::VALUE_OPTIONAL, 'Force init record again', 'no'],
-            'admin-phone'    => [null, InputOption::VALUE_OPTIONAL, 'Admin phone number', '18011112222'],
+            'admin-phone'    => [null, InputOption::VALUE_OPTIONAL, 'Admin phone number', '17011223344'],
             'admin-name'     => [null, InputOption::VALUE_OPTIONAL, 'Admin name', 'Master'],
-            'admin-password' => [null, InputOption::VALUE_REQUIRED, 'Admin password', 'BSW@2020bbssww'],
+            'admin-password' => [null, InputOption::VALUE_REQUIRED, 'Admin password', 'bsw@2020#BSW'],
         ];
     }
 

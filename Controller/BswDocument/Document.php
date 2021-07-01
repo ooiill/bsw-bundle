@@ -39,7 +39,7 @@ trait Document
                     $text = "{$roman}. {$text}";
                 }
 
-                $url = $this->url('app_bsw_document', compact('name'));
+                $url = $this->url($this->cnf->route_document, compact('name'));
                 $url = "{$url}#{$id}";
 
                 return [$url, $text];

@@ -19,5 +19,6 @@ class Acme extends BswBackendController
     use NumberCaptcha;
     use SiteIndex;
     use Telegram;
+    use Theme;
     use ThirdMessage;
 }

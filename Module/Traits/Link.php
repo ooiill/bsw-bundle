@@ -19,6 +19,16 @@ trait Link
     use Form\ConfirmCheckbox;
 
     /**
+     * @var string
+     */
+    public $beforeOriginal;
+
+    /**
+     * @var string
+     */
+    public $afterOriginal;
+
+    /**
      * @return string
      */
     public function getData(): string
@@ -36,5 +46,45 @@ trait Link
         }
 
         return Helper::jsonStringify(array_merge($data, $args));
+    }
+
+    /**
+     * @return string
+     */
+    public function getBeforeOriginal(): ?string
+    {
+        return $this->beforeOriginal;
+    }
+
+    /**
+     * @param string $beforeOriginal
+     *
+     * @return $this
+     */
+    public function setBeforeOriginal(string $beforeOriginal)
+    {
+        $this->beforeOriginal = $beforeOriginal;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAfterOriginal(): ?string
+    {
+        return $this->afterOriginal;
+    }
+
+    /**
+     * @param string $afterOriginal
+     *
+     * @return $this
+     */
+    public function setAfterOriginal(string $afterOriginal)
+    {
+        $this->afterOriginal = $afterOriginal;
+
+        return $this;
     }
 }

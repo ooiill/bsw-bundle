@@ -163,7 +163,11 @@ parameters:
         route_logout: app_bsw_admin_user_logout
         route_profile: app_bsw_admin_user_profile
         route_language: app_language
+        route_theme: app_theme
+        route_skin: app_skin
+        route_document: app_bsw_document
         route_clean_backend: app_clean_backend
+        route_clean_project: app_clean_project
         route_clean_frontend: app_clean_frontend
         route_upload: app_upload
         route_captcha: app_captcha
@@ -399,6 +403,9 @@ services:
         tags: ['console.command']
 
     Leon\BswBundle\Command\BswScaffoldCommand:
+        tags: ['console.command']
+
+    Leon\BswBundle\Command\BswSkinCommand:
         tags: ['console.command']
 
     Twig\Extension\StringLoaderExtension:

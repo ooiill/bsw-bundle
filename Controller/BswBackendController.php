@@ -65,6 +65,11 @@ class BswBackendController extends BswWebController
     protected $skUser = 'backend-user-sk';
 
     /**
+     * @var string
+     */
+    protected $skCnf = 'backend-cnf-sk';
+
+    /**
      * @var bool
      */
     protected $plaintextSensitive = false;
@@ -138,18 +143,20 @@ class BswBackendController extends BswWebController
             }
         }
 
-        $theme = $this->parameter('theme', Abs::CSS_ANT_D, false);
-        $this->appendSrcCssWithKey('ant-d', $theme, Abs::POS_TOP);
+        $this->appendSrcCssWithKey('ant-d', $this->cnf->theme, Abs::POS_TOP);
     }
 
     /**
-     * @param array $cnf
+     * @param array $fileCnf
      *
      * @return array
      */
-    protected function extraConfig(array $cnf): array
+    protected function extraConfig(array $fileCnf): array
     {
-        $pair = array_merge($cnf, $this->getDbConfig('app_database_config'));
+        $dbCnf = $this->getDbConfig('app_database_config');
+        $sessionCnf = $this->session->get($this->skCnf) ?? [];
+
+        $pair = array_merge($fileCnf, $dbCnf, $sessionCnf);
         $pair = Helper::numericValues($pair);
 
         return $pair;
@@ -977,7 +984,22 @@ class BswBackendController extends BswWebController
      */
     public function moduleHeaderSetting(): array
     {
+        $link = function (string $key, string $scene) {
+            return (new Links())
+                ->setLabel("Change {$scene} to {$key}")
+                ->setIcon(['theme' => 'b:icon-apparel', 'skin' => 'b:icon-fashion-accessories'][$scene])
+                ->setRoute(['theme' => $this->cnf->route_theme, 'skin' => $this->cnf->route_skin][$scene])
+                ->setClick('requestByAjax')
+                ->setArgs(['key' => $key]);
+        };
+
         return [
+            $link('default', 'skin'),
+            $link('terse', 'skin')->setAfterOriginal('<a-menu-divider></a-menu-divider>'),
+            $link('ant-d', 'theme'),
+            $link('bsw', 'theme'),
+            $link('ali-yun', 'theme'),
+            $link('talk', 'theme')->setAfterOriginal('<a-menu-divider></a-menu-divider>'),
             new Setting('Switch theme', $this->cnf->icon_theme, 'themeSwitch'),
             new Setting('Switch color weak', $this->cnf->icon_bulb, 'colorWeakSwitch'),
             new Setting('Switch third message', $this->cnf->icon_message, 'thirdMessageSwitch'),
@@ -1002,6 +1024,7 @@ class BswBackendController extends BswWebController
 
         $links = [
             new Links('Clean backend cache', $this->cnf->route_clean_backend, $this->cnf->icon_db),
+            new Links('Clean project cache', $this->cnf->route_clean_project, 'b:icon-warning'),
             new Links('Profile', $this->cnf->route_profile, $this->cnf->icon_profile),
             new Links('Logout', $this->cnf->route_logout, $this->cnf->icon_logout),
         ];

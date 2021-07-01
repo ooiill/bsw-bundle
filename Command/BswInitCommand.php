@@ -242,7 +242,7 @@ class BswInitCommand extends Command
             'twig' => [
                 'paths'                => [
                     '%kernel.project_dir%/templates',
-                    '%kernel.project_dir%/vendor/jtleon/bsw-bundle/Resources/views',
+                    '%kernel.project_dir%/vendor/ooiill/bsw-bundle/Resources/views',
                 ],
                 'default_path'         => '%kernel.project_dir%/templates',
                 'debug'                => '%kernel.debug%',

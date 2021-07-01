@@ -22,7 +22,7 @@ sys.path.append(os.path.abspath('./directive'))
 # -- Project information -----------------------------------------------------
 
 project = u'LeonBswBundle Document'
-copyright = u'https://github.com/jtleon'
+copyright = u'https://github.com/ooiill'
 author = u'jiangxilee@gmail.com'
 
 # The short X.Y version

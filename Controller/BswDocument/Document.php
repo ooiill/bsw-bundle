@@ -55,13 +55,13 @@ trait Document
     /**
      * Document bsw
      *
-     * @Route("/bsw/document/{name}", name="app_bsw_document", requirements={"name": "[a-zA-Z0-9\-\.]+"})
+     * @Route("/bsw/document/{name}", name="app_bsw_document", requirements={"name": "[a-zA-Z0-9\-\.]+"}, defaults={"name": "1.overview"})
      *
      * @param string $name
      *
      * @return Response
      */
-    public function document(string $name = '1.overview'): Response
+    public function document(string $name): Response
     {
         if (($args = $this->valid(Abs::V_NOTHING)) instanceof Response) {
             return $args;

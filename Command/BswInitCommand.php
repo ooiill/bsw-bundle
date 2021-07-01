@@ -48,7 +48,7 @@ class BswInitCommand extends Command
             'scheme-only'         => [null, $opt, 'Only scheme split by comma'],
             'scheme-start-only'   => [null, $opt, 'Only scheme start with string'],
             'scheme-force'        => [null, $opt, 'Force rebuild scheme', 'no'],
-            'scheme-reverse'      => [null, $opt, 'Reverse scheme split by comma'],
+            'scheme-reverse'      => [null, $opt, 'Reverse scheme split by comma, * for all'],
             'scaffold-need'       => [null, $opt, 'Scaffold need?', 'yes'],
             'scaffold-cover'      => [null, $opt, 'Scaffold file rewrite?', 12],
             'scaffold-path'       => [null, $opt, 'Scaffold file save path'],
@@ -56,6 +56,8 @@ class BswInitCommand extends Command
             'config-need'         => [null, $opt, 'Config need?', 'yes'],
             'document-need'       => [null, $opt, 'Document need?', 'yes'],
             'directory'           => [null, $opt, 'The directory where is scaffold template'],
+            'comment-2-label'     => [null, $opt, 'Fields comment to label', 'no'],
+            'comment-2-menu'      => [null, $opt, 'Tables comment to menu', 'no'],
             'acme'                => [null, $opt, 'Acme controller class for annotation hint'],
         ];
     }
@@ -359,9 +361,10 @@ class BswInitCommand extends Command
 
         $project = Helper::underToCamel(str_replace("-", "_", $this->project), false);
         $routeDefault = [
-            Abs::APP_TYPE_BACKEND => 'backend_homepage',
-            Abs::APP_TYPE_API     => 'api_welcome',
-            Abs::APP_TYPE_WEB     => 'web_homepage',
+            Abs::APP_TYPE_API      => 'api_welcome',
+            Abs::APP_TYPE_WEB      => 'web_homepage',
+            Abs::APP_TYPE_FRONTEND => 'web_homepage',
+            Abs::APP_TYPE_BACKEND  => 'backend_homepage',
         ];
 
         return [
@@ -492,7 +495,7 @@ class BswInitCommand extends Command
         }
 
         foreach ($config as $name => $file) {
-            $fileContent = Yaml::parseFile($file) ?? [];
+            $fileContent = Yaml::parseFile($file, Yaml::PARSE_CONSTANT) ?? [];
             $customContent = $this->{"{$name}Cnf"}();
             if (empty($customContent)) {
                 continue;
@@ -548,7 +551,15 @@ class BswInitCommand extends Command
         $schemeStartOnly = $params['scheme-start-only'];
         $scaffoldNeed = ($params['scaffold-need'] === 'yes');
         $schemePrefix = trim($params['scheme-prefix'], '_');
-        $schemeReverse = Helper::stringToArray($params['scheme-reverse']);
+
+        // for build scheme file (.sql)
+        if ($params['scheme-reverse'] == '*') {
+            $field = "Tables_in_{$database}";
+            $tables = $pdo->fetchAllAssociative("SHOW TABLES WHERE {$field} NOT LIKE 'bsw_%'");
+            $schemeReverse = array_column($tables, $field);
+        } else {
+            $schemeReverse = Helper::stringToArray($params['scheme-reverse']);
+        }
 
         foreach ($schemeReverse as $table) {
             $output->write(Abs::ENTER);
@@ -565,10 +576,13 @@ class BswInitCommand extends Command
                 continue;
             }
 
-            file_put_contents($sqlFile = "{$params['scheme-extra']}/{$table}.sql", "{$scheme};");
+            $sqlFile = "{$params['scheme-extra']}/{$table}.sql";
+            array_push($schemeFileList, $sqlFile);
+            file_put_contents($sqlFile, "{$scheme};");
             $output->writeln("<info> Reverse:  [CreateFile] {$sqlFile} </info>");
         }
 
+        $schemeFileList = array_filter(array_unique($schemeFileList));
         foreach ($schemeFileList as $sqlFile) {
             $table = pathinfo($sqlFile, PATHINFO_FILENAME);
             if ($schemeOnly && !in_array($table, $schemeOnly)) {
@@ -599,20 +613,21 @@ class BswInitCommand extends Command
 
             // Entity & Repository
             if ($scaffoldNeed) {
-                $this->getApplication()->find('bsw:scaffold')->run(
-                    new ArrayInput(
-                        [
-                            '--table'               => $table,
-                            '--doctrine'            => $params['doctrine'] ?? Abs::DOCTRINE_DEFAULT,
-                            '--doctrine-is-default' => $params['doctrine-is-default'],
-                            '--app'                 => $this->app,
-                            '--cover'               => $params['scaffold-cover'] ?: 'no',
-                            '--path'                => $params['scaffold-path'] ?: null,
-                            '--namespace'           => $params['scaffold-ns'] ?: null,
-                            '--acme'                => $params['acme'],
-                            '--directory'           => $params['directory'] ?: null,
-                        ]
-                    ),
+                $this->web->commandCaller(
+                    'bsw:scaffold',
+                    [
+                        'table'               => $table,
+                        'doctrine'            => $params['doctrine'] ?? Abs::DOCTRINE_DEFAULT,
+                        'doctrine-is-default' => $params['doctrine-is-default'],
+                        'app'                 => $this->app,
+                        'cover'               => $params['scaffold-cover'] ?: 'no',
+                        'path'                => $params['scaffold-path'] ?: null,
+                        'namespace'           => $params['scaffold-ns'] ?: null,
+                        'acme'                => $params['acme'],
+                        'directory'           => $params['directory'] ?: null,
+                        'comment-2-label'     => $params['comment-2-label'] ?: 'no',
+                        'comment-2-menu'      => $params['comment-2-menu'] ?: 'no',
+                    ],
                     $output
                 );
             }

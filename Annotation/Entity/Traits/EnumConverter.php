@@ -60,12 +60,9 @@ trait EnumConverter
             }
         }
 
-        $msg = "otherwise you should defined constant\n";
-        $msg .= "\n{$EnumClass}::{$prefer};";
-        $msg .= "\n{$EnumClass}::{$secondary};";
-
+        $msg = "otherwise you should defined constant {$EnumClass}::{$prefer} or {$EnumClass}::{$secondary}";
         if (isset($thirdly)) {
-            $msg .= "\n{$EnumClass}::{$thirdly};";
+            $msg .= " or {$EnumClass}::{$thirdly}";
         }
 
         $this->exception('enum', "should be array.\n{$msg}");

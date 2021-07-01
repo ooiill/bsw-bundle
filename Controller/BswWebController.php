@@ -37,7 +37,12 @@ abstract class BswWebController extends AbstractController
     /**
      * @var string
      */
-    protected $version = '2.0.17';
+    protected $version = '2.0.18';
+
+    /**
+     * @var string
+     */
+    protected $appType = Abs::APP_TYPE_WEB;
 
     /**
      * @var bool

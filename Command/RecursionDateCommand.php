@@ -171,7 +171,6 @@ abstract class RecursionDateCommand extends Command
         // next day
         $this->params->{'begin-date'} = Helper::dateDayDiff(1, $this->params->{'begin-date'});
         $arguments = Helper::objectToArray($this->params);
-        $arguments = Helper::arrayMapKey($arguments, '--%s');
-        $this->getApplication()->find($this->getName())->run(new ArrayInput($arguments), $output);
+        $this->web->commandCaller($this->getName(), $arguments, $output);
     }
 }

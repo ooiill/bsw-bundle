@@ -2,8 +2,11 @@
 
 namespace Leon\BswBundle\Command;
 
+use Doctrine\DBAL\Types\Types;
 use Leon\BswBundle\Component\Helper;
+use Leon\BswBundle\Controller\BswApiController;
 use Leon\BswBundle\Controller\BswBackendController;
+use Leon\BswBundle\Controller\BswFrontendController;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Exception\CommandException;
 use Leon\BswBundle\Module\Exception\FileNotExistsException;
@@ -21,6 +24,11 @@ use InvalidArgumentException;
 class BswScaffoldCommand extends Command
 {
     use BswFoundation;
+
+    /**
+     * @var array
+     */
+    protected $params;
 
     /**
      * @var string
@@ -82,6 +90,8 @@ class BswScaffoldCommand extends Command
             'path'                => [null, $opt, 'File save path'],
             'namespace'           => [null, $opt, 'Namespace for Controller\Entity\Repository'],
             'directory'           => [null, $opt, 'The directory where is scaffold template'],
+            'comment-2-label'     => [null, $opt, 'Fields comment to label', 'no'],
+            'comment-2-menu'      => [null, $opt, 'Tables comment to menu', 'no'],
             'acme'                => [
                 null,
                 $opt,
@@ -113,8 +123,8 @@ class BswScaffoldCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $params = $this->options($input);
-        extract($params);
+        $this->params = $this->options($input);
+        extract($this->params);
 
         /**
          * @var string $table
@@ -154,9 +164,13 @@ class BswScaffoldCommand extends Command
         }
 
         // app
-        if (in_array($app, [Abs::APP_TYPE_BACKEND, Abs::APP_TYPE_FRONTEND, Abs::APP_TYPE_API, Abs::APP_TYPE_WEB])) {
+        if (in_array($app, [Abs::APP_TYPE_API, Abs::APP_TYPE_WEB, Abs::APP_TYPE_FRONTEND, Abs::APP_TYPE_BACKEND])) {
             array_push($this->app, ".{$app}");
-            if ($app == Abs::APP_TYPE_BACKEND) {
+            if ($app == Abs::APP_TYPE_API) {
+                $this->acme = BswApiController::class;
+            } elseif ($app == Abs::APP_TYPE_WEB || $app == Abs::APP_TYPE_FRONTEND) {
+                $this->acme = BswFrontendController::class;
+            } elseif ($app == Abs::APP_TYPE_BACKEND) {
                 $this->acme = BswBackendController::class;
             }
         }
@@ -216,7 +230,7 @@ class BswScaffoldCommand extends Command
         if (!empty($doctrine)) {
             $this->doctrine = $doctrine;
         }
-        $this->doctrineIsDefault = $params['doctrine-is-default'] === 'yes';
+        $this->doctrineIsDefault = $this->params['doctrine-is-default'] === 'yes';
 
         $entityDocument = $this->entityDocument($tabled ?: $table, !!$tabled);
         if (empty($entityDocument)) {
@@ -389,6 +403,7 @@ class BswScaffoldCommand extends Command
      * @param string $table
      *
      * @return array
+     * @throws
      */
     private function previewDocument(string $table): array
     {
@@ -397,14 +412,65 @@ class BswScaffoldCommand extends Command
             return [];
         }
 
-        $fields = Helper::arrayColumn($document['fields'], true, 'name');
+        if ($this->params['comment-2-menu'] == 'yes') {
+            $pdo = $this->pdo($this->doctrine);
+            $record = $pdo->fetchOne(
+                'SELECT * FROM bsw_admin_menu WHERE `route_name` = ?',
+                ["app_{$table}_preview"],
+                [Types::STRING]
+            );
+            $iconMap = [
+                'b:icon-creditlevel',
+                'b:icon-assessedbadge',
+                'b:icon-office',
+                'b:icon-similarproduct',
+                'b:icon-process',
+                'b:icon-electrical',
+                'b:icon-app',
+                'b:icon-earth',
+                'b:icon-icon-74',
+                'b:icon-icon-76',
+                'b:icon-heartpulse',
+                'b:icon-saoyisao',
+                'b:icon-smile',
+                'b:icon-favorite',
+                'b:icon-remind1',
+                'b:icon-pin',
+                'b:icon-gifts',
+                'b:icon-tag',
+                'b:icon-icon-63',
+                'b:icon-hot',
+            ];
+            if (!$record) {
+                static $times = 0;
+                if (strpos($table, 'user') !== false) {
+                    $icon = 'b:icon-account';
+                } elseif (strpos($table, 'cnf') !== false || strpos($table, 'config') !== false) {
+                    $icon = 'b:icon-set';
+                } elseif (strpos($table, 'log') !== false || strpos($table, 'history') !== false) {
+                    $icon = 'b:icon-history';
+                } else {
+                    $icon = $iconMap[$times % count($iconMap)];
+                    $times += 1;
+                }
+                $pdo->insert(
+                    'bsw_admin_menu',
+                    [
+                        'route_name' => "app_{$table}_preview",
+                        'icon'       => $icon,
+                        'value'      => $document['comment'] ?: Helper::stringToLabel($table),
+                        'sort'       => 1,
+                    ]
+                );
+            }
+        }
 
         return $this->tailorArrayChunk(
             [
                 'PreviewTailor' => Abs::FN_PREVIEW_HINT,
             ],
             $table,
-            $fields
+            Helper::arrayColumn($document['fields'], true, 'name')
         );
     }
 
@@ -422,14 +488,12 @@ class BswScaffoldCommand extends Command
             return [];
         }
 
-        $fields = Helper::arrayColumn($document['fields'], true, 'name');
-
         return $this->tailorArrayChunk(
             [
                 'PersistenceTailor' => Abs::FN_PERSISTENCE_HINT,
             ],
             $table,
-            $fields
+            Helper::arrayColumn($document['fields'], true, 'name')
         );
     }
 
@@ -604,7 +668,7 @@ class BswScaffoldCommand extends Command
                     continue;
                 }
 
-                $options = call_user_func_array([$this->acme, $fn], [$item, $table, $fields]);
+                $options = call_user_func_array([$this->acme, $fn], [$item, $table, $fields, $this->params]);
                 if (!is_null($options)) {
                     if (isset($options->hook) && is_array($options->hook)) {
                         $options->hook = array_filter($options->hook);

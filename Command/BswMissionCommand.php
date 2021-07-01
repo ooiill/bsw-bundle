@@ -125,7 +125,6 @@ class BswMissionCommand extends Command
 
             $conditionHandling = [];
             foreach ($condition as $key => $value) {
-                $key = strpos($key, '-') === 0 ? $key : "--{$key}";
                 $value = is_array($value) ? Helper::jsonStringify64($value) : $value;
                 $conditionHandling[$key] = $value;
             }
@@ -142,11 +141,8 @@ class BswMissionCommand extends Command
             // begin
             $missionRepo->modify([Abs::PK => $m['id']], ['state' => 2]);
 
-            // run command
-            $command = $this->getApplication()->find($m['command']);
-
             try {
-                $status = $command->run(new ArrayInput($conditionHandling), $output);
+                $status = $this->web->commandCaller($m['command'], $conditionHandling, $output);
                 if ($status === 0) {
                     if ($m['cronReuse']) {
                         $attributes = ['state' => 1, 'donePercent' => 0, 'remark' => "[{$date}] execute success"];

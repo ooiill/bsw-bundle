@@ -26,16 +26,43 @@ trait BackendEntityHint
     }
 
     /**
+     * Enum is exists
+     *
+     * @param string $table
+     * @param        $item
+     * @param array  $args
+     *
+     * @return bool
+     */
+    public static function enumIsExists(string $table, $item, array $args): bool
+    {
+        $enumClass = get_class_vars($args['acme'])['enum'];
+        $flag = "{$table}_{$item->name}";
+        $prefer = strtoupper(Helper::camelToUnder($flag));
+        $secondary = strtoupper(Helper::camelToUnder($item->name));
+
+        if (defined("{$enumClass}::{$prefer}")) {
+            return true;
+        }
+        if (defined("{$enumClass}::{$secondary}")) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Entity preview hint
      *
      * @param object   $item
      * @param string   $table
      * @param array    $fields
+     * @param array    $args
      * @param stdClass $options
      *
      * @return stdClass
      */
-    public static function entityPreviewHint($item, string $table, array $fields, stdClass $options = null)
+    public static function entityPreviewHint($item, string $table, array $fields, array $args, stdClass $options = null)
     {
         $options = $options ?? new stdClass();
 
@@ -45,7 +72,7 @@ trait BackendEntityHint
         }
 
         // type eq tinyint
-        if ($item->type == Abs::MYSQL_TINYINT) {
+        if ($item->type == Abs::MYSQL_TINYINT && self::enumIsExists($table, $item, $args)) {
             $options->enum = true;
             $options->dress = 'blue';
         }
@@ -182,6 +209,11 @@ trait BackendEntityHint
             $options->render = "{value} %";
         }
 
+        // comment to label
+        if ($args['comment-2-label'] == 'yes' && !empty($item->comment)) {
+            $options->label = trim($item->comment);
+        }
+
         return $options;
     }
 
@@ -191,12 +223,18 @@ trait BackendEntityHint
      * @param object   $item
      * @param string   $table
      * @param array    $fields
+     * @param array    $args
      * @param stdClass $options
      *
      * @return stdClass
      */
-    public static function entityPersistenceHint($item, string $table, array $fields, stdClass $options = null)
-    {
+    public static function entityPersistenceHint(
+        $item,
+        string $table,
+        array $fields,
+        array $args,
+        stdClass $options = null
+    ) {
         $options = $options ?? new stdClass();
 
         $intType = [Abs::MYSQL_TINYINT, Abs::MYSQL_SMALLINT, Abs::MYSQL_INT, Abs::MYSQL_BIGINT];
@@ -228,7 +266,7 @@ trait BackendEntityHint
         }
 
         // select
-        if ($item->type == Abs::MYSQL_TINYINT) {
+        if ($item->type == Abs::MYSQL_TINYINT && self::enumIsExists($table, $item, $args)) {
             $options->type = 'BswForm\\Select::class';
             $options->enum = true;
         }
@@ -337,6 +375,11 @@ trait BackendEntityHint
             unset($options->type);
         }
 
+        // comment to label
+        if ($args['comment-2-label'] == 'yes' && !empty($item->comment)) {
+            $options->label = trim($item->comment);
+        }
+
         return $options;
     }
 
@@ -346,14 +389,15 @@ trait BackendEntityHint
      * @param object   $item
      * @param string   $table
      * @param array    $fields
+     * @param array    $args
      * @param stdClass $options
      *
      * @return stdClass
      */
-    public static function entityFilterHint($item, string $table, array $fields, stdClass $options = null)
+    public static function entityFilterHint($item, string $table, array $fields, array $args, stdClass $options = null)
     {
         $options = $options ?? new stdClass();
-        $options = self::entityPersistenceHint($item, $table, $fields, $options);
+        $options = self::entityPersistenceHint($item, $table, $fields, $args, $options);
 
         if (in_array($item->name, ['add_time', 'update_time'])) {
             unset($options->show);
@@ -410,11 +454,12 @@ trait BackendEntityHint
      * @param object   $item
      * @param string   $table
      * @param array    $fields
+     * @param array    $args
      * @param stdClass $options
      *
      * @return stdClass
      */
-    public static function entityMixedHint($item, string $table, array $fields, stdClass $options = null)
+    public static function entityMixedHint($item, string $table, array $fields, array $args, stdClass $options = null)
     {
         $options = $options ?? new stdClass();
         if (strpos($item->type, 'int') !== false) {

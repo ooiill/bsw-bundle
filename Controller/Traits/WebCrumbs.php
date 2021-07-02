@@ -3,7 +3,7 @@
 namespace Leon\BswBundle\Controller\Traits;
 
 use Leon\BswBundle\Component\Helper;
-use Leon\BswBundle\Module\Bsw\Crumbs\Entity\Crumb;
+use Leon\BswBundle\Module\Scene\Crumb;
 
 trait WebCrumbs
 {

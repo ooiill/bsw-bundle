@@ -6,11 +6,11 @@ use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Component\Html;
 use Leon\BswBundle\Module\Bsw\Arguments;
 use Leon\BswBundle\Module\Bsw\Message;
-use Leon\BswBundle\Module\Bsw\Preview\Entity\Charm;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Error\Entity\ErrorParameter;
 use Leon\BswBundle\Module\Exception\FilterException;
 use Leon\BswBundle\Module\Filter\Dispatcher as FilterDispatcher;
+use Leon\BswBundle\Module\Scene\Charm;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Monolog\Logger;
 

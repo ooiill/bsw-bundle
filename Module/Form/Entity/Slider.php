@@ -2,30 +2,21 @@
 
 namespace Leon\BswBundle\Module\Form\Entity;
 
-use Leon\BswBundle\Module\Form\Entity\Traits\Dots;
-use Leon\BswBundle\Module\Form\Entity\Traits\Included;
-use Leon\BswBundle\Module\Form\Entity\Traits\Marks;
-use Leon\BswBundle\Module\Form\Entity\Traits\Max;
-use Leon\BswBundle\Module\Form\Entity\Traits\Min;
-use Leon\BswBundle\Module\Form\Entity\Traits\Range;
-use Leon\BswBundle\Module\Form\Entity\Traits\Step;
-use Leon\BswBundle\Module\Form\Entity\Traits\TipFormatter;
-use Leon\BswBundle\Module\Form\Entity\Traits\TooltipVisible;
-use Leon\BswBundle\Module\Form\Entity\Traits\Vertical;
+use Leon\BswBundle\Module\GetSetter;
 use Leon\BswBundle\Module\Form\Form;
 
 class Slider extends Form
 {
-    use Dots;
-    use Step;
-    use Min;
-    use Max;
-    use Marks;
-    use Included;
-    use Range;
-    use Vertical;
-    use TooltipVisible;
-    use TipFormatter;
+    use GetSetter\Dots;
+    use GetSetter\Step;
+    use GetSetter\Min;
+    use GetSetter\Max;
+    use GetSetter\Marks;
+    use GetSetter\Included;
+    use GetSetter\Range;
+    use GetSetter\Vertical;
+    use GetSetter\TooltipVisible;
+    use GetSetter\TipFormatter;
 
     /**
      * Slider constructor.

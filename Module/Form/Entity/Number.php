@@ -2,23 +2,18 @@
 
 namespace Leon\BswBundle\Module\Form\Entity;
 
+use Leon\BswBundle\Module\GetSetter;
 use Leon\BswBundle\Module\Entity\Abs;
-use Leon\BswBundle\Module\Form\Entity\Traits\ButtonLabel;
-use Leon\BswBundle\Module\Form\Entity\Traits\Max;
-use Leon\BswBundle\Module\Form\Entity\Traits\Min;
-use Leon\BswBundle\Module\Form\Entity\Traits\PreviewRoute;
-use Leon\BswBundle\Module\Form\Entity\Traits\Size;
-use Leon\BswBundle\Module\Form\Entity\Traits\Step;
 use Leon\BswBundle\Module\Form\Form;
 
 class Number extends Form
 {
-    use Size;
-    use PreviewRoute;
-    use ButtonLabel;
-    use Step;
-    use Min;
-    use Max;
+    use GetSetter\Size;
+    use GetSetter\PreviewRoute;
+    use GetSetter\ButtonLabel;
+    use GetSetter\Step;
+    use GetSetter\Min;
+    use GetSetter\Max;
 
     /**
      * Input constructor.

@@ -4,8 +4,8 @@ namespace Leon\BswBundle\Module\Bsw;
 
 use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Controller\BswWebController;
-use Leon\BswBundle\Module\Bsw\Preview\Entity\Choice;
 use Leon\BswBundle\Module\Error\Error;
+use Leon\BswBundle\Module\Scene\Choice;
 
 abstract class Tailor
 {

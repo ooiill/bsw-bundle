@@ -76,7 +76,7 @@
                 <a-menu-item>
                   <div>
                     {{ item.icon|icon|raw }}
-                    <span :data-bsw.prop="{{ item.data }}">{{ item.label|trans({}, 'twig') }}</span>
+                    <span :data-bsw.prop="{{ item.data }}">{{ item.label|trans({}, 'twig') }}{{ item.checked ? ' ←' : null }}</span>
                   </div>
                 </a-menu-item>
                 {% if item.afterOriginal is not empty %}
@@ -107,7 +107,7 @@
                 <a-menu-item key="{{ item.route }}">
                   <div>
                     {{ item.icon|icon|raw }}
-                    <span :data-bsw.prop="{{ item.data }}">{{ item.label|trans({}, 'twig') }}</span>
+                    <span :data-bsw.prop="{{ item.data }}">{{ item.label|trans({}, 'twig') }}{{ item.checked ? ' ←' : null }}</span>
                   </div>
                 </a-menu-item>
                 {% if item.afterOriginal is not empty %}

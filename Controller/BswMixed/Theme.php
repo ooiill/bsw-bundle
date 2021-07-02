@@ -36,12 +36,10 @@ trait Theme
             return $args;
         }
 
-        $skinMap = [
-            'default' => '',
-            'terse'   => 'terse',
-        ];
+        [$key, $skin] = $this->getSkinByKey($args->key);
+        $this->commandCaller('bsw:backend-skin', ['skin' => $skin]);
+        $this->session->set($this->skCnf, []);
 
-        $this->commandCaller('bsw:backend-skin', ['skin' => $skinMap[$args->key] ?? $args->key]);
         $message = $this->twigLang("Change skin to {$args->key}");
         $message = (new Message())
             ->setMessage($message)
@@ -67,15 +65,8 @@ trait Theme
             return $args;
         }
 
-        $themeMap = [
-            'ant-d'   => Abs::CSS_ANT_D,
-            'bsw'     => Abs::CSS_ANT_D_BSW,
-            'ali-yun' => Abs::CSS_ANT_D_ALI,
-            'talk'    => Abs::CSS_ANT_D_TALK,
-        ];
-
         $skCnf = $this->session->get($this->skCnf) ?? [];
-        $skCnf['theme'] = $themeMap[$args->key] ?? $args->key;
+        [$key, $skCnf['theme']] = $this->getThemeByKey($args->key);
         $this->session->set($this->skCnf, $skCnf);
 
         $message = $this->twigLang("Change theme to {$args->key}");

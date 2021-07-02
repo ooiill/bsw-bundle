@@ -2,18 +2,16 @@
 
 namespace Leon\BswBundle\Module\Form\Entity;
 
+use Leon\BswBundle\Module\GetSetter;
 use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Module\Entity\Abs;
-use Leon\BswBundle\Module\Form\Entity\Traits\ComplexKey;
-use Leon\BswBundle\Module\Form\Entity\Traits\Gutter;
-use Leon\BswBundle\Module\Form\Entity\Traits\Responsive;
 use Leon\BswBundle\Module\Form\Form;
 
 class Group extends Form
 {
-    use Responsive;
-    use Gutter;
-    use ComplexKey;
+    use GetSetter\Responsive;
+    use GetSetter\Gutter;
+    use GetSetter\ComplexKey;
 
     /**
      * @var Form[]

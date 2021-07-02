@@ -3,8 +3,8 @@
 namespace Leon\BswBundle\Module\Bsw\Operate;
 
 use Leon\BswBundle\Module\Bsw\ArgsOutput;
-use Leon\BswBundle\Module\Bsw\Preview\Entity\Choice;
 use Leon\BswBundle\Module\Form\Entity\Button;
+use Leon\BswBundle\Module\Scene\Choice;
 
 class Output extends ArgsOutput
 {

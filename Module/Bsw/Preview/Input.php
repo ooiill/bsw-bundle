@@ -3,8 +3,8 @@
 namespace Leon\BswBundle\Module\Bsw\Preview;
 
 use Leon\BswBundle\Module\Bsw\ArgsInput;
-use Leon\BswBundle\Module\Bsw\Preview\Entity\Choice;
 use Leon\BswBundle\Module\Entity\Abs;
+use Leon\BswBundle\Module\Scene\Choice;
 
 class Input extends ArgsInput
 {

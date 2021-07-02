@@ -8,8 +8,8 @@ use Leon\BswBundle\Controller\BswBackendController;
 use Leon\BswBundle\Module\Bsw\ArgsInput;
 use Leon\BswBundle\Module\Bsw\ArgsOutput;
 use Leon\BswBundle\Module\Bsw\Bsw;
-use Leon\BswBundle\Module\Bsw\Header\Entity\Links;
 use Leon\BswBundle\Module\Entity\Abs;
+use Leon\BswBundle\Module\Scene\Links;
 
 /**
  * @property Input                $input

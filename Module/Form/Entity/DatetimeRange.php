@@ -2,16 +2,14 @@
 
 namespace Leon\BswBundle\Module\Form\Entity;
 
+use Leon\BswBundle\Module\GetSetter;
 use Leon\BswBundle\Module\Entity\Abs;
-use Leon\BswBundle\Module\Form\Entity\Traits\Separator;
-use Leon\BswBundle\Module\Form\Entity\Traits\TimeBoundary;
-use Leon\BswBundle\Module\Form\Entity\Traits\TimeFormat;
 
 class DatetimeRange extends Datetime
 {
-    use TimeFormat;
-    use TimeBoundary;
-    use Separator;
+    use GetSetter\TimeFormat;
+    use GetSetter\TimeBoundary;
+    use GetSetter\Separator;
 
     /**
      * @return string

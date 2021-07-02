@@ -3,7 +3,7 @@
 namespace Leon\BswBundle\Module\Bsw\Crumbs;
 
 use Leon\BswBundle\Module\Bsw\ArgsOutput;
-use Leon\BswBundle\Module\Bsw\Crumbs\Entity\Crumb;
+use Leon\BswBundle\Module\Scene\Crumb;
 
 class Output extends ArgsOutput
 {

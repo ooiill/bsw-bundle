@@ -2,35 +2,23 @@
 
 namespace Leon\BswBundle\Module\Form\Entity;
 
-use Leon\BswBundle\Module\Form\Entity\Traits\Accept;
-use Leon\BswBundle\Module\Form\Entity\Traits\Args;
-use Leon\BswBundle\Module\Form\Entity\Traits\ButtonLabel;
-use Leon\BswBundle\Module\Form\Entity\Traits\FileItems;
-use Leon\BswBundle\Module\Form\Entity\Traits\Flag;
-use Leon\BswBundle\Module\Form\Entity\Traits\ListType;
-use Leon\BswBundle\Module\Form\Entity\Traits\NeedDrag;
-use Leon\BswBundle\Module\Form\Entity\Traits\NeedId;
-use Leon\BswBundle\Module\Form\Entity\Traits\NeedTips;
-use Leon\BswBundle\Module\Form\Entity\Traits\Route;
-use Leon\BswBundle\Module\Form\Entity\Traits\ShowList;
-use Leon\BswBundle\Module\Form\Entity\Traits\Url;
-use Leon\BswBundle\Module\Form\Entity\Traits\VarNameForTips;
+use Leon\BswBundle\Module\GetSetter;
 
 class Upload extends Number
 {
-    use Route;
-    use Args;
-    use ButtonLabel;
-    use NeedDrag;
-    use Accept;
-    use ShowList;
-    use ListType;
-    use Flag;
-    use FileItems;
-    use Url;
-    use NeedId;
-    use NeedTips;
-    use VarNameForTips;
+    use GetSetter\Route;
+    use GetSetter\Args;
+    use GetSetter\ButtonLabel;
+    use GetSetter\NeedDrag;
+    use GetSetter\Accept;
+    use GetSetter\ShowList;
+    use GetSetter\ListType;
+    use GetSetter\Flag;
+    use GetSetter\FileItems;
+    use GetSetter\Url;
+    use GetSetter\NeedId;
+    use GetSetter\NeedTips;
+    use GetSetter\VarNameForTips;
 
     /**
      * Upload constructor.

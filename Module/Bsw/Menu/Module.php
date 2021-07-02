@@ -7,8 +7,8 @@ use Leon\BswBundle\Entity\BswAdminMenu;
 use Leon\BswBundle\Module\Bsw\ArgsInput;
 use Leon\BswBundle\Module\Bsw\ArgsOutput;
 use Leon\BswBundle\Module\Bsw\Bsw;
-use Leon\BswBundle\Module\Bsw\Menu\Entity\Menu;
 use Leon\BswBundle\Module\Entity\Abs;
+use Leon\BswBundle\Module\Scene\Menu;
 
 /**
  * @property Input $input

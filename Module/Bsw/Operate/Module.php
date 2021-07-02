@@ -8,10 +8,10 @@ use Leon\BswBundle\Controller\BswBackendController;
 use Leon\BswBundle\Module\Bsw\ArgsInput;
 use Leon\BswBundle\Module\Bsw\ArgsOutput;
 use Leon\BswBundle\Module\Bsw\Bsw;
-use Leon\BswBundle\Module\Bsw\Preview\Entity\Choice;
 use Leon\BswBundle\Module\Exception\ModuleException;
 use Leon\BswBundle\Module\Form\Entity\Button;
 use Leon\BswBundle\Module\Entity\Abs;
+use Leon\BswBundle\Module\Scene\Choice;
 
 /**
  * @property Input                $input

@@ -3,7 +3,7 @@
 namespace Leon\BswBundle\Module\Bsw\Menu;
 
 use Leon\BswBundle\Module\Bsw\ArgsOutput;
-use Leon\BswBundle\Module\Bsw\Menu\Entity\Menu;
+use Leon\BswBundle\Module\Scene\Menu;
 
 class Output extends ArgsOutput
 {

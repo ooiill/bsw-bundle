@@ -29,9 +29,9 @@ use Leon\BswBundle\Module\Hook\Entity\MessagesTrans;
 use Leon\BswBundle\Module\Hook\Entity\SeoTrans;
 use Leon\BswBundle\Module\Hook\Entity\Timestamp;
 use Leon\BswBundle\Module\Hook\Entity\TwigTrans;
-use Leon\BswBundle\Module\Bsw\Menu\Entity\Menu as MenuItem;
-use Leon\BswBundle\Module\Bsw\Header\Entity\Setting;
-use Leon\BswBundle\Module\Bsw\Header\Entity\Links;
+use Leon\BswBundle\Module\Scene\Links;
+use Leon\BswBundle\Module\Scene\Menu;
+use Leon\BswBundle\Module\Scene\Setting;
 use Leon\BswBundle\Repository\BswAdminLoginRepository;
 use Leon\BswBundle\Repository\BswAdminPersistenceLogRepository;
 use Leon\BswBundle\Repository\BswAdminUserRepository;
@@ -970,11 +970,75 @@ class BswBackendController extends BswWebController
     /**
      * Module header menu
      *
-     * @return MenuItem[]
+     * @return Menu[]
      */
     public function moduleHeaderMenu(): array
     {
         return [];
+    }
+
+    /**
+     * @return array
+     */
+    public function getSkinList(): array
+    {
+        return [
+            'terse'   => 'terse',
+            'classic' => '',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getThemeList(): array
+    {
+        return [
+            'talk'    => Abs::CSS_ANT_D_TALK,
+            'bsw'     => Abs::CSS_ANT_D_BSW,
+            'ant-d'   => Abs::CSS_ANT_D,
+            'ali-yun' => Abs::CSS_ANT_D_ALI,
+        ];
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return array
+     */
+    public function getSkinByKey(string $key): array
+    {
+        $map = $this->getSkinList();
+        if (isset($map[$key])) {
+            return [$key, $map[$key]];
+        }
+        foreach ($map as $k => $v) {
+            if (strpos($k, $key) !== false) {
+                return [$k, $v];
+            }
+        }
+
+        return [key($map), current($map)];
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return array
+     */
+    public function getThemeByKey(string $key): array
+    {
+        $map = $this->getThemeList();
+        if (isset($map[$key])) {
+            return [$key, $map[$key]];
+        }
+        foreach ($map as $k => $v) {
+            if (strpos($k, $key) !== false) {
+                return [$k, $v];
+            }
+        }
+
+        return [key($map), current($map)];
     }
 
     /**
@@ -993,13 +1057,30 @@ class BswBackendController extends BswWebController
                 ->setArgs(['key' => $key]);
         };
 
+        $skin = $this->parameter('skin', 'classic') ?: 'classic';
+        $theme = $this->cnf->theme;
+
         return [
-            $link('default', 'skin'),
-            $link('terse', 'skin')->setAfterOriginal('<a-menu-divider></a-menu-divider>'),
-            $link('ant-d', 'theme'),
-            $link('bsw', 'theme'),
-            $link('ali-yun', 'theme'),
-            $link('talk', 'theme')->setAfterOriginal('<a-menu-divider></a-menu-divider>'),
+            $link('default', 'skin')
+                ->setChecked($skin == 'classic'),
+
+            $link('terse', 'skin')
+                ->setChecked($skin == 'terse')
+                ->setAfterOriginal('<a-menu-divider></a-menu-divider>'),
+
+            $link('ant-d', 'theme')
+                ->setChecked($theme == Abs::CSS_ANT_D),
+
+            $link('bsw', 'theme')
+                ->setChecked($theme == Abs::CSS_ANT_D_BSW),
+
+            $link('ali-yun', 'theme')
+                ->setChecked($theme == Abs::CSS_ANT_D_ALI),
+
+            $link('talk', 'theme')
+                ->setChecked($theme == Abs::CSS_ANT_D_TALK)
+                ->setAfterOriginal('<a-menu-divider></a-menu-divider>'),
+
             new Setting('Switch theme', $this->cnf->icon_theme, 'themeSwitch'),
             new Setting('Switch color weak', $this->cnf->icon_bulb, 'colorWeakSwitch'),
             new Setting('Switch third message', $this->cnf->icon_message, 'thirdMessageSwitch'),

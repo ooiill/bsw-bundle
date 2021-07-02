@@ -3,7 +3,7 @@
 namespace Leon\BswBundle\Module\Bsw\Tabs;
 
 use Leon\BswBundle\Module\Bsw\ArgsOutput;
-use Leon\BswBundle\Module\Bsw\Header\Entity\Links;
+use Leon\BswBundle\Module\Scene\Links;
 
 class Output extends ArgsOutput
 {

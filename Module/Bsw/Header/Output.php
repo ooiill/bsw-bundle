@@ -3,9 +3,9 @@
 namespace Leon\BswBundle\Module\Bsw\Header;
 
 use Leon\BswBundle\Module\Bsw\ArgsOutput;
-use Leon\BswBundle\Module\Bsw\Header\Entity\Links;
-use Leon\BswBundle\Module\Bsw\Header\Entity\Setting;
-use Leon\BswBundle\Module\Bsw\Menu\Entity\Menu;
+use Leon\BswBundle\Module\Scene\Links;
+use Leon\BswBundle\Module\Scene\Menu;
+use Leon\BswBundle\Module\Scene\Setting;
 
 class Output extends ArgsOutput
 {

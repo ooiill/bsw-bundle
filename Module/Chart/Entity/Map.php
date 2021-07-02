@@ -3,16 +3,16 @@
 namespace Leon\BswBundle\Module\Chart\Entity;
 
 use Leon\BswBundle\Module\Chart\Chart;
-use Leon\BswBundle\Module\Chart\Traits;
+use Leon\BswBundle\Module\GetSetter;
 use Leon\BswBundle\Module\Entity\Abs;
 
 class Map extends Chart
 {
-    use Traits\MapSource,
-        Traits\MapColor,
-        Traits\MapNameAlias,
-        Traits\MinValue,
-        Traits\MaxValue;
+    use GetSetter\MapSource,
+        GetSetter\MapColor,
+        GetSetter\MapNameAlias,
+        GetSetter\MinValue,
+        GetSetter\MaxValue;
 
     /**
      * @var string

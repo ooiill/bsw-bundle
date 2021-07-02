@@ -2,42 +2,28 @@
 
 namespace Leon\BswBundle\Module\Form\Entity;
 
+use Leon\BswBundle\Module\GetSetter;
 use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Module\Entity\Abs;
-use Leon\BswBundle\Module\Form\Entity\Traits\AllowClear;
-use Leon\BswBundle\Module\Form\Entity\Traits\ButtonLabel;
-use Leon\BswBundle\Module\Form\Entity\Traits\DropdownEqualWidth;
-use Leon\BswBundle\Module\Form\Entity\Traits\DropdownStyle;
-use Leon\BswBundle\Module\Form\Entity\Traits\LabelInValue;
-use Leon\BswBundle\Module\Form\Entity\Traits\Mode;
-use Leon\BswBundle\Module\Form\Entity\Traits\NotFoundContent;
-use Leon\BswBundle\Module\Form\Entity\Traits\OptionFilterProp;
-use Leon\BswBundle\Module\Form\Entity\Traits\Options;
-use Leon\BswBundle\Module\Form\Entity\Traits\PreviewRoute;
-use Leon\BswBundle\Module\Form\Entity\Traits\Search;
-use Leon\BswBundle\Module\Form\Entity\Traits\ShowArrow;
-use Leon\BswBundle\Module\Form\Entity\Traits\ShowSearch;
-use Leon\BswBundle\Module\Form\Entity\Traits\Size;
-use Leon\BswBundle\Module\Form\Entity\Traits\TokenSeparators;
 use Leon\BswBundle\Module\Form\Form;
 
 class Select extends Form
 {
-    use Size;
-    use Options;
-    use PreviewRoute;
-    use AllowClear;
-    use ButtonLabel;
-    use NotFoundContent;
-    use LabelInValue;
-    use Mode;
-    use ShowSearch;
-    use ShowArrow;
-    use OptionFilterProp;
-    use TokenSeparators;
-    use DropdownStyle;
-    use DropdownEqualWidth;
-    use Search;
+    use GetSetter\Size;
+    use GetSetter\Options;
+    use GetSetter\PreviewRoute;
+    use GetSetter\AllowClear;
+    use GetSetter\ButtonLabel;
+    use GetSetter\NotFoundContent;
+    use GetSetter\LabelInValue;
+    use GetSetter\Mode;
+    use GetSetter\ShowSearch;
+    use GetSetter\ShowArrow;
+    use GetSetter\OptionFilterProp;
+    use GetSetter\TokenSeparators;
+    use GetSetter\DropdownStyle;
+    use GetSetter\DropdownEqualWidth;
+    use GetSetter\Search;
 
     /**
      * @const array Demo

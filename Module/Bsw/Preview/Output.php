@@ -3,7 +3,7 @@
 namespace Leon\BswBundle\Module\Bsw\Preview;
 
 use Leon\BswBundle\Module\Bsw\ArgsOutput;
-use Leon\BswBundle\Module\Bsw\Preview\Entity\Choice;
+use Leon\BswBundle\Module\Scene\Choice;
 
 class Output extends ArgsOutput
 {

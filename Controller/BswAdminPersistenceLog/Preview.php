@@ -6,11 +6,11 @@ use Leon\BswBundle\Component\Html;
 use Leon\BswBundle\Entity\BswAdminPersistenceLog;
 use Leon\BswBundle\Entity\BswAdminUser;
 use Leon\BswBundle\Module\Bsw\Arguments;
-use Leon\BswBundle\Module\Bsw\Preview\Entity\Charm;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Form\Entity\Button;
 use Leon\BswBundle\Annotation\Entity\AccessControl as Access;
 use Leon\BswBundle\Module\Scene\ButtonScene;
+use Leon\BswBundle\Module\Scene\Charm;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 

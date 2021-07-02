@@ -2,27 +2,20 @@
 
 namespace Leon\BswBundle\Module\Form\Entity;
 
+use Leon\BswBundle\Module\GetSetter;
 use Leon\BswBundle\Module\Entity\Abs;
-use Leon\BswBundle\Module\Form\Entity\Traits\AllowClear;
-use Leon\BswBundle\Module\Form\Entity\Traits\Icon;
-use Leon\BswBundle\Module\Form\Entity\Traits\MaxLength;
-use Leon\BswBundle\Module\Form\Entity\Traits\Prefix;
-use Leon\BswBundle\Module\Form\Entity\Traits\PreviewRoute;
-use Leon\BswBundle\Module\Form\Entity\Traits\Size;
-use Leon\BswBundle\Module\Form\Entity\Traits\Suffix;
-use Leon\BswBundle\Module\Form\Entity\Traits\Type;
 use Leon\BswBundle\Module\Form\Form;
 
 class Input extends Form
 {
-    use Size;
-    use PreviewRoute;
-    use AllowClear;
-    use Type;
-    use MaxLength;
-    use Icon;
-    use Prefix;
-    use Suffix;
+    use GetSetter\Size;
+    use GetSetter\PreviewRoute;
+    use GetSetter\AllowClear;
+    use GetSetter\Type;
+    use GetSetter\MaxLength;
+    use GetSetter\Icon;
+    use GetSetter\Prefix;
+    use GetSetter\Suffix;
 
     /**
      * Input constructor.

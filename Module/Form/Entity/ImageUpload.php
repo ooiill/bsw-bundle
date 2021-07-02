@@ -2,14 +2,13 @@
 
 namespace Leon\BswBundle\Module\Form\Entity;
 
+use Leon\BswBundle\Module\GetSetter;
 use Leon\BswBundle\Component\Helper;
-use Leon\BswBundle\Module\Form\Entity\Traits\MaxHeight;
-use Leon\BswBundle\Module\Form\Entity\Traits\MaxWidth;
 
 class ImageUpload extends Upload
 {
-    use MaxWidth;
-    use MaxHeight;
+    use GetSetter\MaxWidth;
+    use GetSetter\MaxHeight;
 
     /**
      * ImageUpload constructor.

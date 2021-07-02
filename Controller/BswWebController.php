@@ -3,7 +3,6 @@
 namespace Leon\BswBundle\Controller;
 
 use Leon\BswBundle\Component\Helper;
-use Leon\BswBundle\Module\Bsw\Crumbs\Entity\Crumb;
 use Leon\BswBundle\Module\Bsw\Message;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Error\Entity\ErrorAccess;
@@ -14,6 +13,7 @@ use Leon\BswBundle\Module\Error\Entity\ErrorParameter;
 use Leon\BswBundle\Module\Error\Entity\ErrorSession;
 use Leon\BswBundle\Module\Error\Error;
 use Leon\BswBundle\Controller\Traits as CT;
+use Leon\BswBundle\Module\Scene\Crumb;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +37,7 @@ abstract class BswWebController extends AbstractController
     /**
      * @var string
      */
-    protected $version = '2.1.1';
+    protected $version = '2.1.2';
 
     /**
      * @var string

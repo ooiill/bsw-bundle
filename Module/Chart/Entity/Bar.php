@@ -2,12 +2,12 @@
 
 namespace Leon\BswBundle\Module\Chart\Entity;
 
-use Leon\BswBundle\Module\Chart\Traits;
+use Leon\BswBundle\Module\GetSetter;
 
 class Bar extends Line
 {
-    use Traits\LabelStackTpl,
-        Traits\MaxBarFixedWidth;
+    use GetSetter\LabelStackTpl,
+        GetSetter\MaxBarFixedWidth;
 
     /**
      * @var string

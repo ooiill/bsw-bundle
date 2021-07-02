@@ -2,33 +2,23 @@
 
 namespace Leon\BswBundle\Module\Form\Entity;
 
+use Leon\BswBundle\Module\GetSetter;
 use Leon\BswBundle\Module\Entity\Abs;
-use Leon\BswBundle\Module\Form\Entity\Traits\AllowClear;
-use Leon\BswBundle\Module\Form\Entity\Traits\DropdownEqualWidth;
-use Leon\BswBundle\Module\Form\Entity\Traits\DropdownStyle;
-use Leon\BswBundle\Module\Form\Entity\Traits\ExpandAll;
-use Leon\BswBundle\Module\Form\Entity\Traits\LabelInValue;
-use Leon\BswBundle\Module\Form\Entity\Traits\OptionFilterProp;
-use Leon\BswBundle\Module\Form\Entity\Traits\ShowArrow;
-use Leon\BswBundle\Module\Form\Entity\Traits\ShowCheckedStrategy;
-use Leon\BswBundle\Module\Form\Entity\Traits\ShowSearch;
-use Leon\BswBundle\Module\Form\Entity\Traits\Size;
-use Leon\BswBundle\Module\Form\Entity\Traits\TreeData;
 use Leon\BswBundle\Module\Form\Form;
 
 class SelectTree extends Form
 {
-    use Size;
-    use AllowClear;
-    use LabelInValue;
-    use ShowSearch;
-    use ShowArrow;
-    use ShowCheckedStrategy;
-    use OptionFilterProp;
-    use DropdownStyle;
-    use DropdownEqualWidth;
-    use TreeData;
-    use ExpandAll;
+    use GetSetter\Size;
+    use GetSetter\AllowClear;
+    use GetSetter\LabelInValue;
+    use GetSetter\ShowSearch;
+    use GetSetter\ShowArrow;
+    use GetSetter\ShowCheckedStrategy;
+    use GetSetter\OptionFilterProp;
+    use GetSetter\DropdownStyle;
+    use GetSetter\DropdownEqualWidth;
+    use GetSetter\TreeData;
+    use GetSetter\ExpandAll;
 
     /**
      * @const array demo

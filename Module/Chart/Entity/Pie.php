@@ -3,14 +3,14 @@
 namespace Leon\BswBundle\Module\Chart\Entity;
 
 use Leon\BswBundle\Module\Chart\Chart;
-use Leon\BswBundle\Module\Chart\Traits;
+use Leon\BswBundle\Module\GetSetter;
 use Leon\BswBundle\Module\Entity\Abs;
 
 class Pie extends Chart
 {
-    use Traits\ShowLabel,
-        Traits\LabelTpl,
-        Traits\Radius;
+    use GetSetter\ShowLabel,
+        GetSetter\LabelTpl,
+        GetSetter\Radius;
 
     /**
      * @var string

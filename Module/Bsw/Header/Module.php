@@ -7,10 +7,10 @@ use Leon\BswBundle\Component\Html;
 use Leon\BswBundle\Module\Bsw\ArgsInput;
 use Leon\BswBundle\Module\Bsw\ArgsOutput;
 use Leon\BswBundle\Module\Bsw\Bsw;
-use Leon\BswBundle\Module\Bsw\Header\Entity\Links;
-use Leon\BswBundle\Module\Bsw\Header\Entity\Setting;
-use Leon\BswBundle\Module\Bsw\Menu\Entity\Menu;
 use Leon\BswBundle\Module\Entity\Abs;
+use Leon\BswBundle\Module\Scene\Links;
+use Leon\BswBundle\Module\Scene\Menu;
+use Leon\BswBundle\Module\Scene\Setting;
 
 /**
  * @property Input $input

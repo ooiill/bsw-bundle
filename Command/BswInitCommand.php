@@ -238,7 +238,7 @@ class BswInitCommand extends Command
      */
     protected function twigCnf(): array
     {
-        return [
+        $twig = [
             'twig' => [
                 'paths'                => [
                     '%kernel.project_dir%/templates',
@@ -250,6 +250,11 @@ class BswInitCommand extends Command
                 'exception_controller' => 'Leon\BswBundle\Controller\BswBackendController::showExceptionAction',
             ],
         ];
+        if ($this->app == Abs::APP_TYPE_BACKEND) {
+            array_unshift($twig['twig']['paths'], '%kernel.project_dir%/templates-terse');
+        }
+
+        return $twig;
     }
 
     /**

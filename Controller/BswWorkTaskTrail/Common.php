@@ -5,7 +5,7 @@ namespace Leon\BswBundle\Controller\BswWorkTaskTrail;
 use Doctrine\ORM\Query\Expr;
 use Leon\BswBundle\Entity\BswAdminUser;
 use Leon\BswBundle\Entity\BswWorkTask;
-use Leon\BswBundle\Module\Bsw\Arguments;
+use Leon\BswBundle\Module\Scene\Arguments;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Repository\BswAdminUserRepository;
 use Leon\BswBundle\Repository\BswWorkTaskRepository;

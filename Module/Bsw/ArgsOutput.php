@@ -2,6 +2,8 @@
 
 namespace Leon\BswBundle\Module\Bsw;
 
+use Leon\BswBundle\Module\Scene\Message;
+
 class ArgsOutput
 {
     /**

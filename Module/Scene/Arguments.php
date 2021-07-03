@@ -1,6 +1,6 @@
 <?php
 
-namespace Leon\BswBundle\Module\Bsw;
+namespace Leon\BswBundle\Module\Scene;
 
 use Leon\BswBundle\Component\Helper;
 use stdClass;

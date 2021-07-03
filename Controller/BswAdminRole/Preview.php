@@ -4,7 +4,7 @@ namespace Leon\BswBundle\Controller\BswAdminRole;
 
 use Leon\BswBundle\Entity\BswAdminRole;
 use Leon\BswBundle\Entity\BswAdminRoleAccessControl;
-use Leon\BswBundle\Module\Bsw\Arguments;
+use Leon\BswBundle\Module\Scene\Arguments;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Repository\BswAdminRoleAccessControlRepository;
 use Leon\BswBundle\Module\Form\Entity\Button;

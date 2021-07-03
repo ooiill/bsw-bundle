@@ -3,7 +3,7 @@
 namespace Leon\BswBundle\Module\Scene;
 
 use Leon\BswBundle\Module\Exception\ModuleException;
-use Leon\BswBundle\Module\Scene\Traits\Link;
+use Leon\BswBundle\Module\Scene\Link;
 
 class Menu
 {

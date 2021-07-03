@@ -3,7 +3,7 @@
 namespace Leon\BswBundle\Controller\BswAdminLogin;
 
 use Leon\BswBundle\Entity\BswAdminLogin;
-use Leon\BswBundle\Module\Bsw\Arguments;
+use Leon\BswBundle\Module\Scene\Arguments;
 use Leon\BswBundle\Module\Form\Entity\Button;
 use Leon\BswBundle\Annotation\Entity\AccessControl as Access;
 use Symfony\Component\Routing\Annotation\Route;

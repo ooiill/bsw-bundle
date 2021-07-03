@@ -1,6 +1,6 @@
 <?php
 
-namespace Leon\BswBundle\Module\Bsw;
+namespace Leon\BswBundle\Module\Scene;
 
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Error\Error;

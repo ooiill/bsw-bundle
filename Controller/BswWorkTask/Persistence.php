@@ -3,8 +3,8 @@
 namespace Leon\BswBundle\Controller\BswWorkTask;
 
 use Leon\BswBundle\Entity\BswWorkTask;
-use Leon\BswBundle\Module\Bsw\Arguments;
-use Leon\BswBundle\Module\Bsw\Message;
+use Leon\BswBundle\Module\Scene\Arguments;
+use Leon\BswBundle\Module\Scene\Message;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Entity\Enum;
 use Leon\BswBundle\Module\Error\Error;

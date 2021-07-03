@@ -5,7 +5,7 @@ namespace Leon\BswBundle\Module\Form\Entity;
 use Leon\BswBundle\Module\GetSetter;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Form\Form;
-use Leon\BswBundle\Module\Scene\Traits\Link;
+use Leon\BswBundle\Module\Scene\Link;
 
 class Button extends Form
 {

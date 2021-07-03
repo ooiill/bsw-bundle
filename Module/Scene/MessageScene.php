@@ -3,7 +3,7 @@
 namespace Leon\BswBundle\Module\Scene;
 
 use Leon\BswBundle\Component\Helper;
-use Leon\BswBundle\Module\Bsw\Message;
+use Leon\BswBundle\Module\Scene\Message;
 use Leon\BswBundle\Module\Entity\Abs;
 
 class MessageScene extends Message

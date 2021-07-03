@@ -4,7 +4,7 @@ namespace Leon\BswBundle\Controller\BswMixed;
 
 use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Component\Html;
-use Leon\BswBundle\Module\Bsw\Arguments;
+use Leon\BswBundle\Module\Scene\Arguments;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Form\Entity\Select;
 use Leon\BswBundle\Component\Reflection;

@@ -15,9 +15,9 @@
     :z-index="result.zIndex || {{ result.zIndex }}"
     :centered="typeof result.centered !== 'undefined' ? result.centered : {{ result.centered ? 'true' : 'false' }}"
     :width="result.width || {{ result.width|vueType }}"
-    :body-style="{{ result.bodyStyleJson }}"
-    :mask-style="{{ result.maskStyleJson }}"
-    :dialog-style="{{ result.dialogStyleJson }}"
+    :body-style="modal.bodyStyle || {{ result.bodyStyleJson }}"
+    :mask-style="modal.maskStyle || {{ result.maskStyleJson }}"
+    :dialog-style="modal.dialogStyle || {{ result.dialogStyleJson }}"
     :footer="null"
   >
     <a-result :status="typeof result.status !== 'undefined' ? result.status : '{{ result.status }}'">

@@ -3,7 +3,7 @@
 namespace Leon\BswBundle\Controller\BswMixed;
 
 use Leon\BswBundle\Component\Helper;
-use Leon\BswBundle\Module\Bsw\Message;
+use Leon\BswBundle\Module\Scene\Message;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Error\Entity\ErrorNoRecord;
 use Symfony\Component\Routing\Annotation\Route;

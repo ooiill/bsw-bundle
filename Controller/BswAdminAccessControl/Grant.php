@@ -4,8 +4,8 @@ namespace Leon\BswBundle\Controller\BswAdminAccessControl;
 
 use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Entity\BswAdminAccessControl;
-use Leon\BswBundle\Module\Bsw\Arguments;
-use Leon\BswBundle\Module\Bsw\Message;
+use Leon\BswBundle\Module\Scene\Arguments;
+use Leon\BswBundle\Module\Scene\Message;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Exception\RepositoryException;
 use Leon\BswBundle\Repository\BswAdminAccessControlRepository;

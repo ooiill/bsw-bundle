@@ -3,7 +3,7 @@
 namespace Leon\BswBundle\Controller\BswAdminMenu;
 
 use Leon\BswBundle\Entity\BswAdminMenu;
-use Leon\BswBundle\Module\Bsw\Arguments;
+use Leon\BswBundle\Module\Scene\Arguments;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Form\Entity\Button;
 use Leon\BswBundle\Annotation\Entity\AccessControl as Access;

@@ -14,11 +14,11 @@
     :height="drawer.height || {{ drawer.height|vueType }}"
     :z-index="drawer.zIndex || {{ drawer.zIndex }}"
     :placement="drawer.placement || '{{ drawer.placement }}'"
-    :mask-style="{{ drawer.maskStyleJson }}"
-    :wrap-style="{{ drawer.wrapStyleJson }}"
-    :drawer-style="{{ drawer.drawerStyleJson }}"
-    :header-style="{{ drawer.headerStyleJson }}"
-    :body-style="{{ drawer.bodyStyleJson }}"
+    :mask-style="modal.maskStyle || {{ drawer.maskStyleJson }}"
+    :wrap-style="modal.wrapStyle || {{ drawer.wrapStyleJson }}"
+    :drawer-style="modal.drawerStyle || {{ drawer.drawerStyleJson }}"
+    :header-style="modal.headerStyle || {{ drawer.headerStyleJson }}"
+    :body-style="modal.bodyStyle || {{ drawer.bodyStyleJson }}"
     @close="bsw.drawerOnCancel"
   >
     <div v-html="drawer.content"></div>

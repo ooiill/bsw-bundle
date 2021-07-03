@@ -4,6 +4,7 @@ namespace Leon\BswBundle\Module\Bsw;
 
 use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Controller\BswBackendController;
+use Leon\BswBundle\Controller\BswWebController;
 use Leon\BswBundle\Entity\FoundationEntity;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Exception\AnnotationException;
@@ -16,6 +17,8 @@ use Leon\BswBundle\Module\Form\Entity\Select;
 use Leon\BswBundle\Module\Form\Entity\SelectTree;
 use Leon\BswBundle\Module\Form\Entity\Transfer;
 use Leon\BswBundle\Module\Form\Form;
+use Leon\BswBundle\Module\Scene\Arguments;
+use Leon\BswBundle\Module\Scene\Message;
 use Leon\BswBundle\Repository\FoundationRepository;
 
 abstract class Bsw
@@ -33,7 +36,7 @@ abstract class Bsw
     const OUTPUT_ARGS_HANDLER = 'OutputArgsHandler';
 
     /**
-     * @var BswBackendController
+     * @var BswWebController
      */
     protected $web;
 
@@ -85,9 +88,9 @@ abstract class Bsw
     /**
      * Bsw constructor.
      *
-     * @param BswBackendController $web
+     * @param BswWebController $web
      */
-    public function __construct(BswBackendController $web)
+    public function __construct(BswWebController $web)
     {
         $this->web = $web;
     }

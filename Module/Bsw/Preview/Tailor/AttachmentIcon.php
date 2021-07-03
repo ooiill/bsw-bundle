@@ -4,7 +4,7 @@ namespace Leon\BswBundle\Module\Bsw\Preview\Tailor;
 
 use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Entity\BswAttachment;
-use Leon\BswBundle\Module\Bsw\Arguments;
+use Leon\BswBundle\Module\Scene\Arguments;
 use Leon\BswBundle\Module\Bsw\Tailor;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Module\Hook\Entity\FileSize;

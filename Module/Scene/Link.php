@@ -1,6 +1,6 @@
 <?php
 
-namespace Leon\BswBundle\Module\Scene\Traits;
+namespace Leon\BswBundle\Module\Scene;
 
 use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Module\GetSetter;

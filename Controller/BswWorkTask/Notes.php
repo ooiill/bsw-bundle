@@ -4,7 +4,7 @@ namespace Leon\BswBundle\Controller\BswWorkTask;
 
 use Leon\BswBundle\Entity\BswWorkTask;
 use Leon\BswBundle\Entity\BswWorkTaskTrail;
-use Leon\BswBundle\Module\Bsw\Arguments;
+use Leon\BswBundle\Module\Scene\Arguments;
 use Leon\BswBundle\Module\Error\Error;
 use Leon\BswBundle\Repository\BswWorkTaskRepository;
 use Leon\BswBundle\Module\Form\Entity\Button;

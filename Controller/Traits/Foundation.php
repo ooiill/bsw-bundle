@@ -28,7 +28,7 @@ use Leon\BswBundle\Module\Form\Form;
 use Leon\BswBundle\Module\Traits as MT;
 use Leon\BswBundle\Module\Hook\Dispatcher as HookerDispatcher;
 use Leon\BswBundle\Module\Validator\Dispatcher as ValidatorDispatcher;
-use Leon\BswBundle\Module\Bsw\Message;
+use Leon\BswBundle\Module\Scene\Message;
 use Leon\BswBundle\Controller\Traits as CT;
 use Leon\BswBundle\Repository\BswTokenRepository;
 use Leon\BswBundle\Repository\FoundationRepository;

@@ -3,7 +3,7 @@
 namespace Leon\BswBundle\Controller\BswWorkTask;
 
 use Leon\BswBundle\Entity\BswWorkTask;
-use Leon\BswBundle\Module\Bsw\Arguments;
+use Leon\BswBundle\Module\Scene\Arguments;
 use Leon\BswBundle\Module\Error\Error;
 use Leon\BswBundle\Repository\BswWorkTaskRepository;
 use Leon\BswBundle\Annotation\Entity\AccessControl as Access;

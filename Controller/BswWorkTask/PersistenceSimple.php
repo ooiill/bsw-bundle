@@ -2,8 +2,8 @@
 
 namespace Leon\BswBundle\Controller\BswWorkTask;
 
-use Leon\BswBundle\Module\Bsw\Arguments;
-use Leon\BswBundle\Module\Bsw\Message;
+use Leon\BswBundle\Module\Scene\Arguments;
+use Leon\BswBundle\Module\Scene\Message;
 use Leon\BswBundle\Module\Error\Error;
 use Leon\BswBundle\Module\Form\Entity\Button;
 use Leon\BswBundle\Annotation\Entity\AccessControl as Access;

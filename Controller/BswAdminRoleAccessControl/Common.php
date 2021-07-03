@@ -3,7 +3,7 @@
 namespace Leon\BswBundle\Controller\BswAdminRoleAccessControl;
 
 use Leon\BswBundle\Entity\BswAdminRole;
-use Leon\BswBundle\Module\Bsw\Arguments;
+use Leon\BswBundle\Module\Scene\Arguments;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Repository\BswAdminRoleRepository;
 

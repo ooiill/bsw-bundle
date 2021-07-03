@@ -4,7 +4,7 @@ namespace Leon\BswBundle\Controller\BswMixed;
 
 use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Entity\BswCommandQueue;
-use Leon\BswBundle\Module\Bsw\Message;
+use Leon\BswBundle\Module\Scene\Message;
 use Leon\BswBundle\Module\Entity\Abs;
 use Leon\BswBundle\Annotation\Entity\AccessControl as Access;
 use Leon\BswBundle\Module\Form\Entity\Upload;

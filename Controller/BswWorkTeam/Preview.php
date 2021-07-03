@@ -3,7 +3,7 @@
 namespace Leon\BswBundle\Controller\BswWorkTeam;
 
 use Leon\BswBundle\Entity\BswWorkTeam;
-use Leon\BswBundle\Module\Bsw\Arguments;
+use Leon\BswBundle\Module\Scene\Arguments;
 use Leon\BswBundle\Module\Form\Entity\Button;
 use Leon\BswBundle\Annotation\Entity\AccessControl as Access;
 use Symfony\Component\Routing\Annotation\Route;

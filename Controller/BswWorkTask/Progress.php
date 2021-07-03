@@ -4,7 +4,7 @@ namespace Leon\BswBundle\Controller\BswWorkTask;
 
 use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Entity\BswAdminUser;
-use Leon\BswBundle\Module\Bsw\Arguments;
+use Leon\BswBundle\Module\Scene\Arguments;
 use Leon\BswBundle\Module\Error\Entity\ErrorAccess;
 use Leon\BswBundle\Module\Error\Entity\ErrorProgress;
 use Leon\BswBundle\Module\Error\Error;

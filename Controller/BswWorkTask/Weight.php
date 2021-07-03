@@ -3,7 +3,7 @@
 namespace Leon\BswBundle\Controller\BswWorkTask;
 
 use Leon\BswBundle\Component\Helper;
-use Leon\BswBundle\Module\Bsw\Arguments;
+use Leon\BswBundle\Module\Scene\Arguments;
 use Leon\BswBundle\Module\Error\Entity\ErrorWithoutChange;
 use Leon\BswBundle\Module\Error\Error;
 use Leon\BswBundle\Module\Form\Entity\Button;

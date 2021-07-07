@@ -137,7 +137,9 @@ abstract class RecursionDateCommand extends Command
 
         $this->_params = $this->options($input);
         $this->params = (object)$this->_params;
-        $this->params->args = (object)Helper::jsonArray64($this->params->args);
+        if (is_string($this->params->args)) {
+            $this->params->args = (object)Helper::jsonArray64($this->params->args);
+        }
         $this->params = $this->params($this->params);
 
         if (!$this->pass()) {

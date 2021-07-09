@@ -916,7 +916,7 @@ class BswBackendController extends BswWebController
         $theme = $this->cnf->theme;
 
         return [
-            $link('default', 'skin')
+            $link('classic', 'skin')
                 ->setChecked($skin == 'classic'),
 
             $link('terse', 'skin')

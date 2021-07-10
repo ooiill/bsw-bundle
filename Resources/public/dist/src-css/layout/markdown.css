@@ -13,16 +13,32 @@ body {
 .ant-layout .ant-layout-content {
   margin: 0;
 }
+footer {
+  height: 56px;
+  line-height: 56px;
+  text-align: center;
+  font-size: 16px;
+  color: #666;
+  border-top: 1px solid #f3f3f3;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
 .markdown-content {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: row;
       flex-direction: row;
-  height: 100vh;
+  height: calc(100vh - 56px);
 }
 .markdown-content > .index {
   overflow: auto;
   padding: 20px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 .markdown-content > .content {
   overflow: auto;
@@ -35,24 +51,32 @@ body {
   border-right: 1px solid rgba(214, 219, 223, 0.2);
 }
 .markdown-content > .index ul {
-  padding-left: 10px;
+  padding-left: 0;
+  margin-bottom: 0;
 }
 .markdown-content > .index ul li.indent-h1 {
   margin-left: 0;
-  margin-top: 10px;
+  margin-top: 8px;
   list-style: none;
-  font-size: 120%;
-  background-color: rgba(0, 0, 0, 0.03);
-  padding: 6px 10px;
+  font-size: 106%;
+  background-color: rgba(0, 0, 0, 0.02);
+  padding: 8px 10px;
+}
+.markdown-content > .index ul li.indent-h1 i {
+  font-size: 12px;
+  float: right;
+  margin: 8px;
 }
 .markdown-content > .index ul li.indent-h2 {
   margin-left: 1.5em;
   margin-top: 8px;
+  padding: 2px 0;
 }
 .markdown-content > .index ul li.indent-h3 {
   margin-left: 3em;
   margin-top: 6px;
   list-style: circle;
+  padding: 2px 0;
 }
 .markdown-content > .index ul li a {
   color: rgba(0, 0, 0, 0.6);
@@ -159,7 +183,7 @@ body {
 .markdown-content code {
   font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
   border: 0;
-  background-color: #e8ebf1;
+  background-color: #f3f3f3;
   border-radius: 3px;
   color: rgba(44, 62, 80, 0.65);
   font-size: 90%;
@@ -187,6 +211,10 @@ body {
 }
 .markdown-content .content ul li {
   list-style: circle;
+}
+.markdown-content .content ul li,
+.markdown-content .content ol li {
+  margin: 4px 0;
 }
 body.bsw-foundation div.bsw-content-document pre code.hljs {
   background-color: #f7f8fa;

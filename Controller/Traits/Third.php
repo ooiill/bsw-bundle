@@ -175,12 +175,16 @@ trait Third
      * Parse markdown content and toc
      *
      * @param string   $markdownOrFile
-     * @param callable $itemsHandler
+     * @param callable $linkHandler
+     * @param callable $liHandler
      *
      * @return array
      */
-    public function parseMdContentAndToc(string $markdownOrFile, callable $itemsHandler = null): array
-    {
+    public function parseMdContentAndToc(
+        string $markdownOrFile,
+        callable $linkHandler = null,
+        callable $liHandler = null
+    ): array {
         $parseMarkdown = new Parsedown();
         if (file_exists($markdownOrFile)) {
             $markdown = file_get_contents($markdownOrFile);
@@ -192,19 +196,25 @@ trait Third
         $content = $parseMarkdown->text($markdown);
         $content = preg_replace_callback(
             '/\<h([1-3])\>(.*?)\<\/h[1-3]\>/',
-            function ($matches) use ($markdownOrFile, $itemsHandler, &$toc) {
+            function ($matches) use ($markdownOrFile, $linkHandler, $liHandler, &$toc) {
                 [$_, $n, $text] = $matches;
                 $id = strtoupper(substr(Helper::generateToken(), 2, 6));
                 $link = "#{$id}";
 
-                if ($itemsHandler) {
-                    $items = call_user_func_array($itemsHandler, [$markdownOrFile, $id, $n, $text]);
-                    Helper::callReturnType($items, Abs::T_ARRAY, 'Items handler of markdown parser');
+                if ($linkHandler) {
+                    $items = call_user_func_array($linkHandler, [$markdownOrFile, $id, $n, $text]);
+                    Helper::callReturnType($items, Abs::T_ARRAY, 'Handler for `link` of markdown parser');
                     [$link, $text] = $items;
                 }
 
                 $link = Html::tag('a', Html::cleanHtml($text), ['href' => $link]);
-                array_push($toc, Html::tag('li', $link, ['class' => ["indent-h{$n} id-{$id}"]]));
+                $li = Html::tag('li', $link, ['class' => ["indent-h{$n} id-{$id}"]]);
+                if ($liHandler) {
+                    $li = call_user_func_array($liHandler, [$markdownOrFile, $id, $n, $text, $link]);
+                    Helper::callReturnType($li, Abs::T_STRING, 'Handler for `li` of markdown parser');
+                }
+
+                array_push($toc, $li);
                 $anchor = Html::tag('a', '♪', ['class' => 'anchor', 'href' => "#{$id}",]);
 
                 return Html::tag("h{$n}", "{$text}{$anchor}", ['id' => $id]);
@@ -222,15 +232,20 @@ trait Third
      * Parse markdown in path
      *
      * @param string   $path
-     * @param callable $itemsHandler
+     * @param callable $linkHandler
+     * @param callable $liHandler
      * @param string   $keySuffix
      *
      * @return array
      */
-    public function parseMdInPath(string $path, ?callable $itemsHandler = null, ?string $keySuffix = null): array
-    {
+    public function parseMdInPath(
+        string $path,
+        ?callable $linkHandler = null,
+        ?callable $liHandler = null,
+        ?string $keySuffix = null
+    ): array {
         return $this->caching(
-            function () use ($path, $itemsHandler) {
+            function () use ($path, $linkHandler, $liHandler) {
                 $tree = [];
                 Helper::directoryIterator(
                     $path,
@@ -243,7 +258,7 @@ trait Third
 
                 $markdown = [];
                 foreach ($tree as $file) {
-                    $markdown[$file] = $this->parseMdContentAndToc($file, $itemsHandler);
+                    $markdown[$file] = $this->parseMdContentAndToc($file, $linkHandler, $liHandler);
                 }
 
                 return $markdown;

@@ -17,10 +17,21 @@ body {
   }
 }
 
+@footer-height: 56px;
+footer {
+  height: @footer-height;
+  line-height: @footer-height;
+  text-align: center;
+  font-size: 16px;
+  color: #666;
+  border-top: 1px solid #f3f3f3;
+  user-select: none;
+}
+
 .markdown-content {
   display: flex;
   flex-direction: row;
-  height: 100vh;
+  height: calc(~"100vh - @{footer-height}");
 
   .before(@text, @a: .2, @r: 0, @g: 0, @b: 0) {
     content: @text;
@@ -37,6 +48,7 @@ body {
   > .index {
     overflow: auto;
     padding: 20px;
+    user-select: none;
   }
 
   > .content {
@@ -50,27 +62,36 @@ body {
     border-right: 1px solid rgba(214, 219, 223, .2);
 
     ul {
-      padding-left: 10px;
+      padding-left: 0;
+      margin-bottom: 0;
 
       li {
         &.indent-h1 {
           margin-left: 0;
-          margin-top: 10px;
+          margin-top: 8px;
           list-style: none;
-          font-size: 120%;
-          background-color: rgba(0, 0, 0, .03);
-          padding: 6px 10px;
+          font-size: 106%;
+          background-color: rgba(0, 0, 0, 0.02);
+          padding: 8px 10px;
+
+          i {
+            font-size: 12px;
+            float: right;
+            margin: 8px;
+          }
         }
 
         &.indent-h2 {
           margin-left: 1.5em;
           margin-top: 8px;
+          padding: 2px 0;
         }
 
         &.indent-h3 {
           margin-left: 3em;
           margin-top: 6px;
           list-style: circle;
+          padding: 2px 0;
         }
 
         a {
@@ -184,7 +205,7 @@ body {
   code {
     font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
     border: 0;
-    background-color: #e8ebf1;
+    background-color: #f3f3f3;
     border-radius: 3px;
     color: rgba(44, 62, 80, 0.65);
     font-size: 90%;
@@ -219,6 +240,10 @@ body {
 
   .content ul li {
     list-style: circle;
+  }
+
+  .content ul li, .content ol li {
+    margin: 4px 0;
   }
 }
 

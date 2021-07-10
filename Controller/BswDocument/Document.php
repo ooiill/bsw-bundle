@@ -49,6 +49,7 @@ trait Document
         return [
             'index'    => implode("\n", array_column($all, 'toc')),
             'document' => $all[$file]['content'],
+            'footer'   => $this->cnf->copyright,
         ];
     }
 
@@ -69,7 +70,6 @@ trait Document
 
         $this->appendSrcCssWithKey('markdown', Abs::CSS_MARKDOWN);
         $this->appendSrcCssWithKey('highlight', Abs::CSS_HIGHLIGHT);
-        $this->appendSrcJsWithKey('markdown', Abs::JS_MARKDOWN);
         $this->appendSrcJsWithKey('highlight', Abs::JS_HIGHLIGHT);
 
         $this->seoWithAppName = false;

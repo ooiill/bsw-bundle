@@ -271,7 +271,7 @@ class Abs
     const CSS_BSW           = 'diy;bsw.css';
     const CSS_WEB           = 'diy;web.css';
     const CSS_EDITOR_CUSTOM = 'diy;third/ckeditor5-custom.css';
-    const CSS_MARKDOWN      = 'diy;markdown.css';
+    const CSS_MARKDOWN      = 'diy;layout/markdown.css';
 
     /**
      * About framework

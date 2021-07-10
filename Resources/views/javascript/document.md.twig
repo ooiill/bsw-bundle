@@ -1,13 +1,13 @@
-'use strict';
-
+{% block documentJavascript %}
 bsw.configure({
+    data: {},
     logic: {
-        init: function init(v) {
-            var allLi = $('.markdown-content .index li');
-            var anchor = bsw.leftTrim(window.location.hash, '#');
+        init(v) {
+            let allLi = $('.markdown-content .index li');
+            let anchor = bsw.leftTrim(window.location.hash, '#');
             if (anchor.length) {
-                var currentLi = $('li.id-' + anchor);
-                var currentMd = $('#' + anchor);
+                let currentLi = $(`li.id-${anchor}`);
+                let currentMd = $(`#${anchor}`);
                 if (currentLi.length) {
                     $('.markdown-content .index').scrollTop(bsw.offset(currentLi).top);
                     currentLi.addClass('current');
@@ -17,19 +17,18 @@ bsw.configure({
                 }
             }
             allLi.click(function () {
-                var thisLi = $(this);
-                var url = thisLi.find('a').attr('href');
-                var urlItems = bsw.parseQueryString(url, true);
-                var currentItems = bsw.parseQueryString(null, true);
+                let thisLi = $(this);
+                let url = thisLi.find('a').attr('href');
+                let urlItems = bsw.parseQueryString(url, true);
+                let currentItems = bsw.parseQueryString(null, true)
                 if (urlItems['hostPart'] !== currentItems['hostPart']) {
                     return;
                 }
                 allLi.removeClass('current');
                 thisLi.addClass('current');
-                setTimeout(function () {
-                    return bsw.prominentAnchor();
-                }, 100);
+                setTimeout(() => bsw.prominentAnchor(), 100)
             });
-        }
+        },
     }
 });
+{% endblock %}

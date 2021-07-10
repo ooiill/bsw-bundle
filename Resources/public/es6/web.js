@@ -28,22 +28,6 @@ $(function () {
             modal: {},
             result: {}
         },
-        footer: 'footer',
-        modal: {},
-        modalMeta: {
-            visible: true,
-            centered: true,
-        },
-        drawer: {},
-        drawerMeta: {
-            visible: true,
-        },
-        result: {},
-        resultMeta: {
-            visible: true,
-        },
-
-        WH: bsw.getWH(),
 
     }, bsw.config.data)).computed(Object.assign({}, bsw.config.computed || {})).method(Object.assign({
 
@@ -117,13 +101,8 @@ $(function () {
 
         setTimeout(function () {
             bsw.messageAutoDiscovery(v.init);
-            v.WH = bsw.getWH()
         }, 100);
 
-        window.addEventListener('message', function (event) {
-            event.data.function += 'InParent';
-            bsw.dispatcherByBswData(event.data, $('body')[0]);
-        }, false)
     });
 });
 

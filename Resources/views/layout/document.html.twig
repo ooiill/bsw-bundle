@@ -2,6 +2,8 @@
 {% set tplScaffoldClass = 'bsw-scaffold-document' %}
 {% set tplContentClass = ['bsw-content-document', tplContentChildrenClass ?? null]|joinClass %}
 
+{% use 'javascript/document.md.twig' %}
+
 {% block loading %}{% endblock %}
 
 {% block page %}
@@ -9,4 +11,9 @@
     <div class="index">{{ data.data.index|raw }}</div>
     <div class="content">{{ data.data.document|raw }}</div>
   </div>
+  <footer>{{ data.data.footer|raw }}</footer>
+{% endblock %}
+
+{% block javascript %}
+{{ block('documentJavascript') }}
 {% endblock %}

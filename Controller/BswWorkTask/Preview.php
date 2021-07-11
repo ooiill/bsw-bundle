@@ -371,7 +371,7 @@ trait Preview
         $button = (new Button('lifecycle'))
             ->setType(Abs::THEME_DEFAULT)
             ->setSize(Abs::SIZE_SMALL)
-            ->setClick('showTrailDrawer')
+            ->setClick('trailDrawerShow')
             ->setArgs(['id' => $args->original['id']]);
 
         $args->hooked['originalTitle'] = $args->hooked['title'];

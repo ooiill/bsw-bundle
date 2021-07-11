@@ -66,7 +66,7 @@ bsw.configure({
         }
     },
     logic: {
-        createForm: function createForm(v) {
+        createLoginForm: function createLoginForm(v) {
             v.loginForm = v.$form.createForm(v);
         }
     }

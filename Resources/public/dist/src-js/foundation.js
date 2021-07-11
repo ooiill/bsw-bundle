@@ -1145,6 +1145,33 @@ var FoundationTools = function (_FoundationPrototype) {
         }
 
         /**
+         * Get anchor
+         *
+         * @param url
+         * @returns {string|*}
+         */
+
+    }, {
+        key: 'getAnchor',
+        value: function getAnchor() {
+            var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            var anchor = bsw.leftTrim(window.location.hash, '#');
+            if (anchor.length > 0) {
+                return anchor;
+            }
+
+            var _parseParams9 = this.parseParams(url),
+                _parseParams10 = _slicedToArray(_parseParams9, 3),
+                _ = _parseParams10[0],
+                __ = _parseParams10[1],
+                queryParams = _parseParams10[2];
+
+            anchor = queryParams.anchor || '';
+            return anchor;
+        }
+
+        /**
          * Count px of padding and margin
          *
          * @param parentElement
@@ -3181,7 +3208,7 @@ var FoundationAntD = function (_FoundationTools) {
             if (bsw.isMobile() && bsw.cnf.mobileDefaultCollapsed) {
                 bsw.cookie().set('bsw_menu_collapsed', 'yes');
             }
-            if (url.startsWith('http') || url.startsWith('/')) {
+            if (url.startsWith('http') || url.startsWith('/') || url.startsWith('#')) {
                 if (typeof data.window === 'undefined') {
                     return location.href = url;
                 } else {
@@ -3483,7 +3510,7 @@ var FoundationAntD = function (_FoundationTools) {
             var animate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'flash';
             var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '.65s';
 
-            var anchor = bsw.leftTrim(window.location.hash, '#');
+            var anchor = bsw.getAnchor();
             if (!anchor.length) {
                 return;
             }

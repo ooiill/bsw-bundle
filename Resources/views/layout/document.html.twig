@@ -8,10 +8,59 @@
 
 {% block page %}
   <div class="markdown-content">
-    <div class="index">{{ data.data.index|raw }}</div>
-    <div class="content">{{ data.data.document|raw }}</div>
+    {% if data.data.useMenu %}
+      <div class="menu">
+        <a-layout-sider
+          class="bsw-menu-container"
+          :theme="menuTheme"
+          :width="300"
+        >
+          <a-menu
+            :theme="menuTheme"
+            :default-open-keys="['{{ data.data.openMenu }}']"
+            :default-selected-keys="['{{ data.data.selectedMenu }}']"
+            mode="inline"
+            @click="redirectByVue"
+          >
+            {% for menuItem in data.data.masterMenu %}
+              {% set subMenu = attribute(data.data.slaveMenu, menuItem.id) ?? [] %}
+              {% if subMenu is not empty %}
+                <a-sub-menu key="{{ menuItem.id }}">
+                <span slot="title">
+                  {% if menuItem.icon is not empty %}
+                    {{ menuItem.icon|icon|raw }}
+                  {% endif %}
+                  <span>{{ menuItem.label }}</span>
+                </span>
+                  {% for subMenuItem in subMenu %}
+                    <a-menu-item key="{{ subMenuItem.id }}">
+                      {% if subMenuItem.icon is not empty %}
+                        {{ subMenuItem.icon|icon|raw }}
+                      {% endif %}
+                      <span :data-bsw.prop="{{ subMenuItem.data }}">{{ subMenuItem.label }}</span>
+                    </a-menu-item>
+                  {% endfor %}
+                </a-sub-menu>
+              {% else %}
+                <a-menu-item key="{{ menuItem.id }}">
+                  {% if menuItem.icon is not empty %}
+                    {{ menuItem.icon|icon|raw }}
+                  {% endif %}
+                  <span :data-bsw.prop="{{ menuItem.data }}">{{ menuItem.label }}</span>
+                </a-menu-item>
+              {% endif %}
+            {% endfor %}
+          </a-menu>
+        </a-layout-sider>
+      </div>
+    {% else %}
+      <div class="index">{{ data.data.toc|raw }}</div>
+    {% endif %}
+    <div class="content">
+      {{ data.data.document|raw }}
+      <footer>{{ data.data.footer|raw }}</footer>
+    </div>
   </div>
-  <footer>{{ data.data.footer|raw }}</footer>
 {% endblock %}
 
 {% block javascript %}

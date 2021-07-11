@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use EasyWeChat\Factory as WxFactory;
 use Leon\BswBundle\Component\Helper;
 use Leon\BswBundle\Component\Html;
+use Leon\BswBundle\Module\Scene\Menu;
 use Mexitek\PHPColors\Color;
 use Yansongda\Pay\Gateways\Alipay;
 use Yansongda\Pay\Pay as WxAliPayment;
@@ -185,45 +186,69 @@ trait Third
         callable $linkHandler = null,
         callable $liHandler = null
     ): array {
+
+        $isFile = false;
         $parseMarkdown = new Parsedown();
         if (file_exists($markdownOrFile)) {
+            $isFile = true;
             $markdown = file_get_contents($markdownOrFile);
         } else {
             $markdown = $markdownOrFile;
         }
 
         $toc = [];
+        $index = [];
         $content = $parseMarkdown->text($markdown);
         $content = preg_replace_callback(
             '/\<h([1-3])\>(.*?)\<\/h[1-3]\>/',
-            function ($matches) use ($markdownOrFile, $linkHandler, $liHandler, &$toc) {
-                [$_, $n, $text] = $matches;
-                $id = strtoupper(substr(Helper::generateToken(), 2, 6));
+            function ($matches) use ($markdownOrFile, $linkHandler, $liHandler, &$toc, &$index) {
+                [$_, $n, $idx] = $matches;
+                $id = strtoupper(substr(Helper::generateToken(), 2, 8));
                 $link = "#{$id}";
 
                 if ($linkHandler) {
-                    $items = call_user_func_array($linkHandler, [$markdownOrFile, $id, $n, $text]);
+                    $items = call_user_func_array($linkHandler, [$markdownOrFile, $id, $n, $idx]);
                     Helper::callReturnType($items, Abs::T_ARRAY, 'Handler for `link` of markdown parser');
-                    [$link, $text] = $items;
+                    [$link, $idx] = $items;
                 }
 
-                $link = Html::tag('a', Html::cleanHtml($text), ['href' => $link]);
-                $li = Html::tag('li', $link, ['class' => ["indent-h{$n} id-{$id}"]]);
+                $li = Html::tag('li', Html::cleanHtml($idx), ['class' => ["indent-h{$n}"]]);
+                $li = Html::tag('a', $li, ['href' => $link, 'id' => "index-{$id}"]);
                 if ($liHandler) {
-                    $li = call_user_func_array($liHandler, [$markdownOrFile, $id, $n, $text, $link]);
+                    $li = call_user_func_array($liHandler, [$markdownOrFile, $id, $n, $idx, $link]);
                     Helper::callReturnType($li, Abs::T_STRING, 'Handler for `li` of markdown parser');
                 }
 
+                $index[$id] = $idx;
                 array_push($toc, $li);
-                $anchor = Html::tag('a', '♪', ['class' => 'anchor', 'href' => "#{$id}",]);
+                $anchor = Html::tag('a', '♪', ['class' => 'anchor', 'href' => $link]);
 
-                return Html::tag("h{$n}", "{$text}{$anchor}", ['id' => $id]);
+                return Html::tag("h{$n}", "{$idx}{$anchor}", ['id' => $id]);
             },
             $content
         );
 
+        $titleId = key($index);
+        $titleLabel = Helper::dig($index, $titleId);
+        $host = Helper::joinString('/', $this->url($this->route), pathinfo($markdownOrFile, PATHINFO_FILENAME));
+        $menu = (new Menu())->setLabel(Html::cleanHtml($titleLabel));
+
+        if ($isFile) {
+            $menu->setUrl("{$host}#{$titleId}");
+        }
+        $menuSub = [];
+        foreach ($index as $id => $label) {
+            $m = (new Menu())->setLabel(Html::cleanHtml($label));
+            if ($isFile) {
+                $m->setUrl("{$host}#{$id}");
+            }
+            array_push($menuSub, $m);
+        }
+
         return [
             'toc'     => Html::tag('ul', implode("\n", $toc)),
+            'menu'    => $menu,
+            'menuSub' => $menuSub,
             'content' => $content,
         ];
     }
@@ -256,12 +281,30 @@ trait Third
                 );
                 asort($tree);
 
+                $i = 1;
+                $masterMenu = [];
+                $slaveMenu = [];
                 $markdown = [];
+                $idMapToKey = [];
                 foreach ($tree as $file) {
-                    $markdown[$file] = $this->parseMdContentAndToc($file, $linkHandler, $liHandler);
+                    $md = $this->parseMdContentAndToc($file, $linkHandler, $liHandler);
+                    $masterMenu[$i] = Helper::dig($md, 'menu');
+                    $masterMenu[$i]->setId($i)->setIcon('b:icon-form');
+                    if ($anchor = Helper::getAnchor($masterMenu[$i]->getUrl())) {
+                        $idMapToKey[$i] = $anchor;
+                    }
+                    foreach (Helper::dig($md, 'menuSub') as $k => $v) {
+                        $key = $i * 1000 + $k + 1;
+                        $slaveMenu[$i][] = $v->setId($key)->setIcon('b:icon-attachment1');
+                        if ($ahr = Helper::getAnchor($v->getUrl())) {
+                            $idMapToKey[$key] = $ahr;
+                        }
+                    }
+                    $markdown[$file] = $md;
+                    $i++;
                 }
 
-                return $markdown;
+                return [$markdown, $masterMenu, $slaveMenu, $idMapToKey];
             },
             "md-path-{$path}{$keySuffix}",
             0

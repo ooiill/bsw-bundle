@@ -57,7 +57,7 @@ NydhxUEs0y8aMzWbGwIDAQAB
         },
     },
     logic: {
-        createForm: function (v) {
+        createLoginForm: function (v) {
             v.loginForm = v.$form.createForm(v);
         }
     }

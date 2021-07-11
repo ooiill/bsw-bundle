@@ -14,12 +14,13 @@ body {
   margin: 0;
 }
 footer {
-  height: 56px;
-  line-height: 56px;
-  text-align: center;
+  height: 60px;
+  line-height: 60px;
   font-size: 16px;
   color: #666;
   border-top: 1px solid #f3f3f3;
+  margin-top: 60px;
+  text-align: left;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -30,7 +31,7 @@ footer {
   display: flex;
   -ms-flex-direction: row;
       flex-direction: row;
-  height: calc(100vh - 56px);
+  height: calc(100vh - 0px);
 }
 .markdown-content > .index {
   overflow: auto;
@@ -42,17 +43,28 @@ footer {
 }
 .markdown-content > .content {
   overflow: auto;
-  padding: 10px 30px 50px 40px;
+  padding: 10px 30px 0 40px;
 }
 .markdown-content > .index {
-  -ms-flex: 0 0 380px;
-      flex: 0 0 380px;
+  -ms-flex: 0 0 320px;
+      flex: 0 0 320px;
   padding-right: 20px;
   border-right: 1px solid rgba(214, 219, 223, 0.2);
 }
 .markdown-content > .index ul {
   padding-left: 0;
   margin-bottom: 0;
+}
+.markdown-content > .index ul a {
+  color: rgba(0, 0, 0, 0.6);
+}
+.markdown-content > .index ul a.current {
+  color: rgba(0, 109, 203, 0.6);
+}
+.markdown-content > .index ul a.current li:after {
+  content: '←';
+  margin-left: 6px;
+  color: #000000;
 }
 .markdown-content > .index ul li.indent-h1 {
   margin-left: 0;
@@ -78,23 +90,17 @@ footer {
   list-style: circle;
   padding: 2px 0;
 }
-.markdown-content > .index ul li a {
-  color: rgba(0, 0, 0, 0.6);
-}
-.markdown-content > .index ul li.current a {
-  color: rgba(0, 109, 203, 0.6);
-}
-.markdown-content > .index ul li.current a:after {
-  content: '←';
-  margin-left: 3px;
-  color: #000000;
-}
 .markdown-content > .content {
   -ms-flex: 1 1 auto;
       flex: 1 1 auto;
 }
 .markdown-content > .content ul {
   padding-left: 30px;
+}
+.markdown-content .ant-menu-dark,
+.markdown-content .ant-menu-dark .ant-menu-sub {
+  color: rgba(255, 255, 255, 0.65);
+  background: #031e38;
 }
 .markdown-content p,
 .markdown-content code,
@@ -131,7 +137,7 @@ footer {
 }
 .markdown-content h4:before {
   content: '♯';
-  margin-right: 3px;
+  margin-right: 6px;
   color: rgba(0, 0, 0, 0.2);
 }
 .markdown-content h5 {

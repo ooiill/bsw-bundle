@@ -4,7 +4,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 bsw.configure({
     method: {
-        changeSelectedList: function changeSelectedList(handler) {
+        grantChangeSelectedList: function grantChangeSelectedList(handler) {
             var that = this;
             var form = 'persistenceForm';
             $.each(that.init.selectedList, function (key, meta) {
@@ -42,16 +42,16 @@ bsw.configure({
                 that[form].setFieldsValue(_defineProperty({}, key, values));
             });
         },
-        selectAll: function selectAll() {
-            this.changeSelectedList(function (v, disabled, selected) {
+        grantSelectAll: function grantSelectAll() {
+            this.grantChangeSelectedList(function (v, disabled, selected) {
                 if (disabled.includes(v)) {
                     return selected.includes(v);
                 }
                 return true;
             });
         },
-        unSelectAll: function unSelectAll() {
-            this.changeSelectedList(function (v, disabled, selected) {
+        grantUnSelectAll: function grantUnSelectAll() {
+            this.grantChangeSelectedList(function (v, disabled, selected) {
                 return disabled.includes(v) && selected.includes(v);
             });
         }

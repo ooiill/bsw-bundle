@@ -17,31 +17,33 @@ body {
   }
 }
 
-@footer-height: 56px;
+@footer-full-height: 0px;
+@footer-height: 60px;
 footer {
   height: @footer-height;
   line-height: @footer-height;
-  text-align: center;
   font-size: 16px;
   color: #666;
   border-top: 1px solid #f3f3f3;
+  margin-top: 60px;
+  text-align: left;
   user-select: none;
 }
 
 .markdown-content {
   display: flex;
   flex-direction: row;
-  height: calc(~"100vh - @{footer-height}");
+  height: calc(~"100vh - @{footer-full-height}");
 
   .before(@text, @a: .2, @r: 0, @g: 0, @b: 0) {
     content: @text;
-    margin-right: 3px;
+    margin-right: 6px;
     color: rgba(@r, @g, @b, @a);
   }
 
   .after(@text, @a: .2, @r: 0, @g: 0, @b: 0) {
     content: @text;
-    margin-left: 3px;
+    margin-left: 6px;
     color: rgba(@r, @g, @b, @a);
   }
 
@@ -53,17 +55,29 @@ footer {
 
   > .content {
     overflow: auto;
-    padding: 10px 30px 50px 40px;
+    padding: 10px 30px 0 40px;
   }
 
   > .index {
-    flex: 0 0 380px;
+    flex: 0 0 320px;
     padding-right: 20px;
     border-right: 1px solid rgba(214, 219, 223, .2);
 
     ul {
       padding-left: 0;
       margin-bottom: 0;
+
+      a {
+        color: rgba(0, 0, 0, .6);
+
+        &.current {
+          color: rgba(0, 109, 203, .6);
+
+          li:after {
+            .after('←', 1);
+          }
+        }
+      }
 
       li {
         &.indent-h1 {
@@ -93,18 +107,6 @@ footer {
           list-style: circle;
           padding: 2px 0;
         }
-
-        a {
-          color: rgba(0, 0, 0, .6);
-        }
-
-        &.current a {
-          color: rgba(0, 109, 203, .6);
-
-          &:after {
-            .after('←', 1);
-          }
-        }
       }
     }
   }
@@ -115,6 +117,11 @@ footer {
     ul {
       padding-left: 30px;
     }
+  }
+
+  .ant-menu-dark, .ant-menu-dark .ant-menu-sub {
+    color: rgba(255, 255, 255, .65);
+    background: #031e38;
   }
 
   p, code, blockquote, table, ul, ol {

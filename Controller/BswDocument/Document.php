@@ -30,7 +30,7 @@ trait Document
         }
 
         $basic = $this->kernel->getBundle(Abs::BSW_BUNDLE)->getPath();
-        $all = $this->parseMdInPath(
+        [$md, $masterMenu, $slaveMenu, $idMapKey] = $this->parseMdInPath(
             "{$basic}/Resources/doc",
             function ($file, $id, $n, $text) use ($args) {
                 $name = pathinfo($file, PATHINFO_FILENAME);
@@ -46,10 +46,24 @@ trait Document
             }
         );
 
+        $openMenu = 0;
+        $keyMapId = array_flip($idMapKey);
+        foreach ($masterMenu as $master) {
+            if (strpos($master->getUrl(), $args->name) !== false) {
+                $openMenu = $master->getId();
+            }
+        }
+
         return [
-            'index'    => implode("\n", array_column($all, 'toc')),
-            'document' => $all[$file]['content'],
-            'footer'   => $this->cnf->copyright,
+            'toc'          => implode("\n", array_column($md, 'toc')),
+            'masterMenu'   => $masterMenu,
+            'slaveMenu'    => $slaveMenu,
+            'openMenu'     => $openMenu,
+            'selectedMenu' => $keyMapId[Helper::getAnchor()] ?? 0,
+            'keyMapIdJson' => Helper::jsonStringify($keyMapId),
+            'document'     => $md[$file]['content'],
+            'useMenu'      => false,
+            'footer'       => $this->cnf->copyright,
         ];
     }
 
@@ -73,7 +87,8 @@ trait Document
         $this->appendSrcJsWithKey('highlight', Abs::JS_HIGHLIGHT);
 
         $this->seoWithAppName = false;
-        $this->cnf->font_symbol = null; // Not load iconfont.js
+
+        // $this->cnf->font_symbol = null; // Not load iconfont.js
 
         return $this->showEmpty('layout/document.html', ['args' => compact('name')]);
     }

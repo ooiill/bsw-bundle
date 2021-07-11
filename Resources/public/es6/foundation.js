@@ -848,6 +848,22 @@ class FoundationTools extends FoundationPrototype {
     }
 
     /**
+     * Get anchor
+     *
+     * @param url
+     * @returns {string|*}
+     */
+    getAnchor(url = null) {
+        let anchor = bsw.leftTrim(window.location.hash, '#');
+        if (anchor.length > 0) {
+            return anchor
+        }
+        let [_, __, queryParams] = this.parseParams(url);
+        anchor = queryParams.anchor || ''
+        return anchor
+    }
+
+    /**
      * Count px of padding and margin
      *
      * @param parentElement
@@ -2500,7 +2516,7 @@ class FoundationAntD extends FoundationTools {
         if (bsw.isMobile() && bsw.cnf.mobileDefaultCollapsed) {
             bsw.cookie().set('bsw_menu_collapsed', 'yes');
         }
-        if (url.startsWith('http') || url.startsWith('/')) {
+        if (url.startsWith('http') || url.startsWith('/') || url.startsWith('#')) {
             if (typeof data.window === 'undefined') {
                 return location.href = url;
             } else {
@@ -2761,7 +2777,7 @@ class FoundationAntD extends FoundationTools {
      * @param duration
      */
     prominentAnchor(animate = 'flash', duration = '.65s') {
-        let anchor = bsw.leftTrim(window.location.hash, '#');
+        let anchor = bsw.getAnchor();
         if (!anchor.length) {
             return;
         }

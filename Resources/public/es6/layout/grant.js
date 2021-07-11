@@ -1,6 +1,6 @@
 bsw.configure({
     method: {
-        changeSelectedList(handler) {
+        grantChangeSelectedList(handler) {
             let that = this;
             let form = 'persistenceForm';
             $.each(that.init.selectedList, function (key, meta) {
@@ -16,16 +16,16 @@ bsw.configure({
                 that[form].setFieldsValue({[key]: values});
             });
         },
-        selectAll() {
-            this.changeSelectedList(function (v, disabled, selected) {
+        grantSelectAll() {
+            this.grantChangeSelectedList(function (v, disabled, selected) {
                 if (disabled.includes(v)) {
                     return selected.includes(v);
                 }
                 return true;
             });
         },
-        unSelectAll() {
-            this.changeSelectedList(function (v, disabled, selected) {
+        grantUnSelectAll() {
+            this.grantChangeSelectedList(function (v, disabled, selected) {
                 return disabled.includes(v) && selected.includes(v);
             });
         },

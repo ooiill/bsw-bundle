@@ -23,11 +23,11 @@
             :label-col="{'xs':24, 'sm':24, 'md':24, 'lg':24, 'xl':24, 'xxl':24}"
             :wrapper-col="{'xs':24, 'sm':24, 'md':24, 'lg':24, 'xl':24, 'xxl':24}"
           >
-            <a-button @click="selectAll" type="primary">
+            <a-button @click="grantSelectAll" type="primary">
               {{ 'b:icon-success1'|icon|raw }}
               {{ 'Select all'|trans({}, 'twig') }}
             </a-button>
-            <a-button @click="unSelectAll">
+            <a-button @click="grantUnSelectAll">
               {{ 'b:icon-icon-37'|icon|raw }}
               {{ 'Un select all'|trans({}, 'twig') }}
             </a-button>

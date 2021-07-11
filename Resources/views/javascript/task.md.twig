@@ -5,7 +5,7 @@ bsw.configure({
         trailDrawer: {{ logic.drawer.trailVisible|raw }},
     },
     method: {
-        showTrailDrawer(options) {
+        trailDrawerShow(options) {
             this.drawer.width = 720;
             this.trailCurrent = options.id;
             this.trailDrawer[this.trailCurrent] = true;

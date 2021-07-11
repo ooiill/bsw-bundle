@@ -34,12 +34,12 @@
         {% set subMenu = attribute(menu.slaveMenu, menuItem.id) ?? [] %}
         {% if subMenu is not empty %}
           <a-sub-menu key="{{ menuItem.id }}">
-          <span slot="title">
-            {% if menuItem.icon is not empty %}
-              {{ menuItem.icon|icon|raw }}
-            {% endif %}
-            <span>{{ menuItem.label }}</span>
-          </span>
+            <span slot="title">
+              {% if menuItem.icon is not empty %}
+                {{ menuItem.icon|icon|raw }}
+              {% endif %}
+              <span>{{ menuItem.label }}</span>
+            </span>
             {% for subMenuItem in subMenu %}
               <a-menu-item key="{{ subMenuItem.id }}">
                 {% if subMenuItem.icon is not empty %}

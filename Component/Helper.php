@@ -1326,6 +1326,41 @@ class Helper
     }
 
     /**
+     * Get anchor
+     *
+     * @param null|string $url
+     *
+     * @return string
+     */
+    public static function getAnchor(string $url = null): string
+    {
+        $url = $url ?? self::currentUrl();
+        if (strpos($url, '#') !== false) {
+            return trim(explode("#", $url)[1], "# ");
+        }
+        $args = self::getUrlItems($url);
+
+        return $args['params']['anchor'] ?? '';
+    }
+
+    /**
+     * Set anchor
+     *
+     * @param string      $anchor
+     * @param null|string $url
+     *
+     * @return string
+     */
+    public static function setAnchor(string $anchor, string $url = null): string
+    {
+        if (strpos($url, '#') !== false) {
+            $url = explode("#", $url)[0];
+        }
+
+        return self::addParamsForUrl(['anchor' => $anchor], $url);
+    }
+
+    /**
      * Build url query
      *
      * @param array  $params

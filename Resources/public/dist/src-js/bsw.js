@@ -639,7 +639,6 @@ $(function () {
             var operates = function operates() {
                 bsw.messageAutoDiscovery(v.init);
                 bsw.autoIFrameHeight();
-                bsw.prominentAnchor();
                 v.loadTimes += 1;
             };
             var loadingDiv = $('.bsw-page-loading');

@@ -1,34 +1,35 @@
 {% block documentJavascript %}
 bsw.configure({
     data: {},
-    logic: {
-        init(v) {
-            let allLi = $('.markdown-content .index li');
-            let anchor = bsw.leftTrim(window.location.hash, '#');
-            if (anchor.length) {
-                let currentLi = $(`li.id-${anchor}`);
-                let currentMd = $(`#${anchor}`);
-                if (currentLi.length) {
-                    $('.markdown-content .index').scrollTop(bsw.offset(currentLi).top);
-                    currentLi.addClass('current');
+    method: {
+        documentRender(f5) {
+            let theAnchor = bsw.getAnchor();
+            $('.index > ul > a').removeClass('current');
+            if (theAnchor.length) {
+                let currentLink = $(`#index-${theAnchor}`);
+                if (currentLink.length) {
+                    currentLink.addClass('current');
+                    if (f5) {
+                        $('.markdown-content .index').scrollTop(currentLink[0].offsetTop - 5);
+                    }
                 }
+                let currentMd = $(`#${theAnchor}`);
                 if (currentMd.length) {
-                    $('.markdown-content .content').scrollTop(bsw.offset(currentMd).top);
+                    $('.markdown-content .content').scrollTop(currentMd[0].offsetTop - 12);
                 }
             }
-            allLi.click(function () {
-                let thisLi = $(this);
-                let url = thisLi.find('a').attr('href');
-                let urlItems = bsw.parseQueryString(url, true);
-                let currentItems = bsw.parseQueryString(null, true)
-                if (urlItems['hostPart'] !== currentItems['hostPart']) {
-                    return;
-                }
-                allLi.removeClass('current');
-                thisLi.addClass('current');
-                setTimeout(() => bsw.prominentAnchor(), 100)
-            });
+            setTimeout(() => bsw.prominentAnchor(), 100)
+        }
+    },
+    logic: {
+        documentInit(v) {
+            v.documentRender(true);
         },
+        documentListenTheAnchor(v) {
+            window.onhashchange = function () {
+                v.documentRender(false);
+            };
+        }
     }
 });
 {% endblock %}

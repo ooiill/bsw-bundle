@@ -9,6 +9,7 @@ class Abs
      */
     const BSW                = 'LeonBsw';
     const BSW_BUNDLE         = 'LeonBswBundle';
+    const BSW_BUNDLE_PATH    = 'ooiill/bsw-bundle';
     const FORM_DATA_SPLIT    = ',';
     const VALIDATION_IF_SET  = '~';
     const FILTER_INDEX_SPLIT = '@';

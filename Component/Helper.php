@@ -799,6 +799,27 @@ class Helper
     }
 
     /**
+     * Get directory files's md5 collect
+     *
+     * @param string $path
+     *
+     * @return array
+     */
+    public static function getDirectoryMd5s(string $path): array
+    {
+        $md5Tree = [];
+        Helper::directoryIterator(
+            $path,
+            $md5Tree,
+            function ($file) {
+                return md5_file($file);
+            }
+        );
+
+        return $md5Tree;
+    }
+
+    /**
      * Zip directory
      *
      * @param string $directory

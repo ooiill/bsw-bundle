@@ -23,48 +23,7 @@ trait Document
      */
     public function documentDataGenerator(Arguments $args)
     {
-        try {
-            $file = $this->getFilePath("{$args->name}.md", 'doc');
-        } catch (Exception $e) {
-            throw new Exception("The document is not found");
-        }
-
-        $basic = $this->kernel->getBundle(Abs::BSW_BUNDLE)->getPath();
-        [$md, $masterMenu, $slaveMenu, $idMapKey] = $this->parseMdInPath(
-            "{$basic}/Resources/doc",
-            function ($file, $id, $n, $text) use ($args) {
-                $name = pathinfo($file, PATHINFO_FILENAME);
-                if ($n == 1 && $index = intval($name)) {
-                    $roman = Helper::intToRoman($index);
-                    $text = "{$roman}. {$text}";
-                }
-
-                $url = $this->url($this->cnf->route_document, compact('name'));
-                $url = "{$url}#{$id}";
-
-                return [$url, $text];
-            }
-        );
-
-        $openMenu = 0;
-        $keyMapId = array_flip($idMapKey);
-        foreach ($masterMenu as $master) {
-            if (strpos($master->getUrl(), $args->name) !== false) {
-                $openMenu = $master->getId();
-            }
-        }
-
-        return [
-            'toc'          => implode("\n", array_column($md, 'toc')),
-            'masterMenu'   => $masterMenu,
-            'slaveMenu'    => $slaveMenu,
-            'openMenu'     => $openMenu,
-            'selectedMenu' => $keyMapId[Helper::getAnchor()] ?? 0,
-            'keyMapIdJson' => Helper::jsonStringify($keyMapId),
-            'document'     => $md[$file]['content'],
-            'useMenu'      => false,
-            'footer'       => $this->cnf->copyright,
-        ];
+        return $this->markdownDirectoryParse($args->name, $this->getPath('doc'));
     }
 
     /**

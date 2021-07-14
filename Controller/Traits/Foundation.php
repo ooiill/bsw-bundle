@@ -1446,7 +1446,7 @@ trait Foundation
             return $file;
         }
 
-        throw new FileNotExistsException("{$file} is not found");
+        throw new FileNotExistsException("File {$file} is not exists");
     }
 
     /**
@@ -1475,7 +1475,64 @@ trait Foundation
             return $file;
         }
 
-        throw new FileNotExistsException("{$file} is not found");
+        throw new FileNotExistsException("File {$file} is not exists");
+    }
+
+    /**
+     * Get path (in order)
+     *
+     * @param string $dirName
+     * @param string $bundle
+     *
+     * @return string
+     * @throws
+     */
+    public function getPathInOrder(string $dirName = 'mixed', string $bundle = Abs::BSW_BUNDLE)
+    {
+        $dirName = trim($dirName, '/');
+        $path = $this->kernel->getProjectDir();
+        $dir = "{$path}/{$dirName}";
+
+        if (is_dir($dir)) {
+            return $dir;
+        }
+
+        $path = $this->kernel->getBundle($bundle)->getPath();
+        $dir = "{$path}/Resources/{$dirName}";
+
+        if (is_dir($dir)) {
+            return $dir;
+        }
+
+        throw new FileNotExistsException("Directory {$dir} is not exists");
+    }
+
+    /**
+     * Get path
+     *
+     * @param string $dirName
+     * @param string $bundle
+     *
+     * @return string
+     * @throws
+     */
+    public function getPath(string $dirName = 'mixed', ?string $bundle = Abs::BSW_BUNDLE)
+    {
+        $dirName = trim($dirName, '/');
+
+        if ($bundle) {
+            $path = $this->kernel->getBundle($bundle)->getPath();
+            $dir = "{$path}/Resources/{$dirName}";
+        } else {
+            $path = $this->kernel->getProjectDir();
+            $dir = "{$path}/{$dirName}";
+        }
+
+        if (is_dir($dir)) {
+            return $dir;
+        }
+
+        throw new FileNotExistsException("Directory {$dir} is not exists");
     }
 
     /**

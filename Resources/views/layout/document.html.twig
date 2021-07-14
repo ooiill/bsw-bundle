@@ -7,8 +7,9 @@
 {% block loading %}{% endblock %}
 
 {% block page %}
+  {% set md = data.data ?? logic.data.data %}
   <div class="markdown-content">
-    {% if data.data.useMenu %}
+    {% if md.useMenu %}
       <div class="menu">
         <a-layout-sider
           class="bsw-menu-container"
@@ -17,13 +18,13 @@
         >
           <a-menu
             :theme="menuTheme"
-            :default-open-keys="['{{ data.data.openMenu }}']"
-            :default-selected-keys="['{{ data.data.selectedMenu }}']"
+            :default-open-keys="['{{ md.openMenu }}']"
+            :default-selected-keys="['{{ md.selectedMenu }}']"
             mode="inline"
             @click="redirectByVue"
           >
-            {% for menuItem in data.data.masterMenu %}
-              {% set subMenu = attribute(data.data.slaveMenu, menuItem.id) ?? [] %}
+            {% for menuItem in md.masterMenu %}
+              {% set subMenu = attribute(md.slaveMenu, menuItem.id) ?? [] %}
               {% if subMenu is not empty %}
                 <a-sub-menu key="{{ menuItem.id }}">
                 <span slot="title">
@@ -54,11 +55,11 @@
         </a-layout-sider>
       </div>
     {% else %}
-      <div class="index">{{ data.data.toc|raw }}</div>
+      <div class="index">{{ md.toc|raw }}</div>
     {% endif %}
     <div class="content">
-      {{ data.data.document|raw }}
-      <footer>{{ data.data.footer|raw }}</footer>
+      {{ md.document|raw }}
+      <footer>{{ md.footer|raw }}</footer>
     </div>
   </div>
 {% endblock %}

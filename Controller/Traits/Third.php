@@ -27,6 +27,7 @@ use Monolog\Logger;
 use App\Kernel;
 use OTPHP\TOTP;
 use Parsedown;
+use Exception;
 
 /**
  * @property Kernel  $kernel
@@ -309,6 +310,64 @@ trait Third
             "md-path-{$path}{$keySuffix}",
             0
         );
+    }
+
+    /**
+     * Markdown directory parse
+     *
+     * @param string $currentFile
+     * @param string $path
+     * @param bool   $useMenu
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function markdownDirectoryParse(string $currentFile, string $path, bool $useMenu = false)
+    {
+        $file = Helper::joinString('/', $path, $currentFile);
+        $file = "{$file}.md";
+
+        if (!file_exists($file)) {
+            throw new Exception("The document is not found ({$currentFile}.md)");
+        }
+
+        [$md, $masterMenu, $slaveMenu, $idMapKey] = $this->parseMdInPath(
+            $path,
+            function ($file, $id, $n, $text) {
+                $name = pathinfo($file, PATHINFO_FILENAME);
+                if ($n == 1 && $index = intval($name)) {
+                    $roman = Helper::intToRoman($index);
+                    $text = "{$roman}. {$text}";
+                }
+
+                $url = $this->url($this->route, compact('name'));
+                $url = "{$url}#{$id}";
+
+                return [$url, $text];
+            },
+            null,
+            md5(implode('+', Helper::getDirectoryMd5s($path)))
+        );
+
+        $openMenu = 0;
+        $keyMapId = array_flip($idMapKey);
+        foreach ($masterMenu as $master) {
+            if (strpos($master->getUrl(), $currentFile) !== false) {
+                $openMenu = $master->getId();
+            }
+        }
+
+        return [
+            'toc'          => implode("\n", array_column($md, 'toc')),
+            'masterMenu'   => $masterMenu,
+            'slaveMenu'    => $slaveMenu,
+            'openMenu'     => $openMenu,
+            'selectedMenu' => $keyMapId[Helper::getAnchor()] ?? 0,
+            'keyMapIdJson' => Helper::jsonStringify($keyMapId),
+            'document'     => $md[$file]['content'],
+            'useMenu'      => $useMenu,
+            'footer'       => $this->cnf->copyright,
+        ];
     }
 
     /**

@@ -1,6 +1,10 @@
 {% block documentJavascript %}
 bsw.configure({
-    data: {},
+    data: {
+        indexCol: 5,
+        indexColTmp: 5,
+        shrink: false,
+    },
     method: {
         documentRender(f5) {
             let theAnchor = bsw.getAnchor();
@@ -19,16 +23,37 @@ bsw.configure({
                 }
             }
             setTimeout(() => bsw.prominentAnchor(), 100)
-        }
+        },
+        changeShrink() {
+            this.shrink = !this.shrink;
+            if (this.shrink === true) {
+                this.indexColTmp = this.indexCol;
+                this.indexCol = 0;
+            } else {
+                this.indexCol = this.indexColTmp;
+            }
+        },
+        resize(fromInit = false) {
+            let w = document.body.clientWidth;
+            let r = bsw.getResponsiveInfo(w);
+            this.indexCol = {xs: 24, sm: 10, md: 8, lg:6, xl:5, xxl: 4}[r];
+            if (fromInit && r === 'xs') {
+                this.changeShrink();
+            }
+        },
     },
     logic: {
         documentInit(v) {
             v.documentRender(true);
+            v.resize(true);
         },
         documentListenTheAnchor(v) {
             window.onhashchange = function () {
                 v.documentRender(false);
             };
+        },
+        documentResize(v) {
+            $(window).resize(() => v.resize());
         }
     }
 });

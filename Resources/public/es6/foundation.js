@@ -391,6 +391,30 @@ class FoundationPrototype {
             scnW: window.screen.availWidth,
         }
     }
+
+    /**
+     *  xs - <576px
+     *  sm - ≥576px
+     *  md - ≥768px
+     *  lg - ≥992px
+     *  xl - ≥1200px
+     * xxl - ≥1600px
+     */
+    getResponsiveInfo(width) {
+        if (width < 576) {
+            return 'xs';
+        } else if (width < 768) {
+            return 'sm';
+        } else if (width < 992) {
+            return 'md';
+        } else if (width < 1200) {
+            return 'lg';
+        } else if (width < 1600) {
+            return 'xl';
+        } else {
+            return 'xxl';
+        }
+    }
 }
 
 //

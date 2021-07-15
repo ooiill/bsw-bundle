@@ -8,62 +8,73 @@
 
 {% block page %}
   {% set md = data.data ?? logic.data.data %}
-  <div class="markdown-content">
-    {% if md.useMenu %}
-      <div class="menu">
-        <a-layout-sider
-          class="bsw-menu-container"
-          :theme="menuTheme"
-          :width="300"
-        >
-          <a-menu
-            :theme="menuTheme"
-            :default-open-keys="['{{ md.openMenu }}']"
-            :default-selected-keys="['{{ md.selectedMenu }}']"
-            mode="inline"
-            @click="redirectByVue"
+  <a-button
+    class="shrink-button"
+    size="large"
+    type="primary"
+    shape="circle"
+    :icon="shrink ? 'menu-unfold' : 'menu-fold'"
+    @click="changeShrink"
+  ></a-button>
+
+  <a-row class="markdown-content">
+    <a-col :span="indexCol" class="{{ md.useMenu ? 'menu' : 'index' }}">
+      {% if md.useMenu %}
+        <div class="menu">
+          <a-layout-sider
+            class="bsw-menu-container"
+            theme="light"
+            width="100%"
           >
-            {% for menuItem in md.masterMenu %}
-              {% set subMenu = attribute(md.slaveMenu, menuItem.id) ?? [] %}
-              {% if subMenu is not empty %}
-                <a-sub-menu key="{{ menuItem.id }}">
+            <a-menu
+              theme="light"
+              :default-open-keys="['{{ md.openMenu }}']"
+              :default-selected-keys="['{{ md.selectedMenu }}']"
+              mode="inline"
+              @click="redirectByVue"
+            >
+              {% for menuItem in md.masterMenu %}
+                {% set subMenu = attribute(md.slaveMenu, menuItem.id) ?? [] %}
+                {% if subMenu is not empty %}
+                  <a-sub-menu key="{{ menuItem.id }}">
                 <span slot="title">
                   {% if menuItem.icon is not empty %}
                     {{ menuItem.icon|icon|raw }}
                   {% endif %}
                   <span>{{ menuItem.label }}</span>
                 </span>
-                  {% for subMenuItem in subMenu %}
-                    <a-menu-item key="{{ subMenuItem.id }}">
-                      {% if subMenuItem.icon is not empty %}
-                        {{ subMenuItem.icon|icon|raw }}
-                      {% endif %}
-                      <span :data-bsw.prop="{{ subMenuItem.data }}">{{ subMenuItem.label }}</span>
-                    </a-menu-item>
-                  {% endfor %}
-                </a-sub-menu>
-              {% else %}
-                <a-menu-item key="{{ menuItem.id }}">
-                  {% if menuItem.icon is not empty %}
-                    {{ menuItem.icon|icon|raw }}
-                  {% endif %}
-                  <span :data-bsw.prop="{{ menuItem.data }}">{{ menuItem.label }}</span>
-                </a-menu-item>
-              {% endif %}
-            {% endfor %}
-          </a-menu>
-        </a-layout-sider>
-      </div>
-    {% else %}
-      <div class="index">{{ md.toc|raw }}</div>
-    {% endif %}
-    <div class="content">
+                    {% for subMenuItem in subMenu %}
+                      <a-menu-item key="{{ subMenuItem.id }}">
+                        {% if subMenuItem.icon is not empty %}
+                          {{ subMenuItem.icon|icon|raw }}
+                        {% endif %}
+                        <span :data-bsw.prop="{{ subMenuItem.data }}">{{ subMenuItem.label }}</span>
+                      </a-menu-item>
+                    {% endfor %}
+                  </a-sub-menu>
+                {% else %}
+                  <a-menu-item key="{{ menuItem.id }}">
+                    {% if menuItem.icon is not empty %}
+                      {{ menuItem.icon|icon|raw }}
+                    {% endif %}
+                    <span :data-bsw.prop="{{ menuItem.data }}">{{ menuItem.label }}</span>
+                  </a-menu-item>
+                {% endif %}
+              {% endfor %}
+            </a-menu>
+          </a-layout-sider>
+        </div>
+      {% else %}
+        {{ md.toc|raw }}
+      {% endif %}
+    </a-col>
+    <a-col :span="24 - indexCol" class="content">
       {{ md.document|raw }}
       {% block footer %}
         <footer>{{ md.footer|raw }}</footer>
       {% endblock %}
-    </div>
-  </div>
+    </a-col>
+  </a-row>
 {% endblock %}
 
 {% block javascript %}

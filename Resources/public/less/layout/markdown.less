@@ -22,17 +22,20 @@ body {
 footer {
   height: @footer-height;
   line-height: @footer-height;
-  font-size: 16px;
+  font-size: 14px;
   color: #666;
   border-top: 1px solid #f3f3f3;
   margin-top: 60px;
   text-align: left;
   user-select: none;
+  overflow: hidden;
+
+  a {
+    color: #666 !important;
+  }
 }
 
 .markdown-content {
-  display: flex;
-  flex-direction: row;
   height: calc(~"100vh - @{footer-full-height}");
 
   .before(@text, @a: .2, @r: 0, @g: 0, @b: 0) {
@@ -47,19 +50,26 @@ footer {
     color: rgba(@r, @g, @b, @a);
   }
 
+  > .menu, .menu > .menu {
+    overflow: auto;
+    user-select: none;
+    height: 100vh;
+  }
+
   > .index {
     overflow: auto;
     padding: 20px;
     user-select: none;
+    height: 100vh;
   }
 
   > .content {
     overflow: auto;
-    padding: 10px 30px 0 40px;
+    padding: 10px 20px 0 30px;
+    height: 100vh;
   }
 
   > .index {
-    flex: 0 0 340px;
     padding-right: 20px;
     border-right: 1px solid rgba(214, 219, 223, .2);
 
@@ -112,8 +122,6 @@ footer {
   }
 
   > .content {
-    flex: 1 1 auto;
-
     ul {
       padding-left: 30px;
     }
@@ -128,6 +136,7 @@ footer {
       border: 1px solid #f5f4f4;
       border-radius: 8px;
       padding: 8px;
+      max-width: 100%;
     }
   }
 
@@ -272,4 +281,11 @@ footer {
 body.bsw-foundation div.bsw-content-document pre code.hljs {
   background-color: #f7f8fa;
   padding: 20px;
+}
+
+button.shrink-button {
+  position: fixed;
+  left: 30px;
+  bottom: 30px;
+  z-index: 999;
 }

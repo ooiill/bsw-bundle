@@ -59,7 +59,9 @@
     {% endif %}
     <div class="content">
       {{ md.document|raw }}
-      <footer>{{ md.footer|raw }}</footer>
+      {% block footer %}
+        <footer>{{ md.footer|raw }}</footer>
+      {% endblock %}
     </div>
   </div>
 {% endblock %}

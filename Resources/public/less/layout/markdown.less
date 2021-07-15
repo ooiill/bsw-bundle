@@ -67,6 +67,9 @@ footer {
     overflow: auto;
     padding: 10px 20px 0 30px;
     height: 100vh;
+    @media screen and (max-width: 768px) {
+      padding: 10px 14px 0 14px;
+    }
   }
 
   > .index {
@@ -131,7 +134,7 @@ footer {
       margin-top: 10px;
     }
 
-    > p > img {
+    > p img {
       margin: 18px 0;
       border: 1px solid #f5f4f4;
       border-radius: 8px;
@@ -245,7 +248,7 @@ footer {
     color: rgba(44, 62, 80, 0.75);
     font-size: 90%;
     padding: 2px 4px;
-    white-space: nowrap;
+    white-space: pre-wrap;
 
     &[class^="language-"] {
       white-space: unset;
@@ -288,4 +291,23 @@ button.shrink-button {
   left: 30px;
   bottom: 30px;
   z-index: 999;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb { // bar
+  // border-radius: 1em;
+  background-color: rgba(1, 106, 161, .7);
+}
+
+::-webkit-scrollbar-track { // background
+  // border-radius: 1em;
+  background-color: rgba(1, 106, 161, .1);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: rgba(1, 106, 161, .1);
 }

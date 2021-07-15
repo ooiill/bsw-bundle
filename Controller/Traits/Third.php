@@ -201,6 +201,22 @@ trait Third
         $index = [];
         $content = $parseMarkdown->text($markdown);
         $content = preg_replace_callback(
+            '/\<img(.*)src="(.*?)"(.*?)alt="(.*?)"(.*?)>/',
+            function ($matches) use ($content) {
+                return Html::tag(
+                    'a',
+                    "<img{$matches[1]}src='{$matches[2]}'{$matches[3]}alt='{$matches[4]}'{$matches[5]}>",
+                    [
+                        'class'         => 'bsw-preview-image',
+                        'data-fancybox' => 'markdown',
+                        'href'          => $matches[2],
+                        'data-caption'  => $matches[4],
+                    ]
+                );
+            },
+            $content
+        );
+        $content = preg_replace_callback(
             '/\<h([1-3])\>(.*?)\<\/h[1-3]\>/',
             function ($matches) use ($markdownOrFile, $linkHandler, $liHandler, &$toc, &$index) {
                 [$_, $n, $idx] = $matches;
@@ -346,7 +362,7 @@ trait Third
                 return [$url, $text];
             },
             null,
-            md5(implode('+', Helper::getDirectoryMd5s($path)))
+            md5(implode('+', Helper::getDirectoryMd5s($path))) . 'abcc'
         );
 
         $openMenu = 0;

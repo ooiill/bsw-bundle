@@ -1,9 +1,10 @@
 {% block documentJavascript %}
 bsw.configure({
     data: {
-        indexCol: 5,
-        indexColTmp: 5,
+        indexCol: 0,
+        indexColTmp: 0,
         shrink: false,
+        size: null,
     },
     method: {
         documentRender(f5) {
@@ -22,7 +23,7 @@ bsw.configure({
                     $('.markdown-content .content').scrollTop(currentMd[0].offsetTop - 12);
                 }
             }
-            setTimeout(() => bsw.prominentAnchor(), 100)
+            setTimeout(() => bsw.prominentAnchor(), 50)
         },
         changeShrink() {
             this.shrink = !this.shrink;
@@ -33,23 +34,28 @@ bsw.configure({
                 this.indexCol = this.indexColTmp;
             }
         },
-        resize(fromInit = false) {
+        resize(f5 = false) {
             let w = document.body.clientWidth;
-            let r = bsw.getResponsiveInfo(w);
-            this.indexCol = {xs: 24, sm: 10, md: 8, lg:6, xl:5, xxl: 4}[r];
-            if (fromInit && r === 'xs') {
+            this.size = bsw.getResponsiveInfo(w);
+            this.indexCol = {xs: 24, sm: 10, md: 8, lg:7, xl:6, xxl: 5}[this.size];
+            if (f5 && this.size === 'xs') {
                 this.changeShrink();
             }
         },
     },
     logic: {
         documentInit(v) {
-            v.documentRender(true);
             v.resize(true);
+            setTimeout(() =>  v.documentRender(true), 10);
         },
         documentListenTheAnchor(v) {
             window.onhashchange = function () {
-                v.documentRender(false);
+                if (v.size === 'xs') {
+                    v.changeShrink();
+                    setTimeout(() => v.documentRender(false), 10);
+                } else {
+                    v.documentRender(false);
+                }
             };
         },
         documentResize(v) {

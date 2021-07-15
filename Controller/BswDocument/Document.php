@@ -43,7 +43,10 @@ trait Document
 
         $this->appendSrcCssWithKey('markdown', Abs::CSS_MARKDOWN);
         $this->appendSrcCssWithKey('highlight', Abs::CSS_HIGHLIGHT);
+        $this->appendSrcCssWithKey('fancy-box', Abs::CSS_FANCY_BOX);
+
         $this->appendSrcJsWithKey('highlight', Abs::JS_HIGHLIGHT);
+        $this->appendSrcJsWithKey('fancy-box', Abs::JS_FANCY_BOX);
 
         $this->seoWithAppName = false;
 

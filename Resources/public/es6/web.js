@@ -112,7 +112,6 @@ $(function () {
 
     }, bsw.config.component || {})).init(function (v) {
 
-        bsw.initClipboard('.bsw-copy');
         bsw.initVConsole();
         bsw.initHighlight();
 

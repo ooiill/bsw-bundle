@@ -328,7 +328,7 @@ trait Third
 
                 return [$markdown, $masterMenu, $slaveMenu, $idMapToKey];
             },
-            "md-path-{$path}{$keySuffix}" . time(),
+            "md-path-{$path}{$keySuffix}",
             0
         );
     }

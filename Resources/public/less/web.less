@@ -1,1 +1,18 @@
 @import "foundation.less";
+
+.ant-back-top {
+  z-index: 998;
+  right: 80px;
+  @media screen and (max-width: @mobile-lg) {
+    right: 50px;
+    bottom: 40px;
+  }
+}
+
+.bsw-drawer {
+  .ant-drawer-content-wrapper {
+    @media screen and (max-width: @mobile-lg) {
+      width: 100% !important;
+    }
+  }
+}

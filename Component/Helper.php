@@ -3520,6 +3520,36 @@ class Helper
     }
 
     /**
+     * Sort string array with handler
+     *
+     * @param array    $target
+     * @param callable $handler
+     * @param string   $mode
+     *
+     * @return array
+     */
+    public static function sortStringArrayWithHandler(
+        array $target,
+        callable $handler,
+        string $mode = Abs::SORT_ASC
+    ): array {
+        
+        $sortSource = [];
+        foreach ($target as $key => $value) {
+            $source = $handler($value, $key);
+            $sortSource[$source] = $key;
+        }
+        $mode === Abs::SORT_DESC ? krsort($sortSource) : ksort($sortSource);
+
+        $newTarget = [];
+        foreach ($sortSource as $source => $key) {
+            $newTarget[$key] = $target[$key];
+        }
+
+        return $newTarget;
+    }
+
+    /**
      * Appoint keys from array
      *
      * @param array $target

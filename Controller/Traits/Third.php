@@ -296,7 +296,12 @@ trait Third
                         return Helper::strEndWith($file, '.md') ? $file : false;
                     }
                 );
-                asort($tree);
+                $tree = Helper::sortStringArrayWithHandler(
+                    $tree,
+                    function (string $v) {
+                        return intval(Helper::cutString($v, ['/^-1', '.^0']));
+                    }
+                );
 
                 $i = 1;
                 $masterMenu = [];
@@ -323,7 +328,7 @@ trait Third
 
                 return [$markdown, $masterMenu, $slaveMenu, $idMapToKey];
             },
-            "md-path-{$path}{$keySuffix}",
+            "md-path-{$path}{$keySuffix}" . time(),
             0
         );
     }

@@ -129,11 +129,6 @@ footer {
       padding-left: 30px;
     }
 
-    > p > strong {
-      display: inline-block;
-      margin-top: 10px;
-    }
-
     > p img {
       margin: 18px 0;
       border: 1px solid #f5f4f4;
@@ -218,13 +213,16 @@ footer {
     line-height: 26px;
   }
 
-  table {
+  div.content > table {
     border-collapse: collapse;
-  }
 
-  td, th {
-    border: 1px solid #dfe5ea;
-    padding: 12px 20px;
+    td, th {
+      border: 1px solid #dfe5ea;
+      padding: 12px 20px;
+      @media screen and (max-width: 500px) {
+        padding: 6px 4px;
+      }
+    }
   }
 
   blockquote {
@@ -283,7 +281,25 @@ footer {
 
 body.bsw-foundation div.bsw-content-document pre code.hljs {
   background-color: #f7f8fa;
-  padding: 20px;
+  padding: 20px 18px;
+}
+
+.hljs-ln-numbers {
+  user-select: none;
+  text-align: right;
+  color: #ccc;
+  vertical-align: middle;
+  padding-right: 0 !important;
+  min-width: 14px;
+}
+
+.hljs-ln-code {
+  padding-left: 16px !important;
+}
+
+.hljs table tr {
+  display: block;
+  padding: 2px 0;
 }
 
 button.shrink-button {
@@ -294,8 +310,8 @@ button.shrink-button {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-thumb { // bar

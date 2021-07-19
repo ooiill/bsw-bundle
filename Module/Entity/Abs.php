@@ -225,6 +225,7 @@ class Abs
     const JS_MD5            = 'npm;blueimp-md5/js/md5.min.js';
     const JS_EDITOR         = 'npm;@ckeditor/ckeditor5-build-decoupled-document/build/ckeditor.js';
     const JS_HIGHLIGHT      = 'npm;@highlightjs/cdn-assets/highlight.min.js';
+    const JS_HIGHLIGHT_LN   = 'npm;highlightjs-line-numbers.js/dist/highlightjs-line-numbers.min.js';
     const JS_SCROLL_BAR     = 'npm;perfect-scrollbar/dist/perfect-scrollbar.min.js';
     const JS_FOUNDATION     = 'diy;foundation.js';
     const JS_BSW            = 'diy;bsw.js';

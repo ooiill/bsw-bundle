@@ -2593,6 +2593,11 @@ class FoundationAntD extends FoundationTools {
             return;
         }
         hljs.initHighlighting();
+        if (typeof hljs.lineNumbersBlock !== 'undefined') {
+            $('code.hljs').each(function (i, block) {
+                hljs.lineNumbersBlock(block);
+            });
+        }
     }
 
     /**
@@ -2611,6 +2616,11 @@ class FoundationAntD extends FoundationTools {
         $(params.selector).each(function () {
             hljs.highlightBlock(this);
         });
+        if (typeof hljs.lineNumbersBlock !== 'undefined') {
+            $('code.hljs').each(function (i, block) {
+                hljs.lineNumbersBlock(block);
+            });
+        }
     }
 
     /**

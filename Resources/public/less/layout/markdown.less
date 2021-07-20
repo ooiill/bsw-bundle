@@ -35,6 +35,18 @@ footer {
   }
 }
 
+.ant-drawer-body {
+  padding: 0;
+}
+
+.bsw-scaffold > .markdown-content {
+  height: auto;
+
+  > .content {
+    height: auto;
+  }
+}
+
 .markdown-content {
   height: calc(~"100vh - @{footer-full-height}");
 
@@ -138,11 +150,6 @@ footer {
     }
   }
 
-  .ant-menu-dark, .ant-menu-dark .ant-menu-sub {
-    color: rgba(255, 255, 255, .65);
-    background: #031e38;
-  }
-
   p, code, blockquote, table, ul, ol {
     color: rgba(0, 0, 0, 0.7);
   }
@@ -213,7 +220,7 @@ footer {
     line-height: 26px;
   }
 
-  div.content > table {
+  .content > table {
     border-collapse: collapse;
 
     td, th {
@@ -279,7 +286,7 @@ footer {
   }
 }
 
-body.bsw-foundation div.bsw-content-document pre code.hljs {
+body.bsw-foundation .bsw-content-document pre code.hljs {
   background-color: #f7f8fa;
   padding: 20px 18px;
 }
@@ -302,11 +309,22 @@ body.bsw-foundation div.bsw-content-document pre code.hljs {
   padding: 2px 0;
 }
 
+.bsw-scaffold {
+  min-height: 100vh;
+}
+
 button.shrink-button {
   position: fixed;
-  left: 30px;
-  bottom: 30px;
+  right: 50px;
+  bottom: 90px;
   z-index: 999;
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+}
+
+.ant-menu-light {
+  height: 100%;
 }
 
 ::-webkit-scrollbar {

@@ -149,6 +149,9 @@ ul.ant-pagination {
 
       &.left {
         float: left;
+        @media screen and (max-width: @mobile-md) {
+          display: none;
+        }
       }
 
       &.right {

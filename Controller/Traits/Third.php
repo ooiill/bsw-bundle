@@ -338,12 +338,12 @@ trait Third
      *
      * @param string $currentFile
      * @param string $path
-     * @param bool   $useMenu
+     * @param string $useMenu
      *
      * @return array
      * @throws Exception
      */
-    public function markdownDirectoryParse(string $currentFile, string $path, bool $useMenu = false)
+    public function markdownDirectoryParse(string $currentFile, string $path, ?string $useMenu = null)
     {
         $file = Helper::joinString('/', $path, $currentFile);
         $file = "{$file}.md";

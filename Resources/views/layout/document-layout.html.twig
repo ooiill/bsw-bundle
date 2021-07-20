@@ -1,0 +1,102 @@
+{% extends 'layout/blank.html.twig' %}
+{% set tplScaffoldClass = 'bsw-scaffold-document' %}
+{% set tplContentClass = ['bsw-content-document', tplContentChildrenClass ?? null]|joinClass %}
+
+{% use 'javascript/document.md.twig' %}
+
+{% block loading %}{% endblock %}
+
+{% block menu %}
+  <a-layout-sider
+    class="bsw-menu-container"
+    theme="{{ md.useMenu }}"
+    :width="280"
+    collapsible
+    v-model="documentMenuCollapsed"
+  >
+    <a-menu
+      theme="{{ md.useMenu }}"
+      mode="inline"
+      :default-open-keys="['{{ md.openMenu }}']"
+      :default-selected-keys="['{{ md.selectedMenu }}']"
+      :default-open-keys="['{{ md.openMenu }}']"
+      :default-selected-keys="['{{ md.selectedMenu }}']"
+      :inline-collapsed="documentMenuCollapsed"
+      :force-sub-menu-render="true"
+      @click="redirectByVue"
+    >
+      {% for menuItem in md.masterMenu %}
+        {% set subMenu = attribute(md.slaveMenu, menuItem.id) ?? [] %}
+        {% if subMenu is not empty %}
+          <a-sub-menu key="{{ menuItem.id }}">
+              <span slot="title">
+                {% if menuItem.icon is not empty %}
+                  {{ menuItem.icon|icon|raw }}
+                {% endif %}
+                <span>{{ menuItem.label }}</span>
+              </span>
+            {% for subMenuItem in subMenu %}
+              <a-menu-item key="{{ subMenuItem.id }}">
+                {% if subMenuItem.icon is not empty %}
+                  {{ subMenuItem.icon|icon|raw }}
+                {% endif %}
+                <span :data-bsw.prop="{{ subMenuItem.data }}">{{ subMenuItem.label }}</span>
+              </a-menu-item>
+            {% endfor %}
+          </a-sub-menu>
+        {% else %}
+          <a-menu-item key="{{ menuItem.id }}">
+            {% if menuItem.icon is not empty %}
+              {{ menuItem.icon|icon|raw }}
+            {% endif %}
+            <span :data-bsw.prop="{{ menuItem.data }}">{{ menuItem.label }}</span>
+          </a-menu-item>
+        {% endif %}
+      {% endfor %}
+    </a-menu>
+  </a-layout-sider>
+{% endblock %}
+
+{% block page %}
+  {% set md = data.data ?? logic.data.data %}
+  <a-layout class="{{ ['bsw-scaffold']|joinClass }}">
+    <!-- menu mobile -->
+    <a-drawer
+      wrap-class-name="bsw-menu-mobile"
+      v-if="bsw.isMobile()"
+      placement="left"
+      :closable="false"
+      :visible="!documentMenuCollapsed"
+      :width="280"
+      @close="documentMenuTrigger"
+    >
+      {{ block('menu') }}
+    </a-drawer>
+    <!-- menu -->
+    <div class="bsw-menu" v-else>
+      {{ block('menu') }}
+    </div>
+    <a-layout class="markdown-content">
+      <a-layout-content class="content">
+        {{ md.document|raw }}
+        {% block footer %}
+          <footer>{{ md.footer|raw }}</footer>
+        {% endblock %}
+        <a-button
+          class="shrink-button"
+          v-if="bsw.isMobile()"
+          size="large"
+          type="primary"
+          shape="circle"
+          :icon="documentMenuCollapsed ? 'menu-unfold' : 'menu-fold'"
+          @click="documentMenuTrigger"
+        ></a-button>
+      </a-layout-content>
+      <!-- footer -->
+    </a-layout>
+  </a-layout>
+{% endblock %}
+
+{% block javascript %}
+{{ block('documentJavascript') }}
+{% endblock %}

@@ -317,7 +317,7 @@ trait Third
                     }
                     foreach (Helper::dig($md, 'menuSub') as $k => $v) {
                         $key = $i * 1000 + $k + 1;
-                        $slaveMenu[$i][] = $v->setId($key)->setIcon('b:icon-attachment1');
+                        $slaveMenu[$i][] = $v->setId($key)->setIcon('b:icon-pin');
                         if ($ahr = Helper::getAnchor($v->getUrl())) {
                             $idMapToKey[$key] = $ahr;
                         }

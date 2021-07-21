@@ -313,10 +313,17 @@ body.bsw-foundation .bsw-content-document pre code.hljs {
   min-height: 100vh;
 }
 
+@media screen and (max-width: 992px) {
+  .ant-back-top {
+    right: 30px;
+    bottom: 30px;
+  }
+}
+
 button.shrink-button {
   position: fixed;
-  right: 50px;
-  bottom: 90px;
+  right: 30px;
+  bottom: 80px;
   z-index: 999;
   @media screen and (min-width: 768px) {
     display: none;
@@ -325,23 +332,4 @@ button.shrink-button {
 
 .ant-menu-light {
   height: 100%;
-}
-
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-
-::-webkit-scrollbar-thumb { // bar
-  // border-radius: 1em;
-  background-color: rgba(1, 106, 161, .7);
-}
-
-::-webkit-scrollbar-track { // background
-  // border-radius: 1em;
-  background-color: rgba(1, 106, 161, .1);
-}
-
-::-webkit-scrollbar-corner {
-  background-color: rgba(1, 106, 161, .1);
 }

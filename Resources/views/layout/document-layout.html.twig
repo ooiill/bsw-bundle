@@ -10,7 +10,7 @@
   <a-layout-sider
     class="bsw-menu-container"
     theme="{{ md.useMenu }}"
-    :width="280"
+    :width="270"
     collapsible
     v-model="documentMenuCollapsed"
   >
@@ -36,7 +36,7 @@
                 <span>{{ menuItem.label }}</span>
               </span>
             {% for subMenuItem in subMenu %}
-              <a-menu-item key="{{ subMenuItem.id }}">
+              <a-menu-item key="{{ subMenuItem.id }}" :style="{paddingLeft: '40px'}">
                 {% if subMenuItem.icon is not empty %}
                   {{ subMenuItem.icon|icon|raw }}
                 {% endif %}
@@ -67,7 +67,7 @@
       placement="left"
       :closable="false"
       :visible="!documentMenuCollapsed"
-      :width="280"
+      :width="270"
       @close="documentMenuTrigger"
     >
       {{ block('menu') }}

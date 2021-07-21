@@ -2,7 +2,7 @@
 bsw.configure({
     data: {
         documentIndexCol: 5,
-        documentMenuCollapsed: true,
+        documentMenuCollapsed: bsw.isMobile(),
     },
     method: {
         documentRender(f5) {

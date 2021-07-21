@@ -3533,10 +3533,13 @@ class Helper
         callable $handler,
         string $mode = Abs::SORT_ASC
     ): array {
-        
+
         $sortSource = [];
         foreach ($target as $key => $value) {
             $source = $handler($value, $key);
+            if ($source === false || $source === null) {
+                continue;
+            }
             $sortSource[$source] = $key;
         }
         $mode === Abs::SORT_DESC ? krsort($sortSource) : ksort($sortSource);

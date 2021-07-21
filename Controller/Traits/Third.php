@@ -294,6 +294,9 @@ trait Third
                     $tree,
                     function ($file) {
                         return Helper::strEndWith($file, '.md') ? $file : false;
+                    },
+                    function ($dir) {
+                        return false;
                     }
                 );
                 $tree = Helper::sortStringArrayWithHandler(
@@ -367,7 +370,7 @@ trait Third
                 return [$url, $text];
             },
             null,
-            md5(implode('+', Helper::getDirectoryMd5s($path))) . 'abcc'
+            md5(implode('+', Helper::multipleToOne(Helper::getDirectoryMd5s($path))))
         );
 
         $openMenu = 0;

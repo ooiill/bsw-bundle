@@ -95,14 +95,19 @@ trait BackendPreset
      *
      * @param array $hooked
      * @param bool  $needKey
+     * @param array $ignoreKeys
      *
      * @return array
      */
-    public function clonePreviewToForm(array $hooked, bool $needKey = true): array
+    public function clonePreviewToForm(array $hooked, bool $needKey = true, array $ignoreKeys = []): array
     {
         $hooked = Helper::arrayRemove($hooked, ['id']);
-        foreach ($hooked as &$value) {
+        foreach ($hooked as $key => &$value) {
             if (!is_scalar($value)) {
+                continue;
+            }
+            if (!empty($ignoreKeys) && in_array($key, $ignoreKeys)) {
+                unset($hooked[$key]);
                 continue;
             }
             $value = ltrim($value, '$￥');

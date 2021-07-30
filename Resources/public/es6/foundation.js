@@ -2592,7 +2592,8 @@ class FoundationAntD extends FoundationTools {
         if (typeof hljs === 'undefined') {
             return;
         }
-        hljs.highlightAll();
+        hljs.initHighlighting();
+        // hljs.highlightAll();
         if (typeof hljs.lineNumbersBlock !== 'undefined') {
             $('code.hljs').each(function (i, block) {
                 hljs.lineNumbersBlock(block);

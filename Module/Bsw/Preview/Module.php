@@ -420,7 +420,7 @@ class Module extends Bsw
                 $fn,
                 [Message::class, Error::class, Abs::T_ARRAY],
                 [],
-                $this->arguments($this->input->args, ['level' => $this->level])
+                $this->arguments($this->input->args, compact('previewAnnotation'), ['level' => $this->level])
             );
 
             if ($previewAnnotationExtra instanceof Error) {

@@ -176,6 +176,7 @@ trait Third
     /**
      * Parse markdown content and toc
      *
+     * @param int      $seq
      * @param string   $markdownOrFile
      * @param callable $linkHandler
      * @param callable $liHandler
@@ -183,6 +184,7 @@ trait Third
      * @return array
      */
     public function parseMdContentAndToc(
+        int $seq,
         string $markdownOrFile,
         callable $linkHandler = null,
         callable $liHandler = null
@@ -218,13 +220,13 @@ trait Third
         );
         $content = preg_replace_callback(
             '/\<h([1-3])\>(.*?)\<\/h[1-3]\>/',
-            function ($matches) use ($markdownOrFile, $linkHandler, $liHandler, &$toc, &$index) {
+            function ($matches) use ($seq, $markdownOrFile, $linkHandler, $liHandler, &$toc, &$index) {
                 [$_, $n, $idx] = $matches;
                 $id = strtoupper(substr(Helper::generateToken(), 2, 8));
                 $link = "#{$id}";
 
                 if ($linkHandler) {
-                    $items = call_user_func_array($linkHandler, [$markdownOrFile, $id, $n, $idx]);
+                    $items = call_user_func_array($linkHandler, [$seq, $markdownOrFile, $id, $n, $idx]);
                     Helper::callReturnType($items, Abs::T_ARRAY, 'Handler for `link` of markdown parser');
                     [$link, $idx] = $items;
                 }
@@ -274,6 +276,8 @@ trait Third
      * Parse markdown in path
      *
      * @param string   $path
+     * @param callable $fileCall
+     * @param callable $dirCall
      * @param callable $linkHandler
      * @param callable $liHandler
      * @param string   $keySuffix
@@ -282,23 +286,27 @@ trait Third
      */
     public function parseMdInPath(
         string $path,
+        ?callable $fileCall = null,
+        ?callable $dirCall = null,
         ?callable $linkHandler = null,
         ?callable $liHandler = null,
         ?string $keySuffix = null
     ): array {
+        if (!$fileCall) {
+            $fileCall = function ($file) {
+                return Helper::strEndWith($file, '.md') ? $file : false;
+            };
+        }
+        if (!$dirCall) {
+            $dirCall = function ($dir) {
+                return false;
+            };
+        }
+
         return $this->caching(
-            function () use ($path, $linkHandler, $liHandler) {
+            function () use ($path, $fileCall, $dirCall, $linkHandler, $liHandler) {
                 $tree = [];
-                Helper::directoryIterator(
-                    $path,
-                    $tree,
-                    function ($file) {
-                        return Helper::strEndWith($file, '.md') ? $file : false;
-                    },
-                    function ($dir) {
-                        return false;
-                    }
-                );
+                Helper::directoryIterator($path, $tree, $fileCall, $dirCall);
                 $tree = Helper::sortStringArrayWithHandler(
                     $tree,
                     function (string $v) {
@@ -311,8 +319,9 @@ trait Third
                 $slaveMenu = [];
                 $markdown = [];
                 $idMapToKey = [];
-                foreach ($tree as $file) {
-                    $md = $this->parseMdContentAndToc($file, $linkHandler, $liHandler);
+                $tree = array_values($tree);
+                foreach ($tree as $seq => $file) {
+                    $md = $this->parseMdContentAndToc($seq, $file, $linkHandler, $liHandler);
                     $masterMenu[$i] = Helper::dig($md, 'menu');
                     $masterMenu[$i]->setId($i)->setIcon('b:icon-form');
                     if ($anchor = Helper::getAnchor($masterMenu[$i]->getUrl())) {
@@ -339,15 +348,24 @@ trait Third
     /**
      * Markdown directory parse
      *
-     * @param string $currentFile
-     * @param string $path
-     * @param string $useMenu
+     * @param string   $currentFile
+     * @param string   $path
+     * @param string   $useMenu
+     * @param callable $fileCall
+     * @param callable $dirCall
+     * @param string   $keySuffix
      *
      * @return array
      * @throws Exception
      */
-    public function markdownDirectoryParse(string $currentFile, string $path, ?string $useMenu = null)
-    {
+    public function markdownDirectoryParse(
+        string $currentFile,
+        string $path,
+        ?string $useMenu = null,
+        ?callable $fileCall = null,
+        ?callable $dirCall = null,
+        ?string $keySuffix = null
+    ) {
         $file = Helper::joinString('/', $path, $currentFile);
         $file = "{$file}.md";
 
@@ -357,10 +375,12 @@ trait Third
 
         [$md, $masterMenu, $slaveMenu, $idMapKey] = $this->parseMdInPath(
             $path,
-            function ($file, $id, $n, $text) {
+            $fileCall,
+            $dirCall,
+            function ($seq, $file, $id, $n, $text) {
                 $name = pathinfo($file, PATHINFO_FILENAME);
-                if ($n == 1 && $index = intval($name)) {
-                    $roman = Helper::intToRoman($index);
+                if ($n == 1) {
+                    $roman = Helper::intToRoman($seq + 1);
                     $text = "{$roman}. {$text}";
                 }
 
@@ -370,7 +390,7 @@ trait Third
                 return [$url, $text];
             },
             null,
-            md5(implode('+', Helper::multipleToOne(Helper::getDirectoryMd5s($path))))
+            md5(implode('+', Helper::multipleToOne(Helper::getDirectoryMd5s($path)))) . $keySuffix
         );
 
         $openMenu = 0;
@@ -388,7 +408,7 @@ trait Third
             'openMenu'     => $openMenu,
             'selectedMenu' => $keyMapId[Helper::getAnchor()] ?? 0,
             'keyMapIdJson' => Helper::jsonStringify($keyMapId),
-            'document'     => $md[$file]['content'],
+            'document'     => $md[$file]['content'] ?? '<h2>404 Not Found</h2>',
             'useMenu'      => $useMenu,
             'footer'       => $this->cnf->copyright,
         ];

@@ -61,9 +61,9 @@ trait Persistence
         };
 
         return [
-            'title'           => ['label' => 'Mission title'],
-            'weight'          => ['typeArgs' => $this->weightTypeArgs($leader)],
-            'lifecycle_start' => [
+            'title'          => ['label' => 'Mission title'],
+            'weight'         => ['typeArgs' => $this->weightTypeArgs($leader)],
+            'lifecycleStart' => [
                 'type'     => Group::class,
                 'sort'     => 3.1,
                 'typeArgs' => [
@@ -84,7 +84,7 @@ trait Persistence
                     ],
                 ],
             ],
-            'lifecycle_end'   => [
+            'lifecycleEnd'   => [
                 'type'     => Group::class,
                 'sort'     => 3.2,
                 'typeArgs' => [

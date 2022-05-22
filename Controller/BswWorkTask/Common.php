@@ -593,10 +593,7 @@ trait Common
      */
     public function beforeLogic()
     {
-        [$team, $leader] = $this->workTaskTeam();
-        if (!$team) {
-            return null;
-        }
+        [$_, $leader] = $this->workTaskTeam();
 
         $title = $this->twigLang('Work task manager');
         $this->seoTitle = $title;

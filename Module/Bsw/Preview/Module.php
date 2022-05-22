@@ -345,15 +345,20 @@ class Module extends Bsw
     }
 
     /**
-     * @param array  $column
-     * @param string $label
+     * @param array       $column
+     * @param null|string $label
+     * @param bool        $transLabel
      *
      * @return array
      */
-    protected function slotsTitleHandler(array $column, ?string $label = null): array
+    protected function slotsTitleHandler(array $column, ?string $label = null, bool $transLabel = true): array
     {
         if (empty($column['slots']['title'])) {
-            $column['title'] = $this->web->fieldLang($label);
+            if ($transLabel) {
+                $column['title'] = $this->web->fieldLang($label);
+            } else {
+                $column['title'] = $label;
+            }
         } elseif (strpos($column['slots']['title'], '__slots_') !== 0) {
             $column['slots']['title'] = $this->slotsName($column['slots']['title']);
         }
@@ -537,7 +542,7 @@ class Module extends Bsw
             if (!empty($item['slots'])) {
                 $column['slots'] = $item['slots'];
             }
-            $column = $this->slotsTitleHandler($column, $item['label']);
+            $column = $this->slotsTitleHandler($column, $item['label'], $item['trans']);
 
             /**
              * slot handler

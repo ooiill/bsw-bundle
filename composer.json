@@ -70,7 +70,7 @@
     "ocramius/proxy-manager": "*",
     "phpmailer/phpmailer": "^6.1.6",
     "friendsofsymfony/rest-bundle": "*",
-    "knplabs/knp-paginator-bundle": "^2.8",
+    "knplabs/knp-paginator-bundle": "*",
     "snc/redis-bundle": "^2.1",
     "symfony/web-profiler-bundle": "5.4.*",
     "symfony/serializer": "5.4.*",

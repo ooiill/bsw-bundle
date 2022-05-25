@@ -73,7 +73,7 @@
     "symfony/security-csrf": "*",
     "symfony/web-profiler-bundle": "5.4.*",
     "symfony/serializer": "5.4.*",
-    "symfony/webpack-encore-bundle": "^1.12",
+    "symfony/webpack-encore-bundle": "^1.12"
   },
   "config": {
     "preferred-install": {

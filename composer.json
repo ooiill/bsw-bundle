@@ -71,7 +71,7 @@
     "friendsofsymfony/rest-bundle": "*",
     "knplabs/knp-paginator-bundle": "*",
     "snc/redis-bundle": "*",
-    "jms/serializer-bundle": "^2.4",
+    "jms/serializer-bundle": "*",
     "symfony/web-profiler-bundle": "5.4.*",
     "symfony/serializer": "5.4.*",
     "symfony/webpack-encore-bundle": "^1.12"

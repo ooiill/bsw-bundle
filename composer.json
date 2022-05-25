@@ -70,8 +70,8 @@
     "knplabs/knp-paginator-bundle": "*",
     "snc/redis-bundle": "*",
     "jms/serializer-bundle": "*",
-    "symfony/security": "5.4.*",
-    "symfony/security-csrf": "5.4.*",
+    "symfony/security": "*",
+    "symfony/security-csrf": "*",
     "symfony/web-profiler-bundle": "5.4.*",
     "symfony/serializer": "5.4.*",
     "symfony/webpack-encore-bundle": "^1.12"

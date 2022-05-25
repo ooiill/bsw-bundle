@@ -39,7 +39,7 @@ abstract class BswWebController extends AbstractController
     /**
      * @var string
      */
-    protected $version = '2.3.7';
+    protected $version = '2.3.8';
 
     /**
      * @var string

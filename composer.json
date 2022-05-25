@@ -70,9 +70,9 @@
     "symfony/profiler-pack": "^1.0",
     "symfony/security": "^4.2",
     "symfony/security-csrf": "^4.2",
-    "symfony/web-profiler-bundle": "^v4.2",
     "ocramius/proxy-manager": "*",
     "phpmailer/phpmailer": "^6.1.6",
+    "symfony/web-profiler-bundle": "5.4.*",
     "symfony/serializer": "5.4.*",
     "symfony/webpack-encore-bundle": "^1.12"
   },
